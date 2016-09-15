@@ -1,0 +1,724 @@
+@model HuskyRescueCore.Models.AdopterApplication
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>AdopterApplication</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="AppAddressCity" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AppAddressCity" class="form-control" />
+                <span asp-validation-for="AppAddressCity" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AppAddressStateId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AppAddressStateId" class="form-control" />
+                <span asp-validation-for="AppAddressStateId" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AppAddressStreet1" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AppAddressStreet1" class="form-control" />
+                <span asp-validation-for="AppAddressStreet1" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AppAddressZIP" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AppAddressZIP" class="form-control" />
+                <span asp-validation-for="AppAddressZIP" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AppCellPhone" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AppCellPhone" class="form-control" />
+                <span asp-validation-for="AppCellPhone" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AppDateBirth" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AppDateBirth" class="form-control" />
+                <span asp-validation-for="AppDateBirth" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AppEmail" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AppEmail" class="form-control" />
+                <span asp-validation-for="AppEmail" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AppEmployer" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AppEmployer" class="form-control" />
+                <span asp-validation-for="AppEmployer" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AppHomePhone" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AppHomePhone" class="form-control" />
+                <span asp-validation-for="AppHomePhone" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AppNameFirst" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AppNameFirst" class="form-control" />
+                <span asp-validation-for="AppNameFirst" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AppNameLast" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AppNameLast" class="form-control" />
+                <span asp-validation-for="AppNameLast" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AppSpouseNameFirst" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AppSpouseNameFirst" class="form-control" />
+                <span asp-validation-for="AppSpouseNameFirst" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AppSpouseNameLast" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AppSpouseNameLast" class="form-control" />
+                <span asp-validation-for="AppSpouseNameLast" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AppTravelFrequency" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AppTravelFrequency" class="form-control" />
+                <span asp-validation-for="AppTravelFrequency" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ApplicantTypeId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ApplicantTypeId" class="form-control" />
+                <span asp-validation-for="ApplicantTypeId" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ApplicationFeeAmount" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ApplicationFeeAmount" class="form-control" />
+                <span asp-validation-for="ApplicationFeeAmount" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ApplicationFeePaymentMethod" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ApplicationFeePaymentMethod" class="form-control" />
+                <span asp-validation-for="ApplicationFeePaymentMethod" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ApplicationFeeTransactionId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ApplicationFeeTransactionId" class="form-control" />
+                <span asp-validation-for="ApplicationFeeTransactionId" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Comments" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Comments" class="form-control" />
+                <span asp-validation-for="Comments" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateSubmitted" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DateSubmitted" class="form-control" />
+                <span asp-validation-for="DateSubmitted" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="FilterAppCatsOwnedCount" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="FilterAppCatsOwnedCount" class="form-control" />
+                <span asp-validation-for="FilterAppCatsOwnedCount" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="FilterAppDogsInterestedIn" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="FilterAppDogsInterestedIn" class="form-control" />
+                <span asp-validation-for="FilterAppDogsInterestedIn" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="FilterAppHasOwnedHuskyBefore" />
+                    <label asp-for="FilterAppHasOwnedHuskyBefore"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="FilterAppIsAwareHuskyAttributes" />
+                    <label asp-for="FilterAppIsAwareHuskyAttributes"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="FilterAppIsCatOwner" />
+                    <label asp-for="FilterAppIsCatOwner"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="FilterAppTraitsDesired" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="FilterAppTraitsDesired" class="form-control" />
+                <span asp-validation-for="FilterAppTraitsDesired" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsAllAdultsAgreedOnAdoption" />
+                    <label asp-for="IsAllAdultsAgreedOnAdoption"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="IsAllAdultsAgreedOnAdoptionReason" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="IsAllAdultsAgreedOnAdoptionReason" class="form-control" />
+                <span asp-validation-for="IsAllAdultsAgreedOnAdoptionReason" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsAppOrSpouseStudent" />
+                    <label asp-for="IsAppOrSpouseStudent"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsAppTravelFrequent" />
+                    <label asp-for="IsAppTravelFrequent"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="IsCompleted" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="IsCompleted" class="form-control" />
+                <span asp-validation-for="IsCompleted" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="IsDeleted" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="IsDeleted" class="form-control" />
+                <span asp-validation-for="IsDeleted" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetAdoptionReasonCompanionChild" />
+                    <label asp-for="IsPetAdoptionReasonCompanionChild"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetAdoptionReasonCompanionPet" />
+                    <label asp-for="IsPetAdoptionReasonCompanionPet"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetAdoptionReasonGift" />
+                    <label asp-for="IsPetAdoptionReasonGift"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetAdoptionReasonGuardDog" />
+                    <label asp-for="IsPetAdoptionReasonGuardDog"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetAdoptionReasonHousePet" />
+                    <label asp-for="IsPetAdoptionReasonHousePet"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetAdoptionReasonJoggingPartner" />
+                    <label asp-for="IsPetAdoptionReasonJoggingPartner"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetAdoptionReasonOther" />
+                    <label asp-for="IsPetAdoptionReasonOther"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetAdoptionReasonWatchDog" />
+                    <label asp-for="IsPetAdoptionReasonWatchDog"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationAloneRestrictionBasement" />
+                    <label asp-for="IsPetKeptLocationAloneRestrictionBasement"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationAloneRestrictionCratedIndoors" />
+                    <label asp-for="IsPetKeptLocationAloneRestrictionCratedIndoors"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationAloneRestrictionCratedOutdoors" />
+                    <label asp-for="IsPetKeptLocationAloneRestrictionCratedOutdoors"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationAloneRestrictionGarage" />
+                    <label asp-for="IsPetKeptLocationAloneRestrictionGarage"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationAloneRestrictionLooseInBackyard" />
+                    <label asp-for="IsPetKeptLocationAloneRestrictionLooseInBackyard"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationAloneRestrictionLooseIndoors" />
+                    <label asp-for="IsPetKeptLocationAloneRestrictionLooseIndoors"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationAloneRestrictionOther" />
+                    <label asp-for="IsPetKeptLocationAloneRestrictionOther"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationAloneRestrictionOutsIdeKennel" />
+                    <label asp-for="IsPetKeptLocationAloneRestrictionOutsIdeKennel"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationAloneRestrictionTiedUpOutdoors" />
+                    <label asp-for="IsPetKeptLocationAloneRestrictionTiedUpOutdoors"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationInOutDoorMostlyOutsIdes" />
+                    <label asp-for="IsPetKeptLocationInOutDoorMostlyOutsIdes"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationInOutDoorsMostlyInsIde" />
+                    <label asp-for="IsPetKeptLocationInOutDoorsMostlyInsIde"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationInOutDoorsTotallyInsIde" />
+                    <label asp-for="IsPetKeptLocationInOutDoorsTotallyInsIde"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationInOutDoorsTotallyOutsIde" />
+                    <label asp-for="IsPetKeptLocationInOutDoorsTotallyOutsIde"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationSleepingRestrictionBasement" />
+                    <label asp-for="IsPetKeptLocationSleepingRestrictionBasement"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationSleepingRestrictionCratedIndoors" />
+                    <label asp-for="IsPetKeptLocationSleepingRestrictionCratedIndoors"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationSleepingRestrictionCratedOutdoors" />
+                    <label asp-for="IsPetKeptLocationSleepingRestrictionCratedOutdoors"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationSleepingRestrictionGarage" />
+                    <label asp-for="IsPetKeptLocationSleepingRestrictionGarage"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationSleepingRestrictionInBedOwner" />
+                    <label asp-for="IsPetKeptLocationSleepingRestrictionInBedOwner"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationSleepingRestrictionLooseInBackyard" />
+                    <label asp-for="IsPetKeptLocationSleepingRestrictionLooseInBackyard"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationSleepingRestrictionLooseIndoors" />
+                    <label asp-for="IsPetKeptLocationSleepingRestrictionLooseIndoors"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationSleepingRestrictionOther" />
+                    <label asp-for="IsPetKeptLocationSleepingRestrictionOther"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationSleepingRestrictionOutsIdeKennel" />
+                    <label asp-for="IsPetKeptLocationSleepingRestrictionOutsIdeKennel"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsPetKeptLocationSleepingRestrictionTiedUpOutdoors" />
+                    <label asp-for="IsPetKeptLocationSleepingRestrictionTiedUpOutdoors"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="LengthPetLeftAloneDaysOfWeek" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="LengthPetLeftAloneDaysOfWeek" class="form-control" />
+                <span asp-validation-for="LengthPetLeftAloneDaysOfWeek" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="LengthPetLeftAloneHoursInDay" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="LengthPetLeftAloneHoursInDay" class="form-control" />
+                <span asp-validation-for="LengthPetLeftAloneHoursInDay" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PetAdoptionReason" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PetAdoptionReason" class="form-control" />
+                <span asp-validation-for="PetAdoptionReason" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PetAdoptionReasonExplain" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PetAdoptionReasonExplain" class="form-control" />
+                <span asp-validation-for="PetAdoptionReasonExplain" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PetKeptLocationAloneRestriction" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PetKeptLocationAloneRestriction" class="form-control" />
+                <span asp-validation-for="PetKeptLocationAloneRestriction" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PetKeptLocationAloneRestrictionExplain" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PetKeptLocationAloneRestrictionExplain" class="form-control" />
+                <span asp-validation-for="PetKeptLocationAloneRestrictionExplain" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PetKeptLocationInOutDoors" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PetKeptLocationInOutDoors" class="form-control" />
+                <span asp-validation-for="PetKeptLocationInOutDoors" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PetKeptLocationInOutDoorsExplain" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PetKeptLocationInOutDoorsExplain" class="form-control" />
+                <span asp-validation-for="PetKeptLocationInOutDoorsExplain" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PetKeptLocationSleepingRestriction" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PetKeptLocationSleepingRestriction" class="form-control" />
+                <span asp-validation-for="PetKeptLocationSleepingRestriction" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PetKeptLocationSleepingRestrictionExplain" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PetKeptLocationSleepingRestrictionExplain" class="form-control" />
+                <span asp-validation-for="PetKeptLocationSleepingRestrictionExplain" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PetLeftAloneDays" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PetLeftAloneDays" class="form-control" />
+                <span asp-validation-for="PetLeftAloneDays" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PetLeftAloneHours" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PetLeftAloneHours" class="form-control" />
+                <span asp-validation-for="PetLeftAloneHours" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="ResIdenceIsYardFenced" />
+                    <label asp-for="ResIdenceIsYardFenced"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ResidenceAgesOfChildren" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ResidenceAgesOfChildren" class="form-control" />
+                <span asp-validation-for="ResidenceAgesOfChildren" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ResidenceFenceHeight" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ResidenceFenceHeight" class="form-control" />
+                <span asp-validation-for="ResidenceFenceHeight" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ResidenceFenceType" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ResidenceFenceType" class="form-control" />
+                <span asp-validation-for="ResidenceFenceType" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ResidenceIsPetAllowed" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ResidenceIsPetAllowed" class="form-control" />
+                <span asp-validation-for="ResidenceIsPetAllowed" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ResidenceIsPetDepositPaid" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ResidenceIsPetDepositPaid" class="form-control" />
+                <span asp-validation-for="ResidenceIsPetDepositPaid" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ResidenceIsPetDepositRequired" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ResidenceIsPetDepositRequired" class="form-control" />
+                <span asp-validation-for="ResidenceIsPetDepositRequired" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ResidenceLandlordName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ResidenceLandlordName" class="form-control" />
+                <span asp-validation-for="ResidenceLandlordName" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ResidenceLandlordNumber" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ResidenceLandlordNumber" class="form-control" />
+                <span asp-validation-for="ResidenceLandlordNumber" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ResidenceLengthOfResidence" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ResidenceLengthOfResidence" class="form-control" />
+                <span asp-validation-for="ResidenceLengthOfResidence" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ResidenceNumberOccupants" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ResidenceNumberOccupants" class="form-control" />
+                <span asp-validation-for="ResidenceNumberOccupants" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ResidenceOwnershipId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ResidenceOwnershipId" class="form-control" />
+                <span asp-validation-for="ResidenceOwnershipId" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ResidencePetDepositAmount" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ResidencePetDepositAmount" class="form-control" />
+                <span asp-validation-for="ResidencePetDepositAmount" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ResidencePetDepositCoverageId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ResidencePetDepositCoverageId" class="form-control" />
+                <span asp-validation-for="ResidencePetDepositCoverageId" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ResidencePetSizeWeightLimit" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ResidencePetSizeWeightLimit" class="form-control" />
+                <span asp-validation-for="ResidencePetSizeWeightLimit" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ResidenceTypeId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ResidenceTypeId" class="form-control" />
+                <span asp-validation-for="ResidenceTypeId" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="StudentTypeId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="StudentTypeId" class="form-control" />
+                <span asp-validation-for="StudentTypeId" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="WhatIfMovingPetPlacement" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="WhatIfMovingPetPlacement" class="form-control" />
+                <span asp-validation-for="WhatIfMovingPetPlacement" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="WhatIfTravelPetPlacement" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="WhatIfTravelPetPlacement" class="form-control" />
+                <span asp-validation-for="WhatIfTravelPetPlacement" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

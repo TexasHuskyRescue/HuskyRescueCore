@@ -1,0 +1,166 @@
+@model HuskyRescueCore.Models.Person
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Person</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="CanEmail" />
+                    <label asp-for="CanEmail"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="CanSnailMail" />
+                    <label asp-for="CanSnailMail"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DriverLicenseNumber" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DriverLicenseNumber" class="form-control" />
+                <span asp-validation-for="DriverLicenseNumber" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="FirstName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsActive" />
+                    <label asp-for="IsActive"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsAdopter" />
+                    <label asp-for="IsAdopter"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsAvailableFoster" />
+                    <label asp-for="IsAvailableFoster"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsBoardMember" />
+                    <label asp-for="IsBoardMember"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsDoNotAdopt" />
+                    <label asp-for="IsDoNotAdopt"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsDonor" />
+                    <label asp-for="IsDonor"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsFoster" />
+                    <label asp-for="IsFoster"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsSponsor" />
+                    <label asp-for="IsSponsor"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsSystemUser" />
+                    <label asp-for="IsSystemUser"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsVolunteer" />
+                    <label asp-for="IsVolunteer"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Lastname" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Lastname" class="form-control" />
+                <span asp-validation-for="Lastname" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Notes" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Notes" class="form-control" />
+                <span asp-validation-for="Notes" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ProfileCreatedTimestamp" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ProfileCreatedTimestamp" class="form-control" />
+                <span asp-validation-for="ProfileCreatedTimestamp" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ProfileUpdatedTimestamp" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ProfileUpdatedTimestamp" class="form-control" />
+                <span asp-validation-for="ProfileUpdatedTimestamp" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

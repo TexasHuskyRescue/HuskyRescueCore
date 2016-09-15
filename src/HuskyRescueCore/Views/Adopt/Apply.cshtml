@@ -1,0 +1,1784 @@
+﻿@using HuskyRescueCore.Models.AdopterViewModels
+@using HuskyRescueCore.Models.BrainTreeViewModels
+@using PaulMiami.AspNetCore.Mvc.Recaptcha
+@model HuskyRescueCore.Models.AdopterViewModels.ApplyToAdoptViewModel
+
+@section scripts {
+    <script src="https://js.braintreegateway.com/web/3.1.0/js/client.min.js"></script>
+    <script src="https://js.braintreegateway.com/web/3.1.0/js/hosted-fields.min.js"></script>
+    <script src="https://js.braintreegateway.com/web/3.1.0/js/paypal.min.js"></script>
+    <script src="https://js.braintreegateway.com/web/3.1.0/js/data-collector.min.js"></script>
+    <script type="text/javascript" src="~/js/Adopt-Apply.js"></script>
+}
+
+
+<!-- main-container start -->
+<!-- ================ -->
+<section class="main-container">
+    <div class="container">
+        <div class="row">
+
+            <!-- main start -->
+            <!-- ================ -->
+            <div class="main col-lg-12 col-md-12 col-sm-12 col-xs-12 space-bottom">
+
+                <div class="Adopt-apply-form">
+                    <form asp-area="" asp-controller="Adopt" asp-action="Apply" method="post" class="margin-clear form-horizontal form-custom" role="form" id="applyForm">
+                        <input asp-for="ApplicationFeeAmount"/>
+                        <input asp-for="BrainTreePayment.DeviceData" />
+                        <input asp-for="BrainTreePayment.Nonce" />
+                        <input type="hidden" name="payment-method-nonce">
+                        <input type="hidden" id="clientToken" value="@ViewData["clientToken"]" />
+                        <input type="hidden" id="merchantId" value="@ViewData["merchantId"]" />
+                        <input type="hidden" id="environment" value="@ViewData["environment"]" />
+                        <input type="hidden" id="postal_code" data-braintree-name="postal_code" value="">
+                        <input type="hidden" id="cardholder_name" data-braintree-name="cardholder_name" value="">
+                        <div asp-validation-summary="All"></div>
+                        <div class="row">
+                            <div class="col-sm-12 text-center">
+                                <h3>Adoption Application</h3>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="AppNameFirst" class="control-label"></label>
+                                        <input asp-for="AppNameFirst" class="form-control" />
+                                        <span asp-validation-for="AppNameFirst"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="AppNameLast" class="control-label"></label>
+                                        <input asp-for="AppNameLast" class="form-control" />
+                                        <span asp-validation-for="AppNameLast"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="AppSpouseNameFirst" class="control-label"></label>
+                                        <input asp-for="AppSpouseNameFirst" class="form-control" />
+                                        <span asp-validation-for="AppSpouseNameFirst"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="AppSpouseNameLast" class="control-label"></label>
+                                        <input asp-for="AppSpouseNameLast" class="form-control" />
+                                        <span asp-validation-for="AppSpouseNameLast"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="AppAddressStreet1" class="control-label"></label>
+                                        <input asp-for="AppAddressStreet1" class="form-control" />
+                                        <span asp-validation-for="AppAddressStreet1"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="AppAddressCity" class="control-label"></label>
+                                        <input asp-for="AppAddressCity" class="form-control" />
+                                        <span asp-validation-for="AppAddressCity"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="AppAddressStateId" class="control-label"></label>
+                                        <select asp-for="AppAddressStateId" asp-items="Model.AppAddressStateList" class="form-control"></select>
+                                        <span asp-validation-for="AppAddressStateId"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="AppAddressZip" class="control-label"></label>
+                                        <input asp-for="AppAddressZip" class="form-control" />
+                                        <span asp-validation-for="AppAddressZip"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="AppHomePhone" class="control-label"></label>
+                                        <input asp-for="AppHomePhone" class="form-control" />
+                                        <span asp-validation-for="AppHomePhone"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="AppCellPhone" class="control-label"></label>
+                                        <input asp-for="AppCellPhone" class="form-control" />
+                                        <span asp-validation-for="AppCellPhone"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="AppEmail" class="control-label"></label>
+                                        <input asp-for="AppEmail" class="form-control" />
+                                        <span asp-validation-for="AppEmail"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="AppEmployer" class="control-label"></label>
+                                        <input asp-for="AppEmployer" class="form-control" />
+                                        <span asp-validation-for="AppEmployer"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="AppDateBirth" class="control-label"></label>
+                                        <input asp-for="AppDateBirth" class="form-control" />
+                                        <span asp-validation-for="AppDateBirth"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <div class="checkbox">
+                                            <label asp-for="IsAllAdultsAgreedOnAdoption" class="control-label">
+                                                <input asp-for="IsAllAdultsAgreedOnAdoption" class="" /> Are all adults in agreement about the adoption?
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback" id="IsAllAdultsAgreedOnAdoptionReason_div">
+                                        <label asp-for="IsAllAdultsAgreedOnAdoptionReason" class="control-label"></label>
+                                        <textarea asp-for="IsAllAdultsAgreedOnAdoptionReason" class="form-control" rows="2"></textarea>
+                                        <span asp-validation-for="IsAllAdultsAgreedOnAdoptionReason"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="ResidenceTypeId" class="control-label"></label>
+                                        <select asp-for="ResidenceTypeId" asp-items="Model.ResidenceTypeList" class="form-control"></select>
+                                        <span asp-validation-for="ResidenceTypeId"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="ResidenceOwnershipId" class="control-label"></label>
+                                        <select asp-for="ResidenceOwnershipId" asp-items="Model.ResidenceOwnershipList" class="form-control"></select>
+                                        <span asp-validation-for="ResidenceOwnershipId"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                    <div class="form-group has-feedback ResidenceRent">
+                                        <label asp-for="ResidenceIsPetAllowed" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.ResidenceIsPetAllowedOptions)
+                                                {
+                                                <div class="col-sm-6 col-xs-6">
+                                                    <label class="radio-inline">
+                                                        <input asp-for="ResidenceIsPetAllowed" type="radio" value="@item.Id" /> @item.Text
+                                                    </label>
+                                                </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="ResidenceIsPetAllowed"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+                                    <div class="form-group has-feedback ResidenceRent">
+                                        <label asp-for="ResidencePetSizeWeightLimit" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.ResidencePetSizeWeightLimitOptions)
+                                                {
+                                                <div class="col-sm-6 col-xs-6">
+                                                    <label class="radio-inline">
+                                                        <input asp-for="ResidencePetSizeWeightLimit" type="radio" value="@item.Id" /> @item.Text
+                                                    </label>
+                                                </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="ResidencePetSizeWeightLimit"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ResidenceRent">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                        <div class="form-group has-feedback">
+                                            <label asp-for="ResidenceIsPetDepositRequired" class="control-label"></label>
+                                            <div class="radio">
+                                                <div id="input-type" class="row">
+                                                    @foreach (var item in Model.ResidenceIsPetDepositRequiredOptions)
+                                                    {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="ResidenceIsPetDepositRequired" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <span asp-validation-for="ResidenceIsPetDepositRequired"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                        <div class="form-group has-feedback ResidencePetDeposit">
+                                            <label asp-for="ResidencePetDepositAmount" class="control-label"></label>
+                                            <input asp-for="ResidencePetDepositAmount" class="form-control" />
+                                            <span asp-validation-for="ResidencePetDepositAmount"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                        <div class="form-group has-feedback ResidencePetDeposit">
+                                            <label asp-for="ResidenceIsPetDepositPaid" class="control-label"></label>
+                                            <div class="radio">
+                                                <div id="input-type" class="row">
+                                                    @foreach (var item in Model.ResidenceIsPetDepositPaidOptions)
+                                                    {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="ResidenceIsPetDepositPaid" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <span asp-validation-for="ResidenceIsPetDepositPaid"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                        <div class="form-group has-feedback ResidencePetDeposit">
+                                            <label asp-for="ResidencePetDepositCoverageId" class="control-label"></label>
+                                            <select asp-for="ResidencePetDepositCoverageId" asp-items="Model.ResidencePetDepositCoverageList" class="form-control"></select>
+                                            <span asp-validation-for="ResidencePetDepositCoverageId"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="ResidenceLengthOfResidence" class="control-label"></label>
+                                        <input asp-for="ResidenceLengthOfResidence" class="form-control" />
+                                        <span asp-validation-for="ResidenceLengthOfResidence"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="WhatIfMovingPetPlacement" class="control-label"></label>
+                                        <input asp-for="WhatIfMovingPetPlacement" class="form-control" />
+                                        <span asp-validation-for="WhatIfMovingPetPlacement"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="ResidenceIsYardFenced" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.ResidenceIsYardFencedOptions)
+                                                {
+                                                <div class="col-sm-6 col-xs-6">
+                                                    <label class="radio-inline">
+                                                        <input asp-for="ResidenceIsYardFenced" type="radio" value="@item.Id" /> @item.Text
+                                                    </label>
+                                                </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="ResidenceIsYardFenced"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback ResidenceFence">
+                                        <label asp-for="ResidenceFenceTypeHeight" class="control-label"></label>
+                                        <input asp-for="ResidenceFenceTypeHeight" class="form-control"/>
+                                        <span asp-validation-for="ResidenceFenceTypeHeight"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="IsAppOrSpouseStudent" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsAppOrSpouseStudentOptions)
+                                                {
+                                                <div class="col-sm-6 col-xs-6">
+                                                    <label class="radio-inline">
+                                                        <input asp-for="IsAppOrSpouseStudent" type="radio" value="@item.Id" /> @item.Text
+                                                    </label>
+                                                </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsAppOrSpouseStudent"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback StudentType">
+                                        <label asp-for="StudentTypeId" class="control-label"></label>
+                                        <select asp-for="StudentTypeId" asp-items="Model.StudentTypeList" class="form-control"></select>
+                                        <span asp-validation-for="StudentTypeId"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsAppTravelFrequent" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsAppTravelFrequentOptions)
+                                                {
+                                                <div class="col-sm-6 col-xs-6">
+                                                    <label class="radio-inline">
+                                                        <input asp-for="IsAppTravelFrequent" type="radio" value="@item.Id" /> @item.Text
+                                                    </label>
+                                                </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsAppTravelFrequent"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback TravelFrequent">
+                                        <label asp-for="AppTravelFrequency" class="control-label"></label>
+                                        <input asp-for="AppTravelFrequency" class="form-control" />
+                                        <span asp-validation-for="AppTravelFrequency"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="WhatIfTravelPetPlacement" class="control-label"></label>
+                                        <textarea asp-for="WhatIfTravelPetPlacement" class="form-control" rows="2"></textarea>
+                                        <span asp-validation-for="WhatIfTravelPetPlacement"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="ResidenceNumberOccupants" class="control-label"></label>
+                                        <input asp-for="ResidenceNumberOccupants" class="form-control" />
+                                        <span asp-validation-for="ResidenceNumberOccupants"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="ResidenceAgesOfChildren" class="control-label"></label>
+                                        <input asp-for="ResidenceAgesOfChildren" class="form-control" />
+                                        <span asp-validation-for="ResidenceAgesOfChildren"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <label asp-for="PetKeptLocationInOutDoors" class="control-label"></label>
+                                    <div class="checkbox">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                <label asp-for="IsPetKeptLocationInOutDoorsTotallyInside" class="control-label">
+                                                    <input asp-for="IsPetKeptLocationInOutDoorsTotallyInside" class="" /> Totally Inside
+                                                </label>
+                                                <label asp-for="IsPetKeptLocationInOutDoorsMostlyInside" class="control-label">
+                                                    <input asp-for="IsPetKeptLocationInOutDoorsMostlyInside" class="" /> Mostly Inside
+                                                </label>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                <label asp-for="IsPetKeptLocationInOutDoorsTotallyOutside" class="control-label">
+                                                    <input asp-for="IsPetKeptLocationInOutDoorsTotallyOutside" class="" /> Totally Outside
+                                                </label>
+                                                <label asp-for="IsPetKeptLocationInOutDoorsTotallyOutside" class="control-label">
+                                                    <input asp-for="IsPetKeptLocationInOutDoorMostlyOutsides" class="" /> Mostly Outside
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="PetKeptLocationInOutDoorsExplain" class="control-label"></label>
+                                        <textarea asp-for="PetKeptLocationInOutDoorsExplain" class="form-control" rows="2"></textarea>
+                                        <span asp-validation-for="PetKeptLocationInOutDoorsExplain"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group has-feedback">
+                                    <label>How long will this pet be left home alone during the day?</label>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                            <label asp-for="PetLeftAloneDays" class="control-label"></label>
+                                            <input asp-for="PetLeftAloneDays" class="form-control" />
+                                            <span asp-validation-for="PetLeftAloneDays"></span>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                            <label asp-for="PetLeftAloneHours" class="control-label"></label>
+                                            <input asp-for="PetLeftAloneHours" class="form-control" />
+                                            <span asp-validation-for="PetLeftAloneHours"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label asp-for="PetKeptLocationAloneRestriction" class="control-label"></label>
+                                <div class="checkbox">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetKeptLocationAloneRestrictionLooseIndoors" class="control-label">
+                                                <input asp-for="IsPetKeptLocationAloneRestrictionLooseIndoors" class="" /> @Html.DisplayNameFor(m => m.IsPetKeptLocationAloneRestrictionLooseIndoors)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetKeptLocationAloneRestrictionGarage" class="control-label">
+                                                <input asp-for="IsPetKeptLocationAloneRestrictionGarage" class="" /> @Html.DisplayNameFor(m => m.IsPetKeptLocationAloneRestrictionGarage)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetKeptLocationAloneRestrictionOutsideKennel" class="control-label">
+                                                <input asp-for="IsPetKeptLocationAloneRestrictionOutsideKennel" class="" /> @Html.DisplayNameFor(m => m.IsPetKeptLocationAloneRestrictionOutsideKennel)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetKeptLocationAloneRestrictionCratedIndoors" class="control-label">
+                                                <input asp-for="IsPetKeptLocationAloneRestrictionCratedIndoors" class="" /> @Html.DisplayNameFor(m => m.IsPetKeptLocationAloneRestrictionCratedIndoors)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetKeptLocationAloneRestrictionCratedOutdoors" class="control-label">
+                                                <input asp-for="IsPetKeptLocationAloneRestrictionCratedOutdoors" class="" /> @Html.DisplayNameFor(m => m.IsPetKeptLocationAloneRestrictionCratedOutdoors)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetKeptLocationAloneRestrictionLooseInBackyard" class="control-label">
+                                                <input asp-for="IsPetKeptLocationAloneRestrictionLooseInBackyard" class="" /> @Html.DisplayNameFor(m => m.IsPetKeptLocationAloneRestrictionLooseInBackyard)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetKeptLocationAloneRestrictionTiedUpOutdoors" class="control-label">
+                                                <input asp-for="IsPetKeptLocationAloneRestrictionTiedUpOutdoors" class="" /> @Html.DisplayNameFor(m => m.IsPetKeptLocationAloneRestrictionTiedUpOutdoors)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetKeptLocationAloneRestrictionBasement" class="control-label">
+                                                <input asp-for="IsPetKeptLocationAloneRestrictionBasement" class="" /> @Html.DisplayNameFor(m => m.IsPetKeptLocationAloneRestrictionBasement)
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetKeptLocationAloneRestrictionOther" class="control-label">
+                                                <input asp-for="IsPetKeptLocationAloneRestrictionOther" class="" /> @Html.DisplayNameFor(m => m.IsPetKeptLocationAloneRestrictionOther)
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="PetKeptLocationAloneRestrictionExplain" class="control-label"></label>
+                                        <textarea asp-for="PetKeptLocationAloneRestrictionExplain" class="form-control" rows="2"></textarea>
+                                        <span asp-validation-for="PetKeptLocationAloneRestrictionExplain"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label asp-for="PetAdoptionReason" class="control-label"></label>
+                                <div class="checkbox">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetAdoptionReasonHousePet" class="control-label">
+                                                <input asp-for="IsPetAdoptionReasonHousePet" class="" /> @Html.DisplayNameFor(m => m.IsPetAdoptionReasonHousePet)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetAdoptionReasonGuardDog" class="control-label">
+                                                <input asp-for="IsPetAdoptionReasonGuardDog" class="" /> @Html.DisplayNameFor(m => m.IsPetAdoptionReasonGuardDog)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetAdoptionReasonWatchDog" class="control-label">
+                                                <input asp-for="IsPetAdoptionReasonWatchDog" class="" /> @Html.DisplayNameFor(m => m.IsPetAdoptionReasonWatchDog)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetAdoptionReasonGift" class="control-label">
+                                                <input asp-for="IsPetAdoptionReasonGift" class="" /> @Html.DisplayNameFor(m => m.IsPetAdoptionReasonGift)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetAdoptionReasonCompanionChild" class="control-label">
+                                                <input asp-for="IsPetAdoptionReasonCompanionChild" class="" /> @Html.DisplayNameFor(m => m.IsPetAdoptionReasonCompanionChild)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetAdoptionReasonCompanionPet" class="control-label">
+                                                <input asp-for="IsPetAdoptionReasonCompanionPet" class="" /> @Html.DisplayNameFor(m => m.IsPetAdoptionReasonCompanionPet)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetAdoptionReasonJoggingPartner" class="control-label">
+                                                <input asp-for="IsPetAdoptionReasonJoggingPartner" class="" /> @Html.DisplayNameFor(m => m.IsPetAdoptionReasonJoggingPartner)
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetAdoptionReasonOther" class="control-label">
+                                                <input asp-for="IsPetAdoptionReasonOther" class="" /> @Html.DisplayNameFor(m => m.IsPetAdoptionReasonOther)
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="PetAdoptionReasonExplain" class="control-label"></label>
+                                        <textarea asp-for="PetAdoptionReasonExplain" class="form-control" rows="2"></textarea>
+                                        <span asp-validation-for="PetAdoptionReasonExplain"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="FilterAppIsAwareHuskyAttributes" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.FilterAppIsAwareHuskyAttributesOptions)
+                                                {
+                                                <div class="col-sm-6 col-xs-6">
+                                                    <label class="radio-inline">
+                                                        <input asp-for="FilterAppIsAwareHuskyAttributes" type="radio" value="@item.Id" /> @item.Text
+                                                    </label>
+                                                </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="FilterAppIsAwareHuskyAttributes"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="FilterAppHasOwnedHuskyBefore" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.FilterAppHasOwnedHuskyBeforeOptions)
+                                                {
+                                                <div class="col-sm-6 col-xs-6">
+                                                    <label class="radio-inline">
+                                                        <input asp-for="FilterAppHasOwnedHuskyBefore" type="radio" value="@item.Id" /> @item.Text
+                                                    </label>
+                                                </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="FilterAppHasOwnedHuskyBefore"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="FilterAppTraitsDesired" class="control-label"></label>
+                                        <textarea asp-for="FilterAppTraitsDesired" class="form-control" rows="2"></textarea>
+                                        <span asp-validation-for="FilterAppTraitsDesired"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="FilterAppIsCatOwner" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.FilterAppIsCatOwnerOptions)
+                                                {
+                                                <div class="col-sm-6 col-xs-6">
+                                                    <label class="radio-inline">
+                                                        <input asp-for="FilterAppIsCatOwner" type="radio" value="@item.Id" /> @item.Text
+                                                    </label>
+                                                </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="FilterAppIsCatOwner"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback CatOwner">
+                                        <label asp-for="FilterAppCatsOwnedCount" class="control-label"></label>
+                                        <input asp-for="FilterAppCatsOwnedCount" class="form-control" />
+                                        <span asp-validation-for="FilterAppCatsOwnedCount"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="FilterAppDogsInterestedIn" class="control-label"></label>
+                                        <textarea asp-for="FilterAppDogsInterestedIn" class="form-control" rows="2"></textarea>
+                                        <span asp-validation-for="FilterAppDogsInterestedIn"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 text-center">
+                                <h3>Veterinarian Information</h3>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                                <label asp-for="VeterinarianOfficeName" class="control-label"></label>
+                                <input asp-for="VeterinarianOfficeName" class="form-control" />
+                                <span asp-validation-for="VeterinarianOfficeName"></span>
+                            </div>
+                            <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                                <label asp-for="VeterinarianDoctorName" class="control-label"></label>
+                                <input asp-for="VeterinarianDoctorName" class="form-control" />
+                                <span asp-validation-for="VeterinarianDoctorName"></span>
+                            </div>
+                            <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                                <label asp-for="PhoneNumber" class="control-label"></label>
+                                <input asp-for="PhoneNumber" class="form-control" />
+                                <span asp-validation-for="PhoneNumber"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 text-center">
+                                <h3>Current & Previously Owned Pets</h3>
+                                <h3><small>Please list every animal (dogs, cats, etc.) you have owned in the last 5 years</small></h3>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <h6>First Pet</h6>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                    <div class="has-feedback">
+                                        <label asp-for="Name1" class="control-label"></label>
+                                        <input asp-for="Name1" class="form-control" />
+                                        <span asp-validation-for="Name1"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 Pet1">
+                                    <div class="has-feedback">
+                                        <label asp-for="Breed1" class="control-label"></label>
+                                        <input asp-for="Breed1" class="form-control" />
+                                        <span asp-validation-for="Breed1"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 Pet1">
+                                    <div class="has-feedback">
+                                        <label asp-for="Sex1" class="control-label"></label>
+                                        <input asp-for="Sex1" class="form-control" />
+                                        <span asp-validation-for="Sex1"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 Pet1">
+                                    <div class="has-feedback">
+                                        <label asp-for="Age1" class="control-label"></label>
+                                        <input asp-for="Age1" class="form-control" />
+                                        <span asp-validation-for="Age1"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet1">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="OwnershipLength1" class="control-label"></label>
+                                        <input asp-for="OwnershipLength1" class="form-control" />
+                                        <span asp-validation-for="OwnershipLength1"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet1">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsAltered1" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsAltered1Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsAltered1" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsAltered1"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet1Alter">
+                                    <div class="has-feedback">
+                                        <label asp-for="AlteredReason1" class="control-label"></label>
+                                        <input asp-for="AlteredReason1" class="form-control" />
+                                        <span asp-validation-for="AlteredReason1"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet1">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsHwPrevention1" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsHwPrevention1Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsHwPrevention1" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsHwPrevention1"></span>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet1HW">
+                                    <div class="has-feedback">
+                                        <label asp-for="HwPreventionReason1" class="control-label"></label>
+                                        <input asp-for="HwPreventionReason1" class="form-control" />
+                                        <span asp-validation-for="HwPreventionReason1"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet1">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsFullyVaccinated1" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsFullyVaccinated1Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsFullyVaccinated1" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsFullyVaccinated1"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet1Vacc">
+                                    <div class="has-feedback">
+                                        <label asp-for="FullyVaccinatedReason1" class="control-label"></label>
+                                        <input asp-for="FullyVaccinatedReason1" class="form-control" />
+                                        <span asp-validation-for="FullyVaccinatedReason1"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet1">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsStillOwned1" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsStillOwned1Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsStillOwned1" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsStillOwned1"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet1StillOwned">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsStillOwnedReason1" class="control-label"></label>
+                                        <input asp-for="IsStillOwnedReason1" class="form-control" />
+                                        <span asp-validation-for="IsStillOwnedReason1"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <h6>Second Pet</h6>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                    <div class="has-feedback">
+                                        <label asp-for="Name2" class="control-label"></label>
+                                        <input asp-for="Name2" class="form-control" />
+                                        <span asp-validation-for="Name2"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 Pet2">
+                                    <div class="has-feedback">
+                                        <label asp-for="Breed2" class="control-label"></label>
+                                        <input asp-for="Breed2" class="form-control" />
+                                        <span asp-validation-for="Breed2"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 Pet2">
+                                    <div class="has-feedback">
+                                        <label asp-for="Sex2" class="control-label"></label>
+                                        <input asp-for="Sex2" class="form-control" />
+                                        <span asp-validation-for="Sex2"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 Pet2">
+                                    <div class="has-feedback">
+                                        <label asp-for="Age2" class="control-label"></label>
+                                        <input asp-for="Age2" class="form-control" />
+                                        <span asp-validation-for="Age2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet2">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="OwnershipLength2" class="control-label"></label>
+                                        <input asp-for="OwnershipLength2" class="form-control" />
+                                        <span asp-validation-for="OwnershipLength2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet2">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsAltered2" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsAltered2Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsAltered2" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsAltered2"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet2Alter">
+                                    <div class="has-feedback">
+                                        <label asp-for="AlteredReason2" class="control-label"></label>
+                                        <input asp-for="AlteredReason2" class="form-control" />
+                                        <span asp-validation-for="AlteredReason2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet2">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsHwPrevention2" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsHwPrevention2Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsHwPrevention2" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsHwPrevention2"></span>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet2HW">
+                                    <div class="has-feedback">
+                                        <label asp-for="HwPreventionReason2" class="control-label"></label>
+                                        <input asp-for="HwPreventionReason2" class="form-control" />
+                                        <span asp-validation-for="HwPreventionReason2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet2">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsFullyVaccinated2" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsFullyVaccinated2Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsFullyVaccinated2" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsFullyVaccinated2"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet2Vacc">
+                                    <div class="has-feedback">
+                                        <label asp-for="FullyVaccinatedReason2" class="control-label"></label>
+                                        <input asp-for="FullyVaccinatedReason2" class="form-control" />
+                                        <span asp-validation-for="FullyVaccinatedReason2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet2">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsStillOwned2" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsStillOwned2Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsStillOwned2" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsStillOwned2"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet2StillOwned">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsStillOwnedReason2" class="control-label"></label>
+                                        <input asp-for="IsStillOwnedReason2" class="form-control" />
+                                        <span asp-validation-for="IsStillOwnedReason2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <h6>Third Pet</h6>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                    <div class="has-feedback">
+                                        <label asp-for="Name3" class="control-label"></label>
+                                        <input asp-for="Name3" class="form-control" />
+                                        <span asp-validation-for="Name3"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 Pet3">
+                                    <div class="has-feedback">
+                                        <label asp-for="Breed3" class="control-label"></label>
+                                        <input asp-for="Breed3" class="form-control" />
+                                        <span asp-validation-for="Breed3"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 Pet3">
+                                    <div class="has-feedback">
+                                        <label asp-for="Sex3" class="control-label"></label>
+                                        <input asp-for="Sex3" class="form-control" />
+                                        <span asp-validation-for="Sex3"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 Pet3">
+                                    <div class="has-feedback">
+                                        <label asp-for="Age3" class="control-label"></label>
+                                        <input asp-for="Age3" class="form-control" />
+                                        <span asp-validation-for="Age3"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet3">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="OwnershipLength3" class="control-label"></label>
+                                        <input asp-for="OwnershipLength3" class="form-control" />
+                                        <span asp-validation-for="OwnershipLength3"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet3">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsAltered3" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsAltered3Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsAltered3" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsAltered3"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet3Alter">
+                                    <div class="has-feedback">
+                                        <label asp-for="AlteredReason3" class="control-label"></label>
+                                        <input asp-for="AlteredReason3" class="form-control" />
+                                        <span asp-validation-for="AlteredReason3"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet3">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsHwPrevention3" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsHwPrevention3Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsHwPrevention3" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsHwPrevention3"></span>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet3HW">
+                                    <div class="has-feedback">
+                                        <label asp-for="HwPreventionReason3" class="control-label"></label>
+                                        <input asp-for="HwPreventionReason3" class="form-control" />
+                                        <span asp-validation-for="HwPreventionReason3"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet3">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsFullyVaccinated3" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsFullyVaccinated3Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsFullyVaccinated3" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsFullyVaccinated3"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet3Vacc">
+                                    <div class="has-feedback">
+                                        <label asp-for="FullyVaccinatedReason3" class="control-label"></label>
+                                        <input asp-for="FullyVaccinatedReason3" class="form-control" />
+                                        <span asp-validation-for="FullyVaccinatedReason3"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet3">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsStillOwned3" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsStillOwned3Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsStillOwned3" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsStillOwned3"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet3StillOwned">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsStillOwnedReason3" class="control-label"></label>
+                                        <input asp-for="IsStillOwnedReason3" class="form-control" />
+                                        <span asp-validation-for="IsStillOwnedReason3"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <h6>Fourth Pet</h6>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                    <div class="has-feedback">
+                                        <label asp-for="Name4" class="control-label"></label>
+                                        <input asp-for="Name4" class="form-control" />
+                                        <span asp-validation-for="Name4"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 Pet4">
+                                    <div class="has-feedback">
+                                        <label asp-for="Breed4" class="control-label"></label>
+                                        <input asp-for="Breed4" class="form-control" />
+                                        <span asp-validation-for="Breed4"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 Pet4">
+                                    <div class="has-feedback">
+                                        <label asp-for="Sex4" class="control-label"></label>
+                                        <input asp-for="Sex4" class="form-control" />
+                                        <span asp-validation-for="Sex4"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 Pet4">
+                                    <div class="has-feedback">
+                                        <label asp-for="Age4" class="control-label"></label>
+                                        <input asp-for="Age4" class="form-control" />
+                                        <span asp-validation-for="Age4"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet4">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="OwnershipLength4" class="control-label"></label>
+                                        <input asp-for="OwnershipLength4" class="form-control" />
+                                        <span asp-validation-for="OwnershipLength4"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet4">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsAltered4" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsAltered4Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsAltered4" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsAltered4"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet4Alter">
+                                    <div class="has-feedback">
+                                        <label asp-for="AlteredReason4" class="control-label"></label>
+                                        <input asp-for="AlteredReason4" class="form-control" />
+                                        <span asp-validation-for="AlteredReason4"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet4">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsHwPrevention4" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsHwPrevention4Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsHwPrevention4" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsHwPrevention4"></span>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet4HW">
+                                    <div class="has-feedback">
+                                        <label asp-for="HwPreventionReason4" class="control-label"></label>
+                                        <input asp-for="HwPreventionReason4" class="form-control" />
+                                        <span asp-validation-for="HwPreventionReason4"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet4">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsFullyVaccinated4" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsFullyVaccinated4Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsFullyVaccinated4" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsFullyVaccinated4"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet4Vacc">
+                                    <div class="has-feedback">
+                                        <label asp-for="FullyVaccinatedReason4" class="control-label"></label>
+                                        <input asp-for="FullyVaccinatedReason4" class="form-control" />
+                                        <span asp-validation-for="FullyVaccinatedReason4"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet4">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsStillOwned4" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsStillOwned4Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsStillOwned4" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsStillOwned4"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet4StillOwned">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsStillOwnedReason4" class="control-label"></label>
+                                        <input asp-for="IsStillOwnedReason4" class="form-control" />
+                                        <span asp-validation-for="IsStillOwnedReason4"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <h6>Fifth Pet</h6>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                    <div class="has-feedback">
+                                        <label asp-for="Name5" class="control-label"></label>
+                                        <input asp-for="Name5" class="form-control" />
+                                        <span asp-validation-for="Name5"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 Pet5">
+                                    <div class="has-feedback">
+                                        <label asp-for="Breed5" class="control-label"></label>
+                                        <input asp-for="Breed5" class="form-control" />
+                                        <span asp-validation-for="Breed5"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 Pet5">
+                                    <div class="has-feedback">
+                                        <label asp-for="Sex5" class="control-label"></label>
+                                        <input asp-for="Sex5" class="form-control" />
+                                        <span asp-validation-for="Sex5"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 Pet5">
+                                    <div class="has-feedback">
+                                        <label asp-for="Age5" class="control-label"></label>
+                                        <input asp-for="Age5" class="form-control" />
+                                        <span asp-validation-for="Age5"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet5">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="OwnershipLength5" class="control-label"></label>
+                                        <input asp-for="OwnershipLength5" class="form-control" />
+                                        <span asp-validation-for="OwnershipLength5"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet5">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsAltered5" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsAltered5Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsAltered5" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsAltered5"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet5Alter">
+                                    <div class="has-feedback">
+                                        <label asp-for="AlteredReason5" class="control-label"></label>
+                                        <input asp-for="AlteredReason5" class="form-control" />
+                                        <span asp-validation-for="AlteredReason5"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet5">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsHwPrevention5" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsHwPrevention5Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsHwPrevention5" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsHwPrevention5"></span>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet5HW">
+                                    <div class="has-feedback">
+                                        <label asp-for="HwPreventionReason5" class="control-label"></label>
+                                        <input asp-for="HwPreventionReason5" class="form-control" />
+                                        <span asp-validation-for="HwPreventionReason5"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet5">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsFullyVaccinated5" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsFullyVaccinated5Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsFullyVaccinated5" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsFullyVaccinated5"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet5Vacc">
+                                    <div class="has-feedback">
+                                        <label asp-for="FullyVaccinatedReason5" class="control-label"></label>
+                                        <input asp-for="FullyVaccinatedReason5" class="form-control" />
+                                        <span asp-validation-for="FullyVaccinatedReason5"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row Pet5">
+                                <div class="col-lg-1 col-md-1 show-for-col-md-up">&nbsp;</div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsStillOwned5" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.IsStillOwned5Options)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsStillOwned5" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="IsStillOwned5"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-12 Pet5StillOwned">
+                                    <div class="has-feedback">
+                                        <label asp-for="IsStillOwnedReason5" class="control-label"></label>
+                                        <input asp-for="IsStillOwnedReason5" class="form-control" />
+                                        <span asp-validation-for="IsStillOwnedReason5"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr />
+                        
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="Comments" class="control-label"></label>
+                                        <textarea asp-for="Comments" class="form-control" rows="3"></textarea>
+                                        <span asp-validation-for="Comments"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h4>Payment</h4>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label asp-for="ApplicationFeeAmountReadOnly" class="control-label"></label>
+                                    <input asp-for="ApplicationFeeAmountReadOnly" class="form-control" readonly/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="BrainTreePayment.PaymentMethod"></label>
+                                        <select asp-for="BrainTreePayment.PaymentMethod" asp-items="Html.GetEnumSelectList<PaymentTypeEnum>()" class="form-control">
+                                            <option value=""></option>
+                                        </select>
+                                        <i class="fa fa-navicon form-control-feedback"></i>
+                                        <span asp-validation-for="BrainTreePayment.PaymentMethod"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="has-feedback">
+                                        <label asp-for="BrainTreePayment.PayeeFirstName" class="control-label"></label>
+                                        <input asp-for="BrainTreePayment.PayeeFirstName" class="form-control"/>
+                                        <span asp-validation-for="BrainTreePayment.PayeeFirstName"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="has-feedback">
+                                        <label asp-for="BrainTreePayment.PayeeLastName" class="control-label"></label>
+                                        <input asp-for="BrainTreePayment.PayeeLastName" class="form-control"/>
+                                        <span asp-validation-for="BrainTreePayment.PayeeLastName"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="creditcardrow" style="display:none">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="as-feedback">
+                                            <label asp-for="BrainTreePayment.PayeeAddressStreet1" class="control-label"></label>
+                                            <input asp-for="BrainTreePayment.PayeeAddressStreet1" class="form-control"/>
+                                            <span asp-validation-for="BrainTreePayment.PayeeAddressStreet1"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="has-feedback">
+                                            <label asp-for="BrainTreePayment.PayeeAddressStreet2" class="control-label"></label>
+                                            <input asp-for="BrainTreePayment.PayeeAddressStreet2" class="form-control"/>
+                                            <span asp-validation-for="BrainTreePayment.PayeeAddressStreet2"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="has-feedback">
+                                            <label asp-for="BrainTreePayment.PayeeAddressCity" class="control-label"></label>
+                                            <input asp-for="BrainTreePayment.PayeeAddressCity" class="form-control"/>
+                                            <span asp-validation-for="BrainTreePayment.PayeeAddressCity"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="has-feedback">
+                                            <label asp-for="BrainTreePayment.PayeeAddressStateId" class="control-label"></label>
+                                            <select asp-for="BrainTreePayment.PayeeAddressStateId" asp-items="Model.BrainTreePayment.States" class="form-control"></select>
+                                            <span asp-validation-for="BrainTreePayment.PayeeAddressStateId"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="has-feedback">
+                                            <label asp-for="BrainTreePayment.PayeeAddressPostalCode" class="control-label"></label>
+                                            <input asp-for="BrainTreePayment.PayeeAddressPostalCode" class="form-control"/>
+                                            <span asp-validation-for="BrainTreePayment.PayeeAddressPostalCode"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div id="error-message"></div>
+                                    <div class="col-md-3">
+                                        <div class="has-feedback">
+                                            <label for="card-number" class="control-label">Card Number</label>
+                                            <div class="hosted-field form-control" id="card-number"></div>
+                                            @*<label asp-for="BrainTreePayment.CardNumber" class="control-label"></label>
+                                            <input asp-for="BrainTreePayment.CardNumber" class="form-control" placeholder = "1111222233334444" data-braintree-name = "number"/>
+                                            <span asp-validation-for="BrainTreePayment.CardNumber"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="has-feedback">
+                                            <label for="cvv" class="control-label">CVV</label>
+                                            <div class="hosted-field form-control" id="cvv"></div>
+                                            @*<label asp-for="BrainTreePayment.CardCvv" class="control-label"></label>
+                                            <input asp-for="BrainTreePayment.CardCvv" class="form-control" placeholder = "123" data-braintree-name = "cvv"/>
+                                            <span asp-validation-for="BrainTreePayment.CardCvv"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="has-feedback">
+                                            <label for="expiration-date" class="control-label">Expiration Date</label>
+                                            <div class="hosted-field form-control" id="expiration-date"></div>
+                                            @*<label asp-for="BrainTreePayment.CardExpireMonth" class="control-label"></label>
+                                            <input asp-for="BrainTreePayment.CardExpireMonth" class="form-control" placeholder = "MM" data-braintree-name = "expiration_month"/>
+                                            <span asp-validation-for="BrainTreePayment.CardExpireMonth"></span>*@
+                                        </div>
+                                    </div>
+                                    @*<div class="col-md-2">
+                                        <div class="has-feedback">
+                                            <label asp-for="BrainTreePayment.CardExpireYear" class="control-label"></label>
+                                            <input asp-for="BrainTreePayment.CardExpireYear" class="form-control" placeholder = "YYYY" data-braintree-name = "expiration_year"/>
+                                            <span asp-validation-for="BrainTreePayment.CardExpireYear"></span>
+                                        </div>
+                                    </div>*@
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" id="paypalrow" style="display:none">
+                            <div class="col-lg-12">
+                                <div id="paypal-button">
+                                    <script src="https://www.paypalobjects.com/api/button.js?"
+                                            data-merchant="braintree"
+                                            data-id="paypal-button"
+                                            data-button="checkout"
+                                            data-color="blue"
+                                            data-size="medium"
+                                            data-shape="pill"
+                                            data-button_type="submit"
+                                            data-button_disabled="false"></script>
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <recaptcha />
+                                        <span class="text-danger" id="recaptchaErrorMessage"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button type="submit" class="btn btn-default">Submit Application</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- main -->
+
+        </div>
+    </div>
+</section>
+<!-- main-container -->

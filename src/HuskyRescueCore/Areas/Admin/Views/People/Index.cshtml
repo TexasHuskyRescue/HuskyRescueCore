@@ -1,0 +1,137 @@
+@model IEnumerable<HuskyRescueCore.Models.Person>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CanEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CanSnailMail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DriverLicenseNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAdopter)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAvailableFoster)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsBoardMember)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsDoNotAdopt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsDonor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsFoster)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsSponsor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsSystemUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsVolunteer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lastname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Notes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProfileCreatedTimestamp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProfileUpdatedTimestamp)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CanEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CanSnailMail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DriverLicenseNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAdopter)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAvailableFoster)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsBoardMember)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDoNotAdopt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDonor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsFoster)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsSponsor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsSystemUser)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsVolunteer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lastname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProfileCreatedTimestamp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProfileUpdatedTimestamp)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

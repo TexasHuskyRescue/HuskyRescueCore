@@ -1,0 +1,167 @@
+@model IEnumerable<HuskyRescueCore.Models.EventGolf>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AreTicketsSold)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BannerImagePath)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateAdded)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateDeleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfEvent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateUpdated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsDeleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Notes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PublicDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TicketPriceDiscount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TicketPriceFull)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BanquetStartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CostBanquet)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CostFoursome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CostSingle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GolfingStartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RegistrationStartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TournamentType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WelcomeMessage)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AreTicketsSold)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BannerImagePath)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateAdded)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateDeleted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfEvent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateUpdated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDeleted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublicDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketPriceDiscount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketPriceFull)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BanquetStartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CostBanquet)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CostFoursome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CostSingle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GolfingStartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegistrationStartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TournamentType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WelcomeMessage)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

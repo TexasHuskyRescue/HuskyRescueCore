@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9CF502A2-69A3-4FEA-9F56-82FD7175DFC4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E3966430-71F6-4BEF-B88C-D105DDEAA77C}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "HuskyRescueCore", "src\HuskyRescueCore\HuskyRescueCore.xproj", "{162B56ED-6FEB-41A3-8A7A-EC14E917A3D1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{162B56ED-6FEB-41A3-8A7A-EC14E917A3D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{162B56ED-6FEB-41A3-8A7A-EC14E917A3D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{162B56ED-6FEB-41A3-8A7A-EC14E917A3D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{162B56ED-6FEB-41A3-8A7A-EC14E917A3D1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{162B56ED-6FEB-41A3-8A7A-EC14E917A3D1} = {9CF502A2-69A3-4FEA-9F56-82FD7175DFC4}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,586 @@
+@model HuskyRescueCore.Models.AdopterApplication
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>AdopterApplication</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AppAddressCity)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppAddressCity)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppAddressStateId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppAddressStateId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppAddressStreet1)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppAddressStreet1)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppAddressZIP)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppAddressZIP)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppCellPhone)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppCellPhone)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppDateBirth)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppDateBirth)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppEmail)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppEmail)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppEmployer)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppEmployer)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppHomePhone)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppHomePhone)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppNameFirst)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppNameFirst)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppNameLast)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppNameLast)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppSpouseNameFirst)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppSpouseNameFirst)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppSpouseNameLast)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppSpouseNameLast)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppTravelFrequency)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppTravelFrequency)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicantTypeId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicantTypeId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationFeeAmount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationFeeAmount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationFeePaymentMethod)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationFeePaymentMethod)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationFeeTransactionId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationFeeTransactionId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Comments)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Comments)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateSubmitted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateSubmitted)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FilterAppCatsOwnedCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FilterAppCatsOwnedCount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FilterAppDogsInterestedIn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FilterAppDogsInterestedIn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FilterAppHasOwnedHuskyBefore)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FilterAppHasOwnedHuskyBefore)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FilterAppIsAwareHuskyAttributes)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FilterAppIsAwareHuskyAttributes)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FilterAppIsCatOwner)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FilterAppIsCatOwner)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FilterAppTraitsDesired)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FilterAppTraitsDesired)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsAllAdultsAgreedOnAdoption)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsAllAdultsAgreedOnAdoption)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsAllAdultsAgreedOnAdoptionReason)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsAllAdultsAgreedOnAdoptionReason)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsAppOrSpouseStudent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsAppOrSpouseStudent)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsAppTravelFrequent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsAppTravelFrequent)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCompleted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsCompleted)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetAdoptionReasonCompanionChild)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetAdoptionReasonCompanionChild)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetAdoptionReasonCompanionPet)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetAdoptionReasonCompanionPet)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetAdoptionReasonGift)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetAdoptionReasonGift)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetAdoptionReasonGuardDog)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetAdoptionReasonGuardDog)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetAdoptionReasonHousePet)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetAdoptionReasonHousePet)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetAdoptionReasonJoggingPartner)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetAdoptionReasonJoggingPartner)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetAdoptionReasonOther)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetAdoptionReasonOther)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetAdoptionReasonWatchDog)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetAdoptionReasonWatchDog)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationAloneRestrictionBasement)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationAloneRestrictionBasement)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationAloneRestrictionCratedIndoors)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationAloneRestrictionCratedIndoors)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationAloneRestrictionCratedOutdoors)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationAloneRestrictionCratedOutdoors)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationAloneRestrictionGarage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationAloneRestrictionGarage)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationAloneRestrictionLooseInBackyard)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationAloneRestrictionLooseInBackyard)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationAloneRestrictionLooseIndoors)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationAloneRestrictionLooseIndoors)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationAloneRestrictionOther)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationAloneRestrictionOther)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationAloneRestrictionOutsIdeKennel)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationAloneRestrictionOutsIdeKennel)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationAloneRestrictionTiedUpOutdoors)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationAloneRestrictionTiedUpOutdoors)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationInOutDoorMostlyOutsIdes)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationInOutDoorMostlyOutsIdes)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationInOutDoorsMostlyInsIde)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationInOutDoorsMostlyInsIde)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationInOutDoorsTotallyInsIde)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationInOutDoorsTotallyInsIde)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationInOutDoorsTotallyOutsIde)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationInOutDoorsTotallyOutsIde)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationSleepingRestrictionBasement)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationSleepingRestrictionBasement)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationSleepingRestrictionCratedIndoors)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationSleepingRestrictionCratedIndoors)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationSleepingRestrictionCratedOutdoors)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationSleepingRestrictionCratedOutdoors)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationSleepingRestrictionGarage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationSleepingRestrictionGarage)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationSleepingRestrictionInBedOwner)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationSleepingRestrictionInBedOwner)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationSleepingRestrictionLooseInBackyard)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationSleepingRestrictionLooseInBackyard)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationSleepingRestrictionLooseIndoors)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationSleepingRestrictionLooseIndoors)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationSleepingRestrictionOther)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationSleepingRestrictionOther)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationSleepingRestrictionOutsIdeKennel)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationSleepingRestrictionOutsIdeKennel)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPetKeptLocationSleepingRestrictionTiedUpOutdoors)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPetKeptLocationSleepingRestrictionTiedUpOutdoors)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LengthPetLeftAloneDaysOfWeek)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LengthPetLeftAloneDaysOfWeek)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LengthPetLeftAloneHoursInDay)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LengthPetLeftAloneHoursInDay)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PetAdoptionReason)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PetAdoptionReason)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PetAdoptionReasonExplain)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PetAdoptionReasonExplain)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PetKeptLocationAloneRestriction)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PetKeptLocationAloneRestriction)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PetKeptLocationAloneRestrictionExplain)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PetKeptLocationAloneRestrictionExplain)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PetKeptLocationInOutDoors)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PetKeptLocationInOutDoors)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PetKeptLocationInOutDoorsExplain)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PetKeptLocationInOutDoorsExplain)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PetKeptLocationSleepingRestriction)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PetKeptLocationSleepingRestriction)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PetKeptLocationSleepingRestrictionExplain)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PetKeptLocationSleepingRestrictionExplain)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PetLeftAloneDays)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PetLeftAloneDays)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PetLeftAloneHours)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PetLeftAloneHours)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResIdenceIsYardFenced)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResIdenceIsYardFenced)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResidenceAgesOfChildren)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResidenceAgesOfChildren)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResidenceFenceHeight)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResidenceFenceHeight)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResidenceFenceType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResidenceFenceType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResidenceIsPetAllowed)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResidenceIsPetAllowed)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResidenceIsPetDepositPaid)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResidenceIsPetDepositPaid)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResidenceIsPetDepositRequired)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResidenceIsPetDepositRequired)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResidenceLandlordName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResidenceLandlordName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResidenceLandlordNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResidenceLandlordNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResidenceLengthOfResidence)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResidenceLengthOfResidence)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResidenceNumberOccupants)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResidenceNumberOccupants)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResidenceOwnershipId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResidenceOwnershipId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResidencePetDepositAmount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResidencePetDepositAmount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResidencePetDepositCoverageId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResidencePetDepositCoverageId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResidencePetSizeWeightLimit)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResidencePetSizeWeightLimit)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResidenceTypeId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResidenceTypeId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StudentTypeId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StudentTypeId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WhatIfMovingPetPlacement)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WhatIfMovingPetPlacement)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WhatIfTravelPetPlacement)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WhatIfTravelPetPlacement)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>

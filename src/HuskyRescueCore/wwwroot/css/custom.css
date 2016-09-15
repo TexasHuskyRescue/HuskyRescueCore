@@ -1,0 +1,59 @@
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error {
+    color: #f00 !important;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #f00 !important;
+    background-color: #fee !important;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: #f00;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+
+/* ---- text-align right the .control-label until 699px MAX width -----*/
+@media (max-width:767px) { 
+    .form-custom .control-label { text-align: right }
+}
+
+@media (max-width:699px) { 
+    .form-custom .control-label {
+        width: 100%;
+        text-align: left;
+    }
+    .form-custom .payment-inputs { width: 100% }
+    .form-custom .submit-form { margin-left: 0 }
+}
+
+
+/* ----------- adjusted nested columns grid and gutters ----------- */
+.form-custom .form-group [class*="col-"] .form-group [class*="col-"] {
+    padding-left: 1%;
+    padding-right: 1%;
+}
+.form-custom .form-group [class*="col-"] .form-group {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.form-custom .form-group [class*="col-"] .form-group [class*="col-"]:not(:last-child) { margin-bottom: 5px }
+
+@media (min-width:768px) { 
+    .form-custom .form-group [class*="col-"] .form-group [class*="col-"]:not(:last-child) { margin-bottom: 0 }
+}
+
+.form-custom .form-group .row {
+    margin-right: 0px;
+    margin-left: 0px;
+}

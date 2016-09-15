@@ -1,0 +1,204 @@
+@model HuskyRescueCore.Models.EventGolf
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>EventGolf</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="AreTicketsSold" />
+                    <label asp-for="AreTicketsSold"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="BannerImagePath" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="BannerImagePath" class="form-control" />
+                <span asp-validation-for="BannerImagePath" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="BusinessId" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <select asp-for="BusinessId" class="form-control" asp-items="ViewBag.BusinessId"></select>
+                <span asp-validation-for="BusinessId" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateAdded" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DateAdded" class="form-control" />
+                <span asp-validation-for="DateAdded" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateDeleted" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DateDeleted" class="form-control" />
+                <span asp-validation-for="DateDeleted" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateOfEvent" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DateOfEvent" class="form-control" />
+                <span asp-validation-for="DateOfEvent" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateUpdated" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DateUpdated" class="form-control" />
+                <span asp-validation-for="DateUpdated" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="EndTime" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="EndTime" class="form-control" />
+                <span asp-validation-for="EndTime" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="EventTypeId" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <select asp-for="EventTypeId" class="form-control" asp-items="ViewBag.EventTypeId"></select>
+                <span asp-validation-for="EventTypeId" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsActive" />
+                    <label asp-for="IsActive"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsDeleted" />
+                    <label asp-for="IsDeleted"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Name" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Notes" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Notes" class="form-control" />
+                <span asp-validation-for="Notes" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PublicDescription" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PublicDescription" class="form-control" />
+                <span asp-validation-for="PublicDescription" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="StartTime" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="StartTime" class="form-control" />
+                <span asp-validation-for="StartTime" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TicketPriceDiscount" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TicketPriceDiscount" class="form-control" />
+                <span asp-validation-for="TicketPriceDiscount" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TicketPriceFull" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TicketPriceFull" class="form-control" />
+                <span asp-validation-for="TicketPriceFull" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="BanquetStartTime" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="BanquetStartTime" class="form-control" />
+                <span asp-validation-for="BanquetStartTime" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CostBanquet" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CostBanquet" class="form-control" />
+                <span asp-validation-for="CostBanquet" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CostFoursome" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CostFoursome" class="form-control" />
+                <span asp-validation-for="CostFoursome" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CostSingle" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CostSingle" class="form-control" />
+                <span asp-validation-for="CostSingle" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="GolfingStartTime" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="GolfingStartTime" class="form-control" />
+                <span asp-validation-for="GolfingStartTime" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="RegistrationStartTime" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="RegistrationStartTime" class="form-control" />
+                <span asp-validation-for="RegistrationStartTime" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TournamentType" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TournamentType" class="form-control" />
+                <span asp-validation-for="TournamentType" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="WelcomeMessage" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="WelcomeMessage" class="form-control" />
+                <span asp-validation-for="WelcomeMessage" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

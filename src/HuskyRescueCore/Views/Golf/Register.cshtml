@@ -1,0 +1,699 @@
+﻿@using HuskyRescueCore.Models.GolfViewModels
+@using HuskyRescueCore.Models.BrainTreeViewModels
+@using PaulMiami.AspNetCore.Mvc.Recaptcha
+@model Register
+
+@section scripts {
+    <script src="https://js.braintreegateway.com/web/3.1.0/js/client.min.js"></script>
+    <script src="https://js.braintreegateway.com/web/3.1.0/js/hosted-fields.min.js"></script>
+    <script src="https://js.braintreegateway.com/web/3.1.0/js/paypal.min.js"></script>
+    <script src="https://js.braintreegateway.com/web/3.1.0/js/data-collector.min.js"></script>
+    <script type="text/javascript" src="~/js/Golf-Register.js"></script>
+}
+
+<!-- main-container start -->
+<!-- ================ -->
+<section class="main-container">
+    <div class="container">
+        <div class="row">
+            <!-- main start -->
+            <!-- ================ -->
+            <div class="main col-md-6 col-md-push-3">
+                <!-- page-title start -->
+                <!-- ================ -->
+                <h1 class="page-title text-center">2016 Golf Tournament</h1>
+                <h1 class="page-title text-center">Register To Attend</h1>
+                <div class="separator"></div>
+                <!-- page-title end -->
+
+                <div class="Adopt-apply-form">
+                    <form asp-area="" asp-controller="Golf" asp-action="Register" method="post" class="margin-clear form-horizontal form-custom" role="form" id="golfRegisterForm">
+                        <input asp-for="TotalAmountDue" />
+                        <input asp-for="GolfTicketCost" />
+                        <input asp-for="BanquetTicketCost" />
+                        <input asp-for="BrainTreePayment.DeviceData" />
+                        <input asp-for="BrainTreePayment.Nonce" />
+                        <input type="hidden" id="clientToken" value="@ViewData["clientToken"]" />
+                        <input type="hidden" id="merchantId" value="@ViewData["merchantId"]" />
+                        <input type="hidden" id="environment" value="@ViewData["environment"]" />
+                        <div asp-validation-summary="All"></div>
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <p>
+                                    First attendee - the primary contact if there is more than one person registered
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee1FirstName" class="control-label"></label>
+                                        <input asp-for="Attendee1FirstName" class="form-control" />
+                                        <span asp-validation-for="Attendee1FirstName"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee1LastName" class="control-label"></label>
+                                        <input asp-for="Attendee1LastName" class="form-control" />
+                                        <span asp-validation-for="Attendee1LastName"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee1AddressStreet1" class="control-label"></label>
+                                        <input asp-for="Attendee1AddressStreet1" class="form-control" />
+                                        <span asp-validation-for="Attendee1AddressStreet1"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee1AddressStreet2" class="control-label"></label>
+                                        <input asp-for="Attendee1AddressStreet2" class="form-control" />
+                                        <span asp-validation-for="Attendee1AddressStreet2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee1AddressCity" class="control-label"></label>
+                                        <input asp-for="Attendee1AddressCity" class="form-control" />
+                                        <span asp-validation-for="Attendee1AddressCity"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee1AddressStateId" class="control-label"></label>
+                                        <select asp-for="Attendee1AddressStateId" asp-items="Model.Attendee1AddressStateList" class="form-control"></select>
+                                        <span asp-validation-for="Attendee1AddressStateId"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee1AddressPostalCode" class="control-label"></label>
+                                        <input asp-for="Attendee1AddressPostalCode" class="form-control" />
+                                        <span asp-validation-for="Attendee1AddressPostalCode"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee1PhoneNumber" class="control-label"></label>
+                                        <input asp-for="Attendee1PhoneNumber" class="form-control" />
+                                        <span asp-validation-for="Attendee1PhoneNumber"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee1EmailAddress" class="control-label"></label>
+                                        <input asp-for="Attendee1EmailAddress" class="form-control" />
+                                        <span asp-validation-for="Attendee1EmailAddress"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee1Type" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.Attendee1TypeOptions)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="Attendee1Type" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="Attendee1Type"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="separator"></div>
+
+
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <p>
+                                    Second attendee
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee2FirstName" class="control-label"></label>
+                                        <input asp-for="Attendee2FirstName" class="form-control" />
+                                        <span asp-validation-for="Attendee2FirstName"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee2LastName" class="control-label"></label>
+                                        <input asp-for="Attendee2LastName" class="form-control" />
+                                        <span asp-validation-for="Attendee2LastName"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee2AddressStreet1" class="control-label"></label>
+                                        <input asp-for="Attendee2AddressStreet1" class="form-control" />
+                                        <span asp-validation-for="Attendee2AddressStreet1"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee2AddressStreet2" class="control-label"></label>
+                                        <input asp-for="Attendee2AddressStreet2" class="form-control" />
+                                        <span asp-validation-for="Attendee2AddressStreet2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee2AddressCity" class="control-label"></label>
+                                        <input asp-for="Attendee2AddressCity" class="form-control" />
+                                        <span asp-validation-for="Attendee2AddressCity"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee2AddressStateId" class="control-label"></label>
+                                        <select asp-for="Attendee2AddressStateId" asp-items="Model.Attendee2AddressStateList" class="form-control"></select>
+                                        <span asp-validation-for="Attendee2AddressStateId"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee2AddressPostalCode" class="control-label"></label>
+                                        <input asp-for="Attendee2AddressPostalCode" class="form-control" />
+                                        <span asp-validation-for="Attendee2AddressPostalCode"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee2PhoneNumber" class="control-label"></label>
+                                        <input asp-for="Attendee2PhoneNumber" class="form-control" />
+                                        <span asp-validation-for="Attendee2PhoneNumber"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee2EmailAddress" class="control-label"></label>
+                                        <input asp-for="Attendee2EmailAddress" class="form-control" />
+                                        <span asp-validation-for="Attendee2EmailAddress"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee2Type" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.Attendee2TypeOptions)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="Attendee2Type" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="Attendee2Type"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="separator"></div>
+
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <p>
+                                    Third attendee
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee3FirstName" class="control-label"></label>
+                                        <input asp-for="Attendee3FirstName" class="form-control" />
+                                        <span asp-validation-for="Attendee3FirstName"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee3LastName" class="control-label"></label>
+                                        <input asp-for="Attendee3LastName" class="form-control" />
+                                        <span asp-validation-for="Attendee3LastName"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee3AddressStreet1" class="control-label"></label>
+                                        <input asp-for="Attendee3AddressStreet1" class="form-control" />
+                                        <span asp-validation-for="Attendee3AddressStreet1"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee3AddressStreet2" class="control-label"></label>
+                                        <input asp-for="Attendee3AddressStreet2" class="form-control" />
+                                        <span asp-validation-for="Attendee3AddressStreet2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee3AddressCity" class="control-label"></label>
+                                        <input asp-for="Attendee3AddressCity" class="form-control" />
+                                        <span asp-validation-for="Attendee3AddressCity"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee3AddressStateId" class="control-label"></label>
+                                        <select asp-for="Attendee3AddressStateId" asp-items="Model.Attendee3AddressStateList" class="form-control"></select>
+                                        <span asp-validation-for="Attendee3AddressStateId"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee3AddressPostalCode" class="control-label"></label>
+                                        <input asp-for="Attendee3AddressPostalCode" class="form-control" />
+                                        <span asp-validation-for="Attendee3AddressPostalCode"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee3PhoneNumber" class="control-label"></label>
+                                        <input asp-for="Attendee3PhoneNumber" class="form-control" />
+                                        <span asp-validation-for="Attendee3PhoneNumber"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee3EmailAddress" class="control-label"></label>
+                                        <input asp-for="Attendee3EmailAddress" class="form-control" />
+                                        <span asp-validation-for="Attendee3EmailAddress"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee3Type" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.Attendee3TypeOptions)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="Attendee3Type" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="Attendee3Type"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="separator"></div>
+
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <p>
+                                    Fourth attendee
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee4FirstName" class="control-label"></label>
+                                        <input asp-for="Attendee4FirstName" class="form-control" />
+                                        <span asp-validation-for="Attendee4FirstName"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee4LastName" class="control-label"></label>
+                                        <input asp-for="Attendee4LastName" class="form-control" />
+                                        <span asp-validation-for="Attendee4LastName"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee4AddressStreet1" class="control-label"></label>
+                                        <input asp-for="Attendee4AddressStreet1" class="form-control" />
+                                        <span asp-validation-for="Attendee4AddressStreet1"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee4AddressStreet2" class="control-label"></label>
+                                        <input asp-for="Attendee4AddressStreet2" class="form-control" />
+                                        <span asp-validation-for="Attendee4AddressStreet2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee4AddressCity" class="control-label"></label>
+                                        <input asp-for="Attendee4AddressCity" class="form-control" />
+                                        <span asp-validation-for="Attendee4AddressCity"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee4AddressStateId" class="control-label"></label>
+                                        <select asp-for="Attendee4AddressStateId" asp-items="Model.Attendee4AddressStateList" class="form-control"></select>
+                                        <span asp-validation-for="Attendee4AddressStateId"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee4AddressPostalCode" class="control-label"></label>
+                                        <input asp-for="Attendee4AddressPostalCode" class="form-control" />
+                                        <span asp-validation-for="Attendee4AddressPostalCode"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee4PhoneNumber" class="control-label"></label>
+                                        <input asp-for="Attendee4PhoneNumber" class="form-control" />
+                                        <span asp-validation-for="Attendee4PhoneNumber"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee4EmailAddress" class="control-label"></label>
+                                        <input asp-for="Attendee4EmailAddress" class="form-control" />
+                                        <span asp-validation-for="Attendee4EmailAddress"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="Attendee4Type" class="control-label"></label>
+                                        <div class="radio">
+                                            <div id="input-type" class="row">
+                                                @foreach (var item in Model.Attendee4TypeOptions)
+                                                {
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="Attendee4Type" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="Attendee4Type"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="separator"></div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="CustomerNotes" class="control-label"></label>
+                                        <textarea asp-for="CustomerNotes" class="form-control" rows="3"></textarea>
+                                        <span asp-validation-for="CustomerNotes"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="separator"></div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h4>Payment</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="payeelist" class="control-label">Populate billing information from</label>
+                                <select id="payeelist" name="payeelist"  class="form-control">
+                                    <option value="">-- select guest -- </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label asp-for="TotalAmountDueReadOnly" class="control-label"></label>
+                                    <input asp-for="TotalAmountDueReadOnly" class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="BrainTreePayment.PaymentMethod"></label>
+                                        <select asp-for="BrainTreePayment.PaymentMethod" asp-items="Html.GetEnumSelectList<PaymentTypeEnum>()" class="form-control">
+                                            <option value=""></option>
+                                        </select>
+                                        <i class="fa fa-navicon form-control-feedback"></i>
+                                        <span asp-validation-for="BrainTreePayment.PaymentMethod"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="has-feedback">
+                                        <label asp-for="BrainTreePayment.PayeeFirstName" class="control-label"></label>
+                                        <input asp-for="BrainTreePayment.PayeeFirstName" class="form-control" />
+                                        <span asp-validation-for="BrainTreePayment.PayeeFirstName"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="has-feedback">
+                                        <label asp-for="BrainTreePayment.PayeeLastName" class="control-label"></label>
+                                        <input asp-for="BrainTreePayment.PayeeLastName" class="form-control" />
+                                        <span asp-validation-for="BrainTreePayment.PayeeLastName"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="creditcardrow" style="display:none">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="as-feedback">
+                                            <label asp-for="BrainTreePayment.PayeeAddressStreet1" class="control-label"></label>
+                                            <input asp-for="BrainTreePayment.PayeeAddressStreet1" class="form-control" />
+                                            <span asp-validation-for="BrainTreePayment.PayeeAddressStreet1"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="has-feedback">
+                                            <label asp-for="BrainTreePayment.PayeeAddressStreet2" class="control-label"></label>
+                                            <input asp-for="BrainTreePayment.PayeeAddressStreet2" class="form-control" />
+                                            <span asp-validation-for="BrainTreePayment.PayeeAddressStreet2"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="has-feedback">
+                                            <label asp-for="BrainTreePayment.PayeeAddressCity" class="control-label"></label>
+                                            <input asp-for="BrainTreePayment.PayeeAddressCity" class="form-control" />
+                                            <span asp-validation-for="BrainTreePayment.PayeeAddressCity"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="has-feedback">
+                                            <label asp-for="BrainTreePayment.PayeeAddressStateId" class="control-label"></label>
+                                            <select asp-for="BrainTreePayment.PayeeAddressStateId" asp-items="Model.BrainTreePayment.States" class="form-control"></select>
+                                            <span asp-validation-for="BrainTreePayment.PayeeAddressStateId"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="has-feedback">
+                                            <label asp-for="BrainTreePayment.PayeeAddressPostalCode" class="control-label"></label>
+                                            <input asp-for="BrainTreePayment.PayeeAddressPostalCode" class="form-control" />
+                                            <span asp-validation-for="BrainTreePayment.PayeeAddressPostalCode"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div id="error-message"></div>
+                                    <div class="col-md-6">
+                                        <div class="has-feedback">
+                                            <label for="card-number" class="control-label">Card Number</label>
+                                            <div class="hosted-field form-control" id="card-number"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="has-feedback">
+                                            <label for="cvv" class="control-label">CVV</label>
+                                            <div class="hosted-field form-control" id="cvv"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="has-feedback">
+                                            <label for="expiration-date" class="control-label">Expiration Date</label>
+                                            <div class="hosted-field form-control" id="expiration-date"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" id="paypalrow" style="display:none">
+                            <div class="col-lg-12">
+                                <div id="paypal-button">
+                                    <script src="https://www.paypalobjects.com/api/button.js?"
+                                            data-merchant="braintree"
+                                            data-id="paypal-button"
+                                            data-button="checkout"
+                                            data-color="blue"
+                                            data-size="medium"
+                                            data-shape="pill"
+                                            data-button_type="submit"
+                                            data-button_disabled="false"></script>
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <recaptcha />
+                                        <span class="text-danger" id="recaptchaErrorMessage"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button type="submit" class="btn btn-default">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+
+
+            </div>
+            <!-- main end -->
+            <!-- sidebar start -->
+            <!-- ================ -->
+            <aside class="col-md-3 col-md-pull-6">
+                <div class="sidebar">
+                    <div class="block clearfix">
+                        <h3 class="title">Title Sponsor</h3>
+                        <div class="separator-2"></div>
+                        <img src="~/images/Sponsors/Red Velvet Inn.png" />
+                        <p><a href="http://redvelvetinn.com/" _target="blank">THE RED VELVET INN</a> is a unique, pet-friendly bed & breakfast located in the heart of downtown Navasota, TX, just 20 minutes south of College Station and an hour north of Houston. It is located in a 120-year-old Victorian style house that was built by Charles W. Stewart, two-time mayor of Navasota, and son of Charles B. Stewart, signer of the Texas Declaration of Independence and designer of the Texas flag.</p>
+                    </div>
+                </div>
+            </aside>
+            <!-- sidebar end -->
+            <!-- sidebar start -->
+            <!-- ================ -->
+            <aside class="col-md-3">
+                <div class="sidebar">
+                    <div class="block clearfix">
+                        <h3 class="title">Golf menu</h3>
+                        <div class="separator-2"></div>
+                        <nav>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a asp-area="" asp-controller="Golf" asp-action="Index">Golf Home</a></li>
+                                <li class="active"><a asp-area="" asp-controller="Golf" asp-action="Register">Register</a></li>
+                                <li><a asp-area="" asp-controller="Golf" asp-action="Sponsors">Sponsors</a></li>
+                                <li><a asp-area="" asp-controller="Golf" asp-action="Sponsorships">Sponsorships</a></li>
+                                <li><a asp-area="" asp-controller="Golf" asp-action="RaffleAuction">Auction</a></li>
+                                <li><a asp-area="" asp-controller="Golf" asp-action="Support">Supporting TXHR</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </aside>
+            <!-- sidebar end -->
+        </div>
+    </div>
+</section>
+<!-- main-container end -->

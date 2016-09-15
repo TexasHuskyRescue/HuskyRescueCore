@@ -1,0 +1,102 @@
+﻿@using HuskyRescueCore.Models.ContactViewModels
+@using PaulMiami.AspNetCore.Mvc.Recaptcha
+@model HuskyRescueCore.Models.ContactViewModels.Contact
+
+<!-- banner start -->
+<!-- ================ -->
+<div class="banner dark-translucent-bg" style="background-image:url('/images/page-contact-banner.jpg'); background-position: 50% 30%;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 text-center col-md-offset-2 pv-20">
+                <h2 class="title">Contact Us</h2>
+                <div class="separator mt-10"></div>
+                <p class="text-center">Reach out to us for anything: adopting and want more information, volunteering, fostering, donating, fundraising, event information, a dog in need of rescue, or anything else. </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- banner end -->
+<!-- main-container start -->
+<!-- ================ -->
+<section class="main-container">
+    <div class="container">
+        <div class="row">
+            <!-- main start -->
+            <!-- ================ -->
+            <div class="main col-md-12 space-bottom">
+                <p class="lead">It would be great to hear from you! Just drop us a line and ask for anything with which you think we could be helpful. We are looking forward to hearing from you!</p>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="alert alert-success hidden" id="MessageSent">
+                            We have received your message, we will contact you very soon.
+                        </div>
+                        <div class="alert alert-danger hidden" id="MessageNotSent">
+                            Oops! Something went wrong, please verify that you are not a robot or refresh the page and try again.
+                        </div>
+                        <div class="contact-form">
+                            <form asp-area="" asp-controller="Home" asp-action="Contact" method="post" class="margin-clear" role="form">
+                                <div asp-validation-summary="All"></div>
+                                <div class="form-group has-feedback">
+                                    <label asp-for="NameFirst"></label>
+                                    <input asp-for="NameFirst" class="form-control" />
+                                    <i class="fa fa-user form-control-feedback"></i>
+                                    <span asp-validation-for="NameFirst"></span>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <label asp-for="NameLast"></label>
+                                    <input asp-for="NameLast" class="form-control" />
+                                    <i class="fa fa-user form-control-feedback"></i>
+                                    <span asp-validation-for="NameLast"></span>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <label asp-for="EmailAddress"></label>
+                                    <input asp-for="EmailAddress" class="form-control" />
+                                    <i class="fa fa-envelope form-control-feedback"></i>
+                                    <span asp-validation-for="EmailAddress"></span>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <label asp-for="ContactTypeId"></label>
+                                    <select asp-for="ContactTypeId" asp-items="Html.GetEnumSelectList<ContactTypeEnum>()" class="form-control">
+                                        <option value=""></option>
+                                    </select>
+                                    <i class="fa fa-navicon form-control-feedback"></i>
+                                    <span asp-validation-for="ContactTypeId"></span>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <label asp-for="Message"></label>
+                                    <textarea asp-for="Message" rows="6" class="form-control" ></textarea>
+                                    <i class="fa fa-pencil form-control-feedback"></i>
+                                    <span asp-validation-for="Message"></span>
+                                </div>
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label asp-for="IsEmailable">
+                                            <input asp-for="IsEmailable"/> Would you like to be added to our emailing list?
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <recaptcha />
+                                        <span class="text-danger" id="recaptchaErrorMessage"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <button type="submit" class="btn btn-default">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="map-canvas"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- main end -->
+        </div>
+    </div>
+</section>
+<!-- main-container end -->
