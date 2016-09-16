@@ -38,6 +38,18 @@ namespace HuskyRescueCore.Services
             {
                 GetGateway();
             }
+            _logger.LogInformation("braintree customerId: {@braintreeCustomerId} {@gateway}", customerId, Gateway);
+
+            var token = string.Empty;
+
+            try
+            {
+                token = string.IsNullOrEmpty(customerId) ? Gateway.ClientToken.generate() : Gateway.ClientToken.generate(new ClientTokenRequest { CustomerId = customerId });
+            }
+            catch (Braintree.Exceptions.AuthenticationException ex)
+            {
+                _logger.LogError(new EventId(10), ex, "error getting braintree token");
+            }
 
             return string.IsNullOrEmpty(customerId) ? Gateway.ClientToken.generate() : Gateway.ClientToken.generate(new ClientTokenRequest { CustomerId = customerId });
         }
