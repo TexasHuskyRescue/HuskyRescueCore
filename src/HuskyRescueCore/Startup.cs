@@ -17,19 +17,23 @@ using Microsoft.AspNetCore.Http;
 using PaulMiami.AspNetCore.Mvc.Recaptcha;
 using Microsoft.Extensions.Options;
 using Serilog;
+using Serilog.Events;
 
 namespace HuskyRescueCore
 {
     public class Startup
     {
+        private IHostingEnvironment CurrentEnvironment { get; set; }
+
         // https://docs.asp.net/en/dev/fundamentals/startup.html
         public Startup(IHostingEnvironment env)
         {
             Log.Logger = new LoggerConfiguration()
               .Enrich.FromLogContext()
-              .Enrich.WithMachineName()
-              .Enrich.WithEnvironmentUserName()
-              .WriteTo.RollingFile(env.WebRootPath + @"\App_Data\logs\") //, shared: true) // file share not supported on platform - error when using this in dev
+              //.Enrich.WithMachineName()
+              //.Enrich.WithEnvironmentUserName()
+              //.WriteTo.RollingFile(env.WebRootPath + @"\App_Data\logs\") //, shared: true) // file share not supported on platform - error when using this in dev
+              .WriteTo.RollingFile("log-{Date}.txt", LogEventLevel.Debug)
               .CreateLogger();
 
 
@@ -37,7 +41,6 @@ namespace HuskyRescueCore
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-
 
             if (env.IsDevelopment())
             {
@@ -47,6 +50,8 @@ namespace HuskyRescueCore
                 // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
                 builder.AddApplicationInsightsSettings(developerMode: true);
             }
+
+            CurrentEnvironment = env;
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -83,14 +88,42 @@ namespace HuskyRescueCore
             services.AddTransient<IRescueGroupsService, RescueGroupsService>();
             services.AddTransient<IFormSerivce, FormService>();
 
-
-            //services.AddSingleton<IConfigureOptions<RecaptchaOptions>, ConfigureRecaptchaOptions>();
-            services.AddRecaptcha(new RecaptchaOptions
+            // TODO: figure out why azure will not ready the configuration for recaptha
+            if (CurrentEnvironment.EnvironmentName == "Development")
             {
-                SiteKey = Configuration["recaptcha:PublicKey"],
-                SecretKey = Configuration["recaptcha:PrivateKey"],
-                ValidationMessage = "Are you a robot?"
-            });
+                services.AddRecaptcha(new RecaptchaOptions
+                {
+                    SiteKey = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
+                    SecretKey = "6LeIxAcTAAAAAGG - vFI1TnRWxMZNFuojJ4WifJWe",
+                    ValidationMessage = "Are you a robot?"
+                });
+            }
+            else if (CurrentEnvironment.EnvironmentName == "Staging")
+            {
+                services.AddRecaptcha(new RecaptchaOptions
+                {
+                    SiteKey = "6LdZlt8SAAAAAFNr2_gJ-E-jB57p8J3FxCiputxE",
+                    SecretKey = "6LdZlt8SAAAAAFzt3c8ofJfCTcgmw5_mOtkBi3iC",
+                    ValidationMessage = "Are you a robot?"
+                });
+            }
+            else if (CurrentEnvironment.EnvironmentName == "Production")
+            {
+                services.AddRecaptcha(new RecaptchaOptions
+                {
+                    SiteKey = "6LdZlt8SAAAAAFNr2_gJ-E-jB57p8J3FxCiputxE",
+                    SecretKey = "6LdZlt8SAAAAAFzt3c8ofJfCTcgmw5_mOtkBi3iC",
+                    ValidationMessage = "Are you a robot?"
+                });
+
+            }
+            //services.AddSingleton<IConfigureOptions<RecaptchaOptions>, ConfigureRecaptchaOptions>();
+            //services.AddRecaptcha(new RecaptchaOptions
+            //{
+            //    SiteKey = Configuration["recaptcha:PublicKey"],
+            //    SecretKey = Configuration["recaptcha:PrivateKey"],
+            //    ValidationMessage = "Are you a robot?"
+            //});
 
             //http://bootstrap3mvc6.azurewebsites.net/Home/Installation
             //services.AddTransient(typeof(BootstrapMvc.Mvc6.BootstrapHelper<>));
@@ -101,8 +134,8 @@ namespace HuskyRescueCore
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime appLifetime)
         {
             // https://docs.asp.net/en/dev/fundamentals/logging.html
-            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            //loggerFactory.AddDebug();
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
             loggerFactory.AddSerilog();
             // Ensure any buffered events are sent at shutdown
             appLifetime.ApplicationStopped.Register(Log.CloseAndFlush);
@@ -112,16 +145,61 @@ namespace HuskyRescueCore
 
             app.UseApplicationInsightsRequestTelemetry();
 
+            var customConfig = Configuration.GetSection("custom");
+            var useDevErrorPages = elmahConfig.GetValue<bool>("UseDevErrorPages");
+
+
+            var sslPort = 0;
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
-                app.UseBrowserLink();
+                if (useDevErrorPages)
+                {
+                    app.UseDeveloperExceptionPage();
+                    app.UseDatabaseErrorPage();
+                    app.UseBrowserLink();
+                }
+
+                var builder = new ConfigurationBuilder()
+                    .SetBasePath(env.ContentRootPath)
+                    .AddJsonFile(@"Properties/launchSettings.json", optional: false, reloadOnChange: true);
+                var launchConfig = builder.Build();
+                sslPort = launchConfig.GetValue<int>("iisSettings:iisExpress:sslPort");
+            }
+            else if (env.IsStaging())
+            {
+                if (useDevErrorPages)
+                {
+                    app.UseDeveloperExceptionPage();
+                    app.UseDatabaseErrorPage();
+                }
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                if (useDevErrorPages)
+                {
+                    app.UseDeveloperExceptionPage();
+                    app.UseDatabaseErrorPage();
+                }
+                else
+                {
+                    app.UseExceptionHandler("/Home/Error");
+                }
             }
+
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.IsHttps)
+                {
+                    await next();
+                }
+                else
+                {
+                    var httpsFormat = "https://{0}{1}{2}";
+                    var httpsUrl = string.Format(httpsFormat, context.Request.Host.Host,
+                        sslPort == 0 || sslPort == 443 ? string.Empty : string.Format(":{0}", sslPort), context.Request.Path);
+                    context.Response.Redirect(httpsUrl);
+                }
+            });
 
             app.UseApplicationInsightsExceptionTelemetry();
 
