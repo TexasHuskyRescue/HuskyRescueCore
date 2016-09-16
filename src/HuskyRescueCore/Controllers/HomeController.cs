@@ -25,7 +25,7 @@ namespace HuskyRescueCore.Controllers
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult AboutUs()
         {
             return View();
         }
