@@ -12,5 +12,15 @@ namespace HuskyRescueCore.Controllers
         {
             return View();
         }
+
+        public IActionResult Partners()
+        {
+            return View();
+        }
+
+        public IActionResult Sponsors()
+        {
+            return View();
+        }
     }
 }
