@@ -1,1 +1,223 @@
-﻿
+﻿@using HuskyRescueCore.Models.DonationViewModels
+@using HuskyRescueCore.Models.BrainTreeViewModels
+@*@using PaulMiami.AspNetCore.Mvc.Recaptcha*@
+@model DonationViewModel
+
+@section scripts {
+    <script type="text/javascript" src="~/js/braintree/client.min.js"></script>
+    <script type="text/javascript" src="~/js/braintree/hosted-fields.min.js"></script>
+    <script type="text/javascript" src="~/js/braintree/paypal.min.js"></script>
+    <script type="text/javascript" src="~/js/braintree/data-collector.min.js"></script>
+    <script type="text/javascript" src="~/js/Donate-Index.js"></script>
+}
+
+
+<!-- main-container start -->
+<!-- ================ -->
+<section class="main-container">
+    <div class="container">
+        <div class="row">
+
+            <!-- main start -->
+            <!-- ================ -->
+            <div class="main col-lg-12 col-md-12 col-sm-12 col-xs-12 space-bottom">
+                <!-- page-title start -->
+                <!-- ================ -->
+                <h1 class="page-title text-center">Donate to TXHR</h1>
+                <h1 class="page-title text-center">Help The Huskies</h1>
+                <div class="separator"></div>
+                <!-- page-title end -->
+
+                <div class="Donate-index-form">
+                    <form asp-area="" asp-controller="Donate" asp-action="Donate" method="post" class="margin-clear form-horizontal form-custom" role="form" id="donateForm">
+                        <input asp-for="BrainTreePayment.DeviceData" />
+                        <input asp-for="BrainTreePayment.Nonce" />
+                        <input type="hidden" id="clientToken" value="@ViewData["clientToken"]" />
+                        <input type="hidden" id="merchantId" value="@ViewData["merchantId"]" />
+                        <input type="hidden" id="environment" value="@ViewData["environment"]" />
+                        <div asp-validation-summary="All"></div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-4 center-block">
+                                    <label asp-for="AmountDonation" class="control-label"></label>
+                                    <input asp-for="AmountDonation" class="form-control" />
+                                    <span asp-validation-for="AmountDonation"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 center-block">
+                                    <label asp-for="DonorEmail" class="control-label"></label>
+                                    <input asp-for="DonorEmail" class="form-control" />
+                                    <span asp-validation-for="DonorEmail"></span>
+                                </div>
+                                <div class="col-lg-6 center-block">
+                                    <label asp-for="DonorPhoneNumber" class="control-label"></label>
+                                    <input asp-for="DonorPhoneNumber" class="form-control" />
+                                    <span asp-validation-for="DonorPhoneNumber"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="Comments" class="control-label"></label>
+                                        <textarea asp-for="Comments" class="form-control" rows="3"></textarea>
+                                        <span asp-validation-for="Comments"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h4>Payment</h4>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="has-feedback">
+                                        <label asp-for="BrainTreePayment.PaymentMethod"></label>
+                                        <select asp-for="BrainTreePayment.PaymentMethod" asp-items="Html.GetEnumSelectList<PaymentTypeEnum>()" class="form-control">
+                                            <option value=""></option>
+                                        </select>
+                                        <i class="fa fa-navicon form-control-feedback"></i>
+                                        <span asp-validation-for="BrainTreePayment.PaymentMethod"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="has-feedback">
+                                        <label asp-for="BrainTreePayment.PayeeFirstName" class="control-label"></label>
+                                        <input asp-for="BrainTreePayment.PayeeFirstName" class="form-control" />
+                                        <span asp-validation-for="BrainTreePayment.PayeeFirstName"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="has-feedback">
+                                        <label asp-for="BrainTreePayment.PayeeLastName" class="control-label"></label>
+                                        <input asp-for="BrainTreePayment.PayeeLastName" class="form-control" />
+                                        <span asp-validation-for="BrainTreePayment.PayeeLastName"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="creditcardrow" style="display:none">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="as-feedback">
+                                            <label asp-for="BrainTreePayment.PayeeAddressStreet1" class="control-label"></label>
+                                            <input asp-for="BrainTreePayment.PayeeAddressStreet1" class="form-control" />
+                                            <span asp-validation-for="BrainTreePayment.PayeeAddressStreet1"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="has-feedback">
+                                            <label asp-for="BrainTreePayment.PayeeAddressStreet2" class="control-label"></label>
+                                            <input asp-for="BrainTreePayment.PayeeAddressStreet2" class="form-control" />
+                                            <span asp-validation-for="BrainTreePayment.PayeeAddressStreet2"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="has-feedback">
+                                            <label asp-for="BrainTreePayment.PayeeAddressCity" class="control-label"></label>
+                                            <input asp-for="BrainTreePayment.PayeeAddressCity" class="form-control" />
+                                            <span asp-validation-for="BrainTreePayment.PayeeAddressCity"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="has-feedback">
+                                            <label asp-for="BrainTreePayment.PayeeAddressStateId" class="control-label"></label>
+                                            <select asp-for="BrainTreePayment.PayeeAddressStateId" asp-items="Model.BrainTreePayment.States" class="form-control"></select>
+                                            <span asp-validation-for="BrainTreePayment.PayeeAddressStateId"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="has-feedback">
+                                            <label asp-for="BrainTreePayment.PayeeAddressPostalCode" class="control-label"></label>
+                                            <input asp-for="BrainTreePayment.PayeeAddressPostalCode" class="form-control" />
+                                            <span asp-validation-for="BrainTreePayment.PayeeAddressPostalCode"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div id="error-message"></div>
+                                    <div class="col-md-3">
+                                        <div class="has-feedback">
+                                            <label for="card-number" class="control-label">Card Number</label>
+                                            <div class="hosted-field form-control" id="card-number"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="has-feedback">
+                                            <label for="cvv" class="control-label">CVV</label>
+                                            <div class="hosted-field form-control" id="cvv"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="has-feedback">
+                                            <label for="expiration-date" class="control-label">Expiration Date</label>
+                                            <div class="hosted-field form-control" id="expiration-date"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" id="paypalrow" style="display:none">
+                            <div class="col-lg-12">
+                                <div id="paypal-button">
+                                    <script src="https://www.paypalobjects.com/api/button.js?"
+                                            data-merchant="braintree"
+                                            data-id="paypal-button"
+                                            data-button="checkout"
+                                            data-color="blue"
+                                            data-size="medium"
+                                            data-shape="pill"
+                                            data-button_type="submit"
+                                            data-button_disabled="false"></script>
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                @*<div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <recaptcha />
+                                        <span class="text-danger" id="recaptchaErrorMessage"></span>
+                                    </div>
+                                </div>*@
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button type="submit" class="btn btn-default" id="submitButton">Submit Donation</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- main -->
+
+        </div>
+    </div>
+</section>
+<!-- main-container -->

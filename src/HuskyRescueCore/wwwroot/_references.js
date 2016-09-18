@@ -6,6 +6,7 @@
 /// <reference path="js/braintree/paypal.min.js" />
 /// <reference path="js/coming.soon.config.js" />
 /// <reference path="js/custom.js" />
+/// <reference path="js/donate-index.js" />
 /// <reference path="js/Golf-Register.js" />
 /// <reference path="js/google.map.config.js" />
 /// <reference path="js/site.js" />

@@ -102,8 +102,8 @@ namespace HuskyRescueCore
             {
                 services.AddRecaptcha(new RecaptchaOptions
                 {
-                    SiteKey = "6LdZlt8SAAAAAFNr2_gJ-E-jB57p8J3FxCiputxE",
-                    SecretKey = "6LdZlt8SAAAAAFzt3c8ofJfCTcgmw5_mOtkBi3iC",
+                    SiteKey = "6Lds7wYUAAAAAEusAuIXHHf6QY5Uom0ITJvCRB1i",
+                    SecretKey = "6Lds7wYUAAAAAG6mLLJzwyCyDtMMsn4hdW3RktMx",
                     ValidationMessage = "Are you a robot?"
                 });
             }

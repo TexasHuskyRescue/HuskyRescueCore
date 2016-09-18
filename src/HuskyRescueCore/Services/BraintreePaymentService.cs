@@ -51,6 +51,9 @@ namespace HuskyRescueCore.Services
                 _logger.LogError(new EventId(10), ex, "error getting braintree token");
             }
 
+
+            _logger.LogInformation("braintree token: {@token}", customerId);
+
             return string.IsNullOrEmpty(customerId) ? Gateway.ClientToken.generate() : Gateway.ClientToken.generate(new ClientTokenRequest { CustomerId = customerId });
         }
 
