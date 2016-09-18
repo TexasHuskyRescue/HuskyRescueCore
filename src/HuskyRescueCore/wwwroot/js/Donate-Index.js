@@ -67,11 +67,16 @@ function PaymentType() {
                         paypalButton.setAttribute('disabled', 'disabled');
                         // Because tokenization opens a popup, this has to be called as a result of
                         // customer action, like clicking a button—you cannot call this at any time.
-                        paypalInstance.tokenize({
+
+                        var paypalOptions = {
                             flow: 'checkout',
                             intent: 'sale',
-                            amount: $('#AmountDonation').val()
-                        }, function (tokenizeErr, payload) {
+                            currency: 'USD',
+                            amount: Number(Math.round($('#AmountDonation').val()+'e2')+'e-2').toFixed(2)
+                        };
+                        console.info('paypal token options', paypalOptions);
+                        paypalInstance.tokenize(paypalOptions,
+                        function (tokenizeErr, payload) {
                             paypalButton.removeAttribute('disabled');
 
                             // Stop if there was an error.
