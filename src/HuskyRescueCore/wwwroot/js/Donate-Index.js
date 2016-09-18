@@ -112,8 +112,6 @@ function PaymentType() {
             $('#paypalrow').show();
             $('#creditcardrow').hide();
 
-            $('#BrainTreePayment_PayeeFirstName').rules('remove', 'required');
-            $('#BrainTreePayment_PayeeLastName').rules('remove', 'required');
             $('#BrainTreePayment_PayeeAddressStreet1').rules('remove', 'required');
             $('#BrainTreePayment_PayeeAddressCity').rules('remove', 'required');
             $('#BrainTreePayment_PayeeAddressStateId').rules('remove', 'required');
@@ -230,14 +228,6 @@ function PaymentType() {
             $('#paypalrow').hide();
             $('#creditcardrow').show();
 
-            $('#BrainTreePayment_PayeeFirstName').rules("add", {
-                required: true,
-                messages: { required: "first name required" }
-            });
-            $('#BrainTreePayment_PayeeLastName').rules("add", {
-                required: true,
-                messages: { required: "last name required" }
-            });
             $('#BrainTreePayment_PayeeAddressStreet1').rules("add", {
                 required: true,
                 messages: { required: "address street required" }
