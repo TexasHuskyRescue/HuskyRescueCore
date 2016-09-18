@@ -8,7 +8,6 @@
     <script src="https://js.braintreegateway.com/web/3.1.0/js/hosted-fields.min.js"></script>
     <script src="https://js.braintreegateway.com/web/3.1.0/js/paypal.min.js"></script>
     <script src="https://js.braintreegateway.com/web/3.1.0/js/data-collector.min.js"></script>
-    <recaptcha-script />
     <script type="text/javascript" src="~/js/Adopt-Apply.js"></script>
 
 }
@@ -1709,36 +1708,20 @@
                                         <div class="has-feedback">
                                             <label for="card-number" class="control-label">Card Number</label>
                                             <div class="hosted-field form-control" id="card-number"></div>
-                                            @*<label asp-for="BrainTreePayment.CardNumber" class="control-label"></label>
-                                            <input asp-for="BrainTreePayment.CardNumber" class="form-control" placeholder = "1111222233334444" data-braintree-name = "number"/>
-                                            <span asp-validation-for="BrainTreePayment.CardNumber"></span>*@
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="has-feedback">
                                             <label for="cvv" class="control-label">CVV</label>
                                             <div class="hosted-field form-control" id="cvv"></div>
-                                            @*<label asp-for="BrainTreePayment.CardCvv" class="control-label"></label>
-                                            <input asp-for="BrainTreePayment.CardCvv" class="form-control" placeholder = "123" data-braintree-name = "cvv"/>
-                                            <span asp-validation-for="BrainTreePayment.CardCvv"></span>*@
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="has-feedback">
                                             <label for="expiration-date" class="control-label">Expiration Date</label>
                                             <div class="hosted-field form-control" id="expiration-date"></div>
-                                            @*<label asp-for="BrainTreePayment.CardExpireMonth" class="control-label"></label>
-                                            <input asp-for="BrainTreePayment.CardExpireMonth" class="form-control" placeholder = "MM" data-braintree-name = "expiration_month"/>
-                                            <span asp-validation-for="BrainTreePayment.CardExpireMonth"></span>*@
                                         </div>
                                     </div>
-                                    @*<div class="col-md-2">
-                                        <div class="has-feedback">
-                                            <label asp-for="BrainTreePayment.CardExpireYear" class="control-label"></label>
-                                            <input asp-for="BrainTreePayment.CardExpireYear" class="form-control" placeholder = "YYYY" data-braintree-name = "expiration_year"/>
-                                            <span asp-validation-for="BrainTreePayment.CardExpireYear"></span>
-                                        </div>
-                                    </div>*@
                                 </div>
                             </div>
                         </div>
@@ -1763,14 +1746,8 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <div class="col-md-offset-2 col-md-10">
-                                        <recaptcha />
-                                        <span class="text-danger" id="recaptchaErrorMessage"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
-                                        <button type="submit" class="btn btn-default">Submit Application</button>
+                                        <button type="submit" class="btn btn-default" id="submitButton">Submit Application</button>
                                     </div>
                                 </div>
                             </div>

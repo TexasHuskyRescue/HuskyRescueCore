@@ -48,7 +48,6 @@ namespace HuskyRescueCore.Controllers
         }
 
         [ImportModelState]
-        [ValidateRecaptcha]
         public IActionResult Register()
         {
             var model = new Register();
@@ -78,7 +77,6 @@ namespace HuskyRescueCore.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ExportModelState]
-        [ValidateRecaptcha]
         public async Task<IActionResult> Register(Register model)
         {
             if (string.IsNullOrEmpty(model.BrainTreePayment.Nonce))

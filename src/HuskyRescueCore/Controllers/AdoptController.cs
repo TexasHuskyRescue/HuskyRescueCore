@@ -51,7 +51,6 @@ namespace HuskyRescueCore.Controllers
         }
 
         [ImportModelState]
-        [ValidateRecaptcha]
         public IActionResult Apply()
         {
             var model = new ApplyToAdoptViewModel();
@@ -94,7 +93,6 @@ namespace HuskyRescueCore.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ExportModelState]
-        [ValidateRecaptcha]
         public async Task<IActionResult> Apply(ApplyToAdoptViewModel model)
         {
             // TODO: add exception handling and display error message to user

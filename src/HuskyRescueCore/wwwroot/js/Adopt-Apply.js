@@ -1,197 +1,257 @@
-﻿
-var paypalButton = document.querySelector('.paypal-button');
+﻿var paypalButton = document.querySelector('.paypal-button');
+var submitBtn = document.getElementById('submitButton');
 
-braintree.client.create({
-    authorization: $('#clientToken').val()
-}, function (err, clientInstance) {
-    // Creation of any other components...
+var globalPayPalInstance = {};
+var isPaypalInit = false;
+var globalHostedInstance = {};
+var isHostedInit = false;
 
-    braintree.dataCollector.create({
-        client: clientInstance,
-        kount: true
-    }, function (err, dataCollectorInstance) {
-        if (err) {
-            // Handle error in creation of data collector
-            return;
-        }
-        // At this point, you should access the dataCollectorInstance.deviceData value and provide it
-        // to your server, e.g. by injecting it into your form as a hidden input.
-        var deviceData = dataCollectorInstance.deviceData;
-        $('#BrainTreePayment_DeviceData').val(deviceData);
-    });
 
-    braintree.hostedFields.create({
-        client: clientInstance,
-        styles: {
-            'input': {
-                'font-size': '14pt'
+function PaymentType() {
+    var paymentType = $('select[name="BrainTreePayment.PaymentMethod"]').val();
+
+    switch (paymentType) {
+        case '0': // PayPal
+
+            braintree.client.create({
+                authorization: $('#clientToken').val()
             },
-            'input.invalid': {
-                'color': 'red'
-            },
-            'input.valid': {
-                'color': 'green'
-            }
-        },
-        fields: {
-            number: {
-                selector: '#card-number',
-                placeholder: '4111 1111 1111 1111'
-            },
-            cvv: {
-                selector: '#cvv',
-                placeholder: '123'
-            },
-            expirationDate: {
-                selector: '#expiration-date',
-                placeholder: '10 / 2019'
-            }
-        }
-    }, function (hostedFieldsErr, hostedFieldsInstance) {
-        if (hostedFieldsErr) {
-            // Handle error in Hosted Fields creation
-            return;
-        }
+            function (err, clientInstance) {
+                // Creation of any other components...
 
-        //submit.removeAttribute('disabled');
-
-        document.getElementById('applyForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
-                if (tokenizeErr) {
-                    // Handle error in Hosted Fields tokenization
-                    return;
-                }
-
-                // Put `payload.nonce` into the `payment-method-nonce` input, and then
-                // submit the form. Alternatively, you could send the nonce to your server
-                // with AJAX.
-                document.querySelector('input[name="payment-method-nonce"]').value = payload.nonce;
-                document.querySelector('input[name="BrainTreePayment.Nonce"]').value = payload.nonce;
-                
-                $('#applyForm').submit();
-            });
-        }, false);
-    });
-
-    // Create a PayPal component.
-    braintree.paypal.create({
-        client: clientInstance
-    }, function (paypalErr, paypalInstance) {
-
-        // Stop if there was a problem creating PayPal.
-        // This could happen if there was a network error or if it's incorrectly
-        // configured.
-        if (paypalErr) {
-            console.error('Error creating PayPal:', paypalErr);
-            return;
-        }
-
-        // Enable the button.
-        paypalButton.removeAttribute('disabled');
-
-        // When the button is clicked, attempt to tokenize.
-        paypalButton.addEventListener('click', function (event) {
-
-            // Because tokenization opens a popup, this has to be called as a result of
-            // customer action, like clicking a button—you cannot call this at any time.
-            paypalInstance.tokenize({
-                flow: 'vault'
-            }, function (tokenizeErr, payload) {
-
-                // Stop if there was an error.
-                if (tokenizeErr) {
-                    if (tokenizeErr.type !== 'CUSTOMER') {
-                        console.error('Error tokenizing:', tokenizeErr);
+                braintree.dataCollector.create({
+                    client: clientInstance,
+                    kount: true
+                },
+                function (err, dataCollectorInstance) {
+                    if (err) {
+                        // Handle error in creation of data collector
+                        return;
                     }
-                    return;
-                }
+                    // At this point, you should access the dataCollectorInstance.deviceData value and provide it
+                    // to your server, e.g. by injecting it into your form as a hidden input.
+                    var deviceData = dataCollectorInstance.deviceData;
+                    $('#BrainTreePayment_DeviceData').val(deviceData);
+                });
+                // Create a PayPal component.
+                braintree.paypal.create({
+                    client: clientInstance
+                },
+                function (paypalErr, paypalInstance) {
+                    // Stop if there was a problem creating PayPal.
+                    // This could happen if there was a network error or if it's incorrectly
+                    // configured.
+                    if (paypalErr) {
+                        console.error('Error creating PayPal:', paypalErr);
+                        return;
+                    }
 
-                // Tokenization succeeded!
-                paypalButton.setAttribute('disabled', true);
-                console.log('Got a nonce! You should submit this to your server.');
-                console.log(payload.nonce);
-                document.querySelector('input[name="payment-method-nonce"]').value = payload.nonce;
-                document.querySelector('input[name="BrainTreePayment.Nonce"]').value = payload.nonce;
+                    // Enable the button.
+                    paypalButton.removeAttribute('disabled');
+
+                    globalPayPalInstance = paypalInstance;
+                    isPaypalInit = true;
+                    if (isHostedInit) {
+                        isHostedInit = false;
+                        globalHostedInstance.teardown(function (teardownErr) {
+                            if (teardownErr) {
+                                console.error('Could not tear down Paypal Fields!', teardownErr);
+                            } else {
+                                console.info('Paypal Fields has been torn down!');
+                            }
+                        });
+                    }
+
+                    // When the button is clicked, attempt to tokenize.
+                    paypalButton.addEventListener('click', function (event) {
+                        paypalButton.setAttribute('disabled', 'disabled');
+                        // Because tokenization opens a popup, this has to be called as a result of
+                        // customer action, like clicking a button—you cannot call this at any time.
+
+                        var paypalOptions = {
+                            flow: 'checkout',
+                            intent: 'sale',
+                            currency: 'USD',
+                            amount: Number(Math.round($('#ApplicationFeeAmount').val() + 'e2') + 'e-2').toFixed(2)
+                        };
+                        console.info('paypal token options', paypalOptions);
+                        paypalInstance.tokenize(paypalOptions,
+                        function (tokenizeErr, payload) {
+                            paypalButton.removeAttribute('disabled');
+
+                            // Stop if there was an error.
+                            if (tokenizeErr) {
+                                switch (tokenizeErr.code) {
+                                    case 'PAYPAL_POPUP_CLOSED':
+                                        console.error('Customer closed PayPal popup.');
+                                        break;
+                                    case 'PAYPAL_ACCOUNT_TOKENIZATION_FAILED':
+                                        console.error('PayPal tokenization failed. See details:', tokenizeErr.details);
+                                        break;
+                                    case 'PAYPAL_FLOW_FAILED':
+                                        console.error('Unable to initialize PayPal flow. Are your options correct?', tokenizeErr.details);
+                                        break;
+                                    default:
+                                        console.error('Error!', tokenizeErr);
+                                }
+                                return;
+                            }
+
+                            // Tokenization succeeded!
+                            paypalButton.setAttribute('disabled', true);
+                            console.log('Got a nonce! You should submit this to your server.');
+                            console.log(payload.nonce);
+                            document.querySelector('input[name="BrainTreePayment.Nonce"]').value = payload.nonce;
+                        });
+
+                    }, false);
+
+                });
             });
 
-        }, false);
+            $('#paypalrow').show();
+            $('#creditcardrow').hide();
 
-    });
-});
+            $('#BrainTreePayment_PayeeAddressStreet1').rules('remove', 'required');
+            $('#BrainTreePayment_PayeeAddressCity').rules('remove', 'required');
+            $('#BrainTreePayment_PayeeAddressStateId').rules('remove', 'required');
+            $('#BrainTreePayment_PayeeAddressPostalCode').rules('remove', 'required');
+            break;
+        case '1':
+            braintree.client.create({
+                authorization: $('#clientToken').val()
+            },
+            function (err, clientInstance) {
+                // Creation of any other components...
 
-/*
-braintree.setup($('#clientToken').val(),
-    'custom',
-    {
-        id: 'applyForm',
-        onError: function (response) {
-            console.log('braintree onError: [type=' + response.type + '][message=' + response.message + ']');
-            $('option:not(:selected)').prop('disabled', false);
-            $('input[name="payment_method_nonce"]').val('');
-        },
-        onPaymentMethodReceived: function (response) {
-            // performed when submitting the form
-            console.log('braintree onPaymentMethodReceived: [nonce=' + response.nonce + '][type=' + response.type + '][details=' + response.details.cardType + ' -- ' + response.details.lastTwo + ']');
+                braintree.dataCollector.create({
+                    client: clientInstance,
+                    kount: true
+                },
+                function (err, dataCollectorInstance) {
+                    if (err) {
+                        // Handle error in creation of data collector
+                        return;
+                    }
+                    // At this point, you should access the dataCollectorInstance.deviceData value and provide it
+                    // to your server, e.g. by injecting it into your form as a hidden input.
+                    var deviceData = dataCollectorInstance.deviceData;
+                    $('#BrainTreePayment_DeviceData').val(deviceData);
+                });
 
-            if (response.details.cardType !== 'Unknown' && response.nonce !== '' && $('input[name="payment_method_nonce"]')) {
-                $('input[name="payment_method_nonce"]').val(response.nonce);
-
-                var isValid = $('#applyForm').valid();
-                if (isValid) {
-                    $.blockUI({
-                        css: {
-                            border: 'none',
-                            padding: '15px',
-                            backgroundColor: '#000',
-                            '-webkit-border-radius': '10px',
-                            '-moz-border-radius': '10px',
-                            opacity: .5,
-                            color: '#fff'
+                braintree.hostedFields.create({
+                    client: clientInstance,
+                    styles: {
+                        'input': {
+                            'font-size': '14pt'
+                        },
+                        'input.invalid': {
+                            'color': 'red'
+                        },
+                        'input.valid': {
+                            'color': 'green'
                         }
-                    });
-                    $('#applyForm').submit();
-                }
-            }
-            else if ($('input[name="payment_method_nonce"]')) {
-                $('input[name="payment_method_nonce"]').val('');
-            }
-        },
-        paypal: {
-            container: 'paypal-button',
-            singleUse: true,
-            amount: parseFloat($('#ApplicationFeeAmountReadOnly')),
-            currency: 'USD',
-            onSuccess: function (nonce, email) {
-                // This will be called as soon as the user completes the PayPal flow
-                console.log('paypal onSuccess');
-                $('option:not(:selected)').prop('disabled', true);
+                    },
+                    fields: {
+                        number: {
+                            selector: '#card-number',
+                            placeholder: '4111 1111 1111 1111'
+                        },
+                        cvv: {
+                            selector: '#cvv',
+                            placeholder: '123'
+                        },
+                        expirationDate: {
+                            selector: '#expiration-date',
+                            placeholder: '10 / 2019'
+                        }
+                    }
+                },
+                function (hostedFieldsErr, hostedFieldsInstance) {
+                    if (hostedFieldsErr) {
+                        // Handle error in Hosted Fields creation
+                        console.error('Hosted Fields Error', hostedFieldsErr);
+                        return;
+                    }
 
-                if (nonce !== '' && $('input[name="payment_method_nonce"]')) {
-                    $('input[name="payment_method_nonce"]').val(nonce);
-                }
-                // set paypal email to email address on form if one has not been provided already
-                if (email !== '' && $('input[name="Email"]').val() !== '') {
-                    $('input[name="Email"]').val(email);
-                }
-            },
-            onCancelled: function () {
-                console.log('paypal onCancelled');
-                $('option:not(:selected)').prop('disabled', false);
-                $('input[name="payment_method_nonce"]').val('');
-            },
-            onUnsupported: function () {
-                console.log('paypal onUnsupported');
-                $('option:not(:selected)').prop('disabled', false);
-                $('input[name="payment_method_nonce"]').val('');
-            }
-        }
-    });
+                    submitBtn.removeAttribute('disabled');
+                    globalHostedInstance = hostedFieldsInstance;
+                    isHostedInit = true;
+                    if (isPaypalInit) {
+                        isPaypalInit = false;
+                        globalPayPalInstance.teardown(function (teardownErr) {
+                            if (teardownErr) {
+                                console.error('Could not tear down Paypal Fields!', teardownErr);
+                            } else {
+                                console.info('Paypal Fields has been torn down!');
+                            }
+                        });
+                    }
 
-var env = $('#environment').val() === true ? BraintreeData.environments.production : BraintreeData.environments.sandbox;
-BraintreeData.setup($('#merchantId').valueOf(), 'applyForm', env);
-*/
+                    document.getElementById('applyForm').addEventListener('submit', function (event) {
+                        event.preventDefault();
+                        submitBtn.setAttribute('disabled', 'disabled');
+                        hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
+                            submitBtn.removeAttribute('disabled');
+                            if (tokenizeErr) {
+                                // Handle error in Hosted Fields tokenization
+                                switch (tokenizeErr.code) {
+                                    case 'HOSTED_FIELDS_FIELDS_EMPTY':
+                                        console.error('All fields are empty! Please fill out the form.');
+                                        break;
+                                    case 'HOSTED_FIELDS_FIELDS_INVALID':
+                                        console.error('Some fields are invalid:', tokenizeErr.details.invalidFieldKeys);
+                                        break;
+                                    case 'HOSTED_FIELDS_FAILED_TOKENIZATION':
+                                        console.error('Tokenization failed server side. Is the card valid?');
+                                        break;
+                                    case 'HOSTED_FIELDS_TOKENIZATION_NETWORK_ERROR':
+                                        console.error('Network error occurred when tokenizing.');
+                                        break;
+                                    default:
+                                        console.error('Something bad happened!', tokenizeErr);
+                                }
+                                return;
+                            }
+
+                            // Put `payload.nonce` into the `payment-method-nonce` input, and then
+                            // submit the form. Alternatively, you could send the nonce to your server
+                            // with AJAX.
+                            document.querySelector('input[name="BrainTreePayment.Nonce"]').value = payload.nonce;
+                            console.log('Got nonce:', payload.nonce);
+                            $('#applyForm').submit();
+                        });
+                    }, false);
+                });
+            });
+
+            $('#paypalrow').hide();
+            $('#creditcardrow').show();
+
+            $('#BrainTreePayment_PayeeAddressStreet1').rules("add", {
+                required: true,
+                messages: { required: "address street required" }
+            });
+            $('#BrainTreePayment_PayeeAddressCity').rules("add", {
+                required: true,
+                messages: { required: "address city required" }
+            });
+            $('#BrainTreePayment_PayeeAddressStateId').rules("add", {
+                required: true,
+                messages: { required: "address state required" }
+            });
+            $('#BrainTreePayment_PayeeAddressPostalCode').rules("add", {
+                required: true,
+                messages: { required: "address ZIP required" }
+            });
+            break;
+    }
+}
+
+$('select[name="BrainTreePayment.PaymentMethod"]').change(PaymentType);
+
+PaymentType();
+
 function PaymentType() {
     var paymentType = $('select[name="BrainTreePayment.PaymentMethod"]').val();
 
