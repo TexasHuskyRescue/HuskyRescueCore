@@ -1,4 +1,5 @@
 ﻿using HuskyRescueCore.Models.AdopterViewModels;
+using HuskyRescueCore.Models.RescueGroupViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

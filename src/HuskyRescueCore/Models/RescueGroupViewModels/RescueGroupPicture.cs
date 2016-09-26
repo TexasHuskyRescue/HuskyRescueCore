@@ -1,4 +1,4 @@
-﻿namespace HuskyRescueCore.Models.AdopterViewModels
+﻿namespace HuskyRescueCore.Models.RescueGroupViewModels
 {
     public class RescueGroupPicture
     {

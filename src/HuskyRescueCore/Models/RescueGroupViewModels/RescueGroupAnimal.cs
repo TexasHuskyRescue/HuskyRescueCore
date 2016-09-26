@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace HuskyRescueCore.Models.AdopterViewModels
+namespace HuskyRescueCore.Models.RescueGroupViewModels
 {
     public class RescueGroupAnimal
     {
@@ -8,6 +8,7 @@ namespace HuskyRescueCore.Models.AdopterViewModels
         {
             AnimalPictures = new List<RescueGroupPicture>();
         }
+        public string AnimalDescriptionText { get; set; }
 
         public string AnimalId { get; set; }
         public string AnimalAltered { get; set; }

@@ -2,6 +2,7 @@ using HuskyRescueCore.Data;
 using HuskyRescueCore.Helpers.PostRequestGet;
 using HuskyRescueCore.Models.AdopterViewModels;
 using HuskyRescueCore.Models.BrainTreeViewModels;
+using HuskyRescueCore.Models.RescueGroupViewModels;
 using HuskyRescueCore.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -25,9 +26,10 @@ namespace HuskyRescueCore.Controllers
         private readonly IBraintreePaymentService _paymentService;
         private readonly IFormSerivce _formService;
         private readonly ILogger<AdoptController> _logger;
+        private readonly IStorageService _storageService;
 
         public AdoptController(ApplicationDbContext context,
-            ISystemSettingService systemServices, IEmailSender emailService, IRescueGroupsService rescuegroupService, IBraintreePaymentService paymentService, IFormSerivce formService, ILogger<AdoptController> logger)
+            ISystemSettingService systemServices, IEmailSender emailService, IRescueGroupsService rescuegroupService, IBraintreePaymentService paymentService, IFormSerivce formService, ILogger<AdoptController> logger, IStorageService storageService)
         {
             _systemServices = systemServices;
             _emailService = emailService;
@@ -36,13 +38,14 @@ namespace HuskyRescueCore.Controllers
             _paymentService = paymentService;
             _formService = formService;
             _logger = logger;
+            _storageService = storageService;
         }
 
         public async Task<IActionResult> Index()
         {
             var huskies = await _rescuegroupService.GetAdoptableHuskiesAsync();
-
-            return View(new RescueGroupAnimals { Animals = huskies });
+            var model = new RescueGroupAnimals { Animals = huskies };
+            return View(model);
         }
 
         public IActionResult Process()
@@ -53,6 +56,7 @@ namespace HuskyRescueCore.Controllers
         [ImportModelState]
         public IActionResult Apply()
         {
+            _logger.LogInformation("Start Apply Get");
             var model = new ApplyToAdoptViewModel();
 
             model.AppAddressStateList = new List<SelectListItem>();
@@ -86,7 +90,7 @@ namespace HuskyRescueCore.Controllers
             ViewData.Add("environment", _systemServices.GetSetting("BraintreeIsProduction").Value);
             model.ApplicationFeeAmount = decimal.Parse(_systemServices.GetSetting("AdoptionApplicationFee").Value);
             #endregion
-
+            _logger.LogInformation("End Apply Get: {@model}", model);
             return View(model);
         }
 
@@ -502,7 +506,7 @@ namespace HuskyRescueCore.Controllers
                         #endregion
 
                         #region Generate PDF
-                        var generatedPdfPath = await _formService.CreateAdoptionApplicationPdf(dbApplicant);
+                        var newPdfFileName = await _formService.CreateAdoptionApplicationPdf(dbApplicant);
                         #endregion
 
                         #region Send Emails
@@ -517,14 +521,20 @@ namespace HuskyRescueCore.Controllers
                                 You're ${0} application fee will be applied towards your adoption fee if you are approved.
                                 The confirmation number for your application fee is {1}", model.ApplicationFeeAmount, model.BrainTreePayment.BraintreeTransactionId);
 
-                        var pdfContentBytes = System.IO.File.ReadAllBytes(generatedPdfPath);
+                        byte[] pdfContentBytes;
+
+                        using (var stream = new MemoryStream())
+                        {
+                            await _storageService.GetAppAdoption(newPdfFileName, stream);
+                            pdfContentBytes = stream.ToArray();
+                        }
 
                         var attachment = new PostmarkDotNet.PostmarkMessageAttachment
                         {
                             Content = Convert.ToBase64String(pdfContentBytes),
-                            ContentId = Path.GetFileName(generatedPdfPath),
+                            ContentId = Path.GetFileName(newPdfFileName),
                             ContentType = "application/pdf",
-                            Name = Path.GetFileName(generatedPdfPath)
+                            Name = Path.GetFileName(newPdfFileName)
                         };
 
                         var attachments = new List<PostmarkDotNet.PostmarkMessageAttachment> { attachment };

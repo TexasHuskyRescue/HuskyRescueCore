@@ -260,15 +260,15 @@ function UpdatePayeeList() {
     var inputName = $(this).prop('id');
     var playerNumber = parseInt(inputName.charAt(8));
 
-    var firstNameInput = $('#Attendee' + (playerNumber) + 'FirstName');
-    var lastNameInput = $('#Attendee' + (playerNumber) + 'LastName');
-    var AddressStreet1Input = $('#Attendee' + (playerNumber) + 'AddressStreet1');
-    var AddressCityInput = $('#Attendee' + (playerNumber) + 'AddressCity');
-    var AddressStateIdInput = $('#Attendee' + (playerNumber) + 'AddressStateId');
-    var AddressPostalCodeInput = $('#Attendee' + (playerNumber) + 'AddressPostalCode');
-    var EmailAddressInput = $('#Attendee' + (playerNumber) + 'EmailAddress');
-    var PhoneNumberInput = $('#Attendee' + (playerNumber) + 'PhoneNumber');
-    var TypeInput = $('#Attendee' + (playerNumber) + 'Type');
+    var firstNameInput = $('#Attendee' + playerNumber + 'FirstName');
+    var lastNameInput = $('#Attendee' + playerNumber + 'LastName');
+    var AddressStreet1Input = $('#Attendee' + playerNumber + 'AddressStreet1');
+    var AddressCityInput = $('#Attendee' + playerNumber + 'AddressCity');
+    var AddressStateIdInput = $('#Attendee' + playerNumber + 'AddressStateId');
+    var AddressPostalCodeInput = $('#Attendee' + playerNumber + 'AddressPostalCode');
+    var EmailAddressInput = $('#Attendee' + playerNumber + 'EmailAddress');
+    var PhoneNumberInput = $('#Attendee' + playerNumber + 'PhoneNumber');
+    var TypeInput = $('#Attendee' + playerNumber + 'Type');
 
     var playerListSelectOptions = $('#payeelist option');
 
@@ -444,9 +444,9 @@ function UpdateAmountDue() {
 
 // assign functions to events
 for (var i = 1; i <= 4; i++) {
-    var firstNameInput = $('#Attendee' + (i) + 'FirstName');
-    var lastNameInput = $('#Attendee' + (i) + 'LastName');
-    var attendeeType = $('input[name="Attendee' + (i) + 'Type"]:radio');
+    var firstNameInput = $('#Attendee' + i + 'FirstName');
+    var lastNameInput = $('#Attendee' + i + 'LastName');
+    var attendeeType = $('input[name="Attendee' + i + 'Type"]:radio');
     firstNameInput.on('change', UpdatePayeeList);
     lastNameInput.on('change', UpdatePayeeList);
     attendeeType.on('change', UpdateAmountDue);

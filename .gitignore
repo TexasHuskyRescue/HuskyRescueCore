@@ -4,8 +4,8 @@
 # settings files
 appsettings.Production.json
 log*.txt
-App_data/*
-
+App_data/
+App_data/*.pdf
 
 # User-specific files
 *.suo

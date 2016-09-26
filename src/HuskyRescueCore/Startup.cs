@@ -66,6 +66,7 @@ namespace HuskyRescueCore
             services.AddApplicationInsightsTelemetry(Configuration);
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IConfiguration>(c => { return Configuration; });
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -87,6 +88,7 @@ namespace HuskyRescueCore
             services.AddTransient<IBraintreePaymentService, BraintreePaymentService>();
             services.AddTransient<IRescueGroupsService, RescueGroupsService>();
             services.AddTransient<IFormSerivce, FormService>();
+            services.AddTransient<IStorageService, StorageService>();
 
             // TODO: figure out why azure will not ready the configuration for recaptha
             if (CurrentEnvironment.EnvironmentName == "Development")

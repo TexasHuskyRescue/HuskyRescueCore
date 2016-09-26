@@ -1,9 +1,6 @@
-﻿// Configure bundling and minification for the project.
-// More info at https://go.microsoft.com/fwlink/?LinkId=808241
 [
   {
     "outputFileName": "wwwroot/css/site.min.css",
-    // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
       "wwwroot/css/site.css"
     ]
@@ -13,12 +10,349 @@
     "inputFiles": [
       "wwwroot/js/site.js"
     ],
-    // Optionally specify minification options
     "minify": {
       "enabled": true,
       "renameLocals": true
-    },
-    // Optinally generate .map file
-    "sourceMap": false
+    }
+  },
+  {
+    "outputFileName": "wwwroot/js/Adopt-Index.min.js",
+    "inputFiles": [
+      "wwwroot/js/Adopt-Index.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/template.min.js",
+    "inputFiles": [
+      "wwwroot/js/template.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/Golf-Register.min.js",
+    "inputFiles": [
+      "wwwroot/js/Golf-Register.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/Donate-Index.min.js",
+    "inputFiles": [
+      "wwwroot/js/Donate-Index.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/Adopt-Apply.min.js",
+    "inputFiles": [
+      "wwwroot/js/Adopt-Apply.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/custom.min.js",
+    "inputFiles": [
+      "wwwroot/js/custom.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/plugins/SmoothScroll.min.js",
+    "inputFiles": [
+      "wwwroot/plugins/SmoothScroll.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/plugins/jquery.parallax-1.1.3.min.js",
+    "inputFiles": [
+      "wwwroot/plugins/jquery.parallax-1.1.3.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/plugins/jquery.countTo.min.js",
+    "inputFiles": [
+      "wwwroot/plugins/jquery.countTo.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/plugins/jquery.browser.min.js",
+    "inputFiles": [
+      "wwwroot/plugins/jquery.browser.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/coming.soon.config.min.js",
+    "inputFiles": [
+      "wwwroot/js/coming.soon.config.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/google.map.config.min.js",
+    "inputFiles": [
+      "wwwroot/js/google.map.config.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/bundles/layout1.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery/dist/jquery.js",
+      "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "wwwroot/plugins/modernizr.js",
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+      "wwwroot/lib/jquery-validation/dist/additional-methods.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/bundles/layout2.js",
+    "inputFiles": [
+      "wwwroot/lib/isotope/dist/isotope.pkgd.js",
+      "wwwroot/lib/magnific-popup/dist/jquery.magnific-popup.js",
+      "wwwroot/lib/waypoints/lib/jquery.waypoints.js",
+      "wwwroot/plugins/jquery.countTo.js",
+      "wwwroot/plugins/jquery.parallax-1.1.3.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/bundles/layout3.js",
+    "inputFiles": [
+      "wwwroot/plugins/morphext/morphext.js",
+      "wwwroot/lib/vide/dist/jquery.vide.js",
+      "wwwroot/lib/owl.carousel/dist/owl.carousel.js",
+      "wwwroot/plugins/jquery.browser.js",
+      "wwwroot/plugins/SmoothScroll.js",
+      "wwwroot/js/template.js",
+      "wwwroot/plugins/pace/pace.min.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/bundles/revolution-slider.js",
+    "inputFiles": [
+      "wwwroot/plugins/rs-plugin/js/jquery.themepunch.tools.min.js",
+      "wwwroot/plugins/rs-plugin/js/jquery.themepunch.revolution.js"
+    ]
+  },
+
+  {
+    "outputFileName": "wwwroot/css/animate.min.css",
+    "inputFiles": [
+      "wwwroot/css/animate.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/animations.min.css",
+    "inputFiles": [
+      "wwwroot/css/animations.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/custom.min.css",
+    "inputFiles": [
+      "wwwroot/css/custom.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/print-invoice.min.css",
+    "inputFiles": [
+      "wwwroot/css/print-invoice.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/style.min.css",
+    "inputFiles": [
+      "wwwroot/css/style.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/typography-default.min.css",
+    "inputFiles": [
+      "wwwroot/css/typography-default.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/typography-scheme-2.min.css",
+    "inputFiles": [
+      "wwwroot/css/typography-scheme-2.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/fonts/fontello/css/fontello.min.css",
+    "inputFiles": [
+      "wwwroot/fonts/fontello/css/fontello.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/fonts/fontello/css/fontello-codes.min.css",
+    "inputFiles": [
+      "wwwroot/fonts/fontello/css/fontello-codes.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/fonts/fontello/css/fontello-embedded.min.css",
+    "inputFiles": [
+      "wwwroot/fonts/fontello/css/fontello-embedded.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/fonts/fontello/css/fontello-ie7.min.css",
+    "inputFiles": [
+      "wwwroot/fonts/fontello/css/fontello-ie7.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/fonts/fontello/css/fontello-ie7-codes.min.css",
+    "inputFiles": [
+      "wwwroot/fonts/fontello/css/fontello-ie7-codes.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/fonts/fontello/css/animation.min.css",
+    "inputFiles": [
+      "wwwroot/fonts/fontello/css/animation.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/fonts/font-awesome/css/font-awesome.min.css",
+    "inputFiles": [
+      "wwwroot/fonts/font-awesome/css/font-awesome.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/skins/blue.min.css",
+    "inputFiles": [
+      "wwwroot/css/skins/blue.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/skins/brown.min.css",
+    "inputFiles": [
+      "wwwroot/css/skins/brown.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/skins/cool_green.min.css",
+    "inputFiles": [
+      "wwwroot/css/skins/cool_green.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/skins/dark_cyan.min.css",
+    "inputFiles": [
+      "wwwroot/css/skins/dark_cyan.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/skins/dark_red.min.css",
+    "inputFiles": [
+      "wwwroot/css/skins/dark_red.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/skins/gold.min.css",
+    "inputFiles": [
+      "wwwroot/css/skins/gold.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/skins/gray.min.css",
+    "inputFiles": [
+      "wwwroot/css/skins/gray.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/skins/green.min.css",
+    "inputFiles": [
+      "wwwroot/css/skins/green.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/skins/light_blue.min.css",
+    "inputFiles": [
+      "wwwroot/css/skins/light_blue.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/skins/orange.min.css",
+    "inputFiles": [
+      "wwwroot/css/skins/orange.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/skins/pink.min.css",
+    "inputFiles": [
+      "wwwroot/css/skins/pink.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/skins/purple.min.css",
+    "inputFiles": [
+      "wwwroot/css/skins/purple.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/skins/red.min.css",
+    "inputFiles": [
+      "wwwroot/css/skins/red.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/skins/vivid_red.min.css",
+    "inputFiles": [
+      "wwwroot/css/skins/vivid_red.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/magnific-popup/dist/magnific-popup.min.css",
+    "inputFiles": [
+      "wwwroot/lib/magnific-popup/dist/magnific-popup.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/plugins/rs-plugin/css/settings.min.css",
+    "inputFiles": [
+      "wwwroot/plugins/rs-plugin/css/settings.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/plugins/rs-plugin/css/settings-ie8.min.css",
+    "inputFiles": [
+      "wwwroot/plugins/rs-plugin/css/settings-ie8.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/hover/css/hover.min.css",
+    "inputFiles": [
+      "wwwroot/lib/hover/css/hover.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/plugins/morphext/morphext.min.css",
+    "inputFiles": [
+      "wwwroot/plugins/morphext/morphext.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/bundles/layout1.css",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+      "wwwroot/fonts/font-awesome/css/font-awesome.css",
+      "wwwroot/fonts/fontello/css/fontello.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/bundles/layout2.css",
+    "inputFiles": [
+      "wwwroot/lib/magnific-popup/dist/magnific-popup.css",
+      "wwwroot/plugins/rs-plugin/css/settings.css",
+      "wwwroot/css/animate.css",
+      "wwwroot/css/animations.css",
+      "wwwroot/lib/owl.carousel/dist/assets/owl.carousel.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/bundles/layout3.css",
+    "inputFiles": [
+      "wwwroot/lib/hover/css/hover.css",
+      "wwwroot/plugins/morphext/morphext.css",
+      "wwwroot/css/style.css",
+      "wwwroot/css/typography-default.css",
+      "wwwroot/css/skins/red.css",
+      "wwwroot/css/custom.css"
+    ]
   }
 ]

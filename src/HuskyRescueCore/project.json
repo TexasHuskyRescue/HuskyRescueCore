@@ -53,7 +53,8 @@
     "Serilog.Extensions.Logging": "1.2.0",
     "Serilog.Settings.Configuration": "2.1.0",
     "Serilog.Sinks.ApplicationInsights": "2.1.0",
-    "Serilog.Sinks.RollingFile": "3.0.1"
+    "Serilog.Sinks.RollingFile": "3.0.1",
+    "WindowsAzure.Storage": "7.2.1"
   },
 
   "tools": {
@@ -96,6 +97,7 @@
       "Views",
       "Areas/**/Views",
       "appsettings.json",
+      "appsettings.*.json",
       "web.config"
     ]
   },

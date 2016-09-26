@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using HuskyRescueCore.Models.AdopterViewModels;
+﻿using HuskyRescueCore.Models.RescueGroupViewModels;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Text;
-using System.IO;
-using Newtonsoft.Json.Linq;
-using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace HuskyRescueCore.Services
 {
@@ -150,6 +150,10 @@ namespace HuskyRescueCore.Services
                         AnimalSummarypublic = animal.Value.animalSummarypublic != null ? animal.Value.animalSummarypublic.Value : string.Empty,
                         AnimalThumbnailUrl = animal.Value.animalThumbnailUrl != null ? animal.Value.animalThumbnailUrl.Value : string.Empty
                     };
+
+                    var startIndex = a.AnimalDescription.IndexOf("<p>") + 3;
+                    var length = a.AnimalDescription.IndexOf("</p>") - startIndex;
+                    a.AnimalDescriptionText = a.AnimalDescription.Substring(startIndex, length).Replace("&nbsp;", " ");
 
                     foreach (var picture in animal.Value.animalPictures)
                     {

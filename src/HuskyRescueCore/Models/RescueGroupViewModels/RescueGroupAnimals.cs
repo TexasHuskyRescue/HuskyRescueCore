@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace HuskyRescueCore.Models.AdopterViewModels
+namespace HuskyRescueCore.Models.RescueGroupViewModels
 {
     public class RescueGroupAnimals
     {

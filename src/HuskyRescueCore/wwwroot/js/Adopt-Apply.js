@@ -252,25 +252,6 @@ $('select[name="BrainTreePayment.PaymentMethod"]').change(PaymentType);
 
 PaymentType();
 
-function PaymentType() {
-    var paymentType = $('select[name="BrainTreePayment.PaymentMethod"]').val();
-
-    switch (paymentType) {
-        case '0':
-            $('#paypalrow').show();
-            $('#creditcardrow').hide();
-            break;
-        case '1':
-            $('#paypalrow').hide();
-            $('#creditcardrow').show();
-            break;
-    }
-}
-
-$('select[name="BrainTreePayment.PaymentMethod"]').change(PaymentType);
-PaymentType();
-
-
 $('#IsAllAdultsAgreedOnAdoptionReason_div').hide();
 $('input[name="IsAllAdultsAgreedOnAdoption"]').click(function () {
     if ($('input[name="IsAllAdultsAgreedOnAdoption"]:checked').val() === 'true') {

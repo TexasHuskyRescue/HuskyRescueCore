@@ -57,3 +57,17 @@
     margin-right: 0px;
     margin-left: 0px;
 }
+
+/* ---- isotope ---- */
+
+.grid {
+  /*background: #EEE;*/
+  max-width: 1200px;
+}
+
+/* clear fix */
+.grid:after {
+  content: '';
+  display: block;
+  clear: both;
+}
