@@ -14,415 +14,339 @@
     <!-- Favicon -->
     <link rel="shortcut icon" href="~/images/favicon.ico">
     <!-- Web Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Raleway:700,400,300' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'>
-    <!-- Bootstrap core CSS -->
-    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome CSS -->
-    <link href="~/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <!-- Fontello CSS -->
-    <link href="~/fonts/fontello/css/fontello.css" rel="stylesheet">
-    <!-- Plugins -->
-    <link href="~/lib/magnific-popup/dist/magnific-popup.css" rel="stylesheet">
-    <link href="~/plugins/rs-plugin/css/settings.css" rel="stylesheet">
-    <link href="~/css/animations.css" rel="stylesheet">
-    <link href="~/lib/owl.carousel/dist/assets/owl.carousel.min.css" rel="stylesheet">
-    @*<link href="~/lib/owl.carousel/dist/assets/owl.transitions.css" rel="stylesheet">*@
-    <link href="~/lib/hover/css/hover-min.css" rel="stylesheet">
-    <link href="~/plugins/morphext/morphext.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Raleway:700,400,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'>
 
-    <!-- The Project's core CSS file -->
-    <link href="~/css/style.css" rel="stylesheet">
-    <!-- The Project's Typography CSS file, includes used fonts -->
-    <!-- Used font for body: Roboto -->
-    <!-- Used font for headings: Raleway -->
-    <link href="~/css/typography-default.css" rel="stylesheet">
-    <!-- Color Scheme (In order to change the color scheme, replace the blue.css with the color scheme that you prefer)-->
-    <link href="~/css/skins/red.css" rel="stylesheet">
+    @Html.Partial("_StylesheetsPartial")
 
-    <!-- Custom css -->
-    <link href="~/css/custom.css" rel="stylesheet">
+    @RenderSection("stylesheets", required: false)
 
     @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
 </head>
-    <!-- body classes:  -->
-    <!-- "boxed": boxed layout mode e.g. <body class="boxed"> -->
-    <!-- "pattern-1 ... pattern-9": background patterns for boxed layout mode e.g. <body class="boxed pattern-1"> -->
-    <!-- "transparent-header": makes the header transparent and pulls the banner to top -->
-    <!-- "gradient-background-header": applies gradient background to header -->
-    <!-- "page-loader-1 ... page-loader-6": add a page loader to the page (more info @@components-page-loaders.html) -->
-    <body class="no-trans front-page transparent-header boxed pattern-3">
-        <!-- scrollToTop -->
-        <!-- ================ -->
-        <div class="scrollToTop circle"><i class="icon-up-open-big"></i></div>
+<!-- body classes:  -->
+<!-- "boxed": boxed layout mode e.g. <body class="boxed"> -->
+<!-- "pattern-1 ... pattern-9": background patterns for boxed layout mode e.g. <body class="boxed pattern-1"> -->
+<!-- "transparent-header": makes the header transparent and pulls the banner to top -->
+<!-- "gradient-background-header": applies gradient background to header -->
+<!-- "page-loader-1 ... page-loader-6": add a page loader to the page (more info @@components-page-loaders.html) -->
+<body class="no-trans front-page transparent-header boxed pattern-3">
+    <!-- scrollToTop -->
+    <!-- ================ -->
+    <div class="scrollToTop circle"><i class="icon-up-open-big"></i></div>
 
-        <!-- page wrapper start -->
-        <!-- ================ -->
-        <div class="page-wrapper">
+    <!-- page wrapper start -->
+    <!-- ================ -->
+    <div class="page-wrapper">
 
-            <!-- header-container start -->
-            <div class="header-container">
-                <!-- header-top start -->
-                <!-- classes:  -->
-                <!-- "dark": dark version of header top e.g. class="header-top dark" -->
-                <!-- "colored": colored version of header top e.g. class="header-top colored" -->
-                <!-- ================ -->
-                <div class="header-top dark ">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-xs-2 col-sm-5">
-                                <!-- header-top-first start -->
-                                <!-- ================ -->
-                                <div class="header-top-first clearfix">
-                                    <ul class="social-links squaare small clearfix hidden-xs">
-                                        <li class="twitter"><a target="_blank" href="https://twitter.com/txhuskyrescue"><i class="fa fa-twitter"></i></a></li>
-                                        <li class="pinterest"><a target="_blank" href="http://pinterest.com/txhuskyrescue"><i class="fa fa-pinterest"></i></a></li>
-                                        <li class="googleplus"><a target="_blank" href="https://plus.google.com/112816597978592196487/posts"><i class="fa fa-google-plus"></i></a></li>
-                                        <li class="youtube"><a target="_blank" href="https://www.youtube.com/user/TxHR/videos"><i class="fa fa-youtube-play"></i></a></li>
-                                        <li class="facebook"><a target="_blank" href="https://www.facebook.com/TexasHuskyRescue"><i class="fa fa-facebook"></i></a></li>
-                                        <li class="instagram"><a target="_blank" href="https://www.instagram.com/txhuskyrescue/"><i class="fa fa-instagram"></i></a></li>
-                                    </ul>
-                                    <div class="social-links hidden-lg hidden-md hidden-sm circle small">
-                                        <div class="btn-group dropdown">
-                                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"><i class="fa fa-share-alt"></i></button>
-                                            <ul class="dropdown-menu dropdown-animation">
-                                                <li class="twitter"><a target="_blank" href="https://twitter.com/txhuskyrescue"><i class="fa fa-twitter"></i></a></li>
-                                                <li class="pinterest"><a target="_blank" href="http://pinterest.com/txhuskyrescue"><i class="fa fa-pinterest"></i></a></li>
-                                                <li class="googleplus"><a target="_blank" href="https://plus.google.com/112816597978592196487/posts"><i class="fa fa-google-plus"></i></a></li>
-                                                <li class="youtube"><a target="_blank" href="https://www.youtube.com/user/TxHR/videos"><i class="fa fa-youtube-play"></i></a></li>
-                                                <li class="facebook"><a target="_blank" href="https://www.facebook.com/TexasHuskyRescue"><i class="fa fa-facebook"></i></a></li>
-                                                <li class="instagram"><a target="_blank" href="https://www.instagram.com/txhuskyrescue/"><i class="fa fa-instagram"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- header-top-first end -->
-                            </div>
-                            <div class="col-xs-10 col-sm-7">
-                                <!-- header-top-second start -->
-                                <!-- ================ -->
-                                <div id="header-top-second" class="clearfix text-right">
-                                    <ul class="list-inline">
-                                        <li><i class="fa fa-phone pr-5 pl-10"></i>877-894-8759</li>
-                                        <li><i class="fa fa-envelope-square pr-5 pl-10"></i>PO Box 118891 Carrollton, TX 75007</li>
-                                        @*<li><i class="fa fa-envelope-o pr-5 pl-10"></i>contact@texashuskyrescue.org</li>*@
-                                    </ul>
-                                </div>
-                                <!-- header-top-second end -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- header-top end -->
-                <!-- header start -->
-                <!-- classes:  -->
-                <!-- "fixed": enables fixed navigation mode (sticky menu) e.g. class="header fixed clearfix" -->
-                <!-- "dark": dark version of header e.g. class="header dark clearfix" -->
-                <!-- "full-width": mandatory class for the full-width menu layout -->
-                <!-- "centered": mandatory class for the centered logo layout -->
-                <!-- ================ -->
-                <header class="header fixed clearfix">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-2 ">
-                                <!-- header-left start -->
-                                <!-- ================ -->
-                                <div class="header-left clearfix">
-                                    <!-- logo -->
-                                    <div id="logo" class="logo">
-                                        <a asp-area="" asp-controller="Home" asp-action="Index"><img id="logo_img" src="/images/logo.png" alt="Texas Husky Rescue"></a>
-                                    </div>
-                                    <!-- name-and-slogan -->
-                                    <div class="site-slogan">
-                                        Texas Husky Rescue
-                                    </div>
-                                </div>
-                                <!-- header-left end -->
-                            </div>
-                            <div class="col-md-10">
-
-                                <!-- header-right start -->
-                                <!-- ================ -->
-                                <div class="header-right clearfix">
-
-                                    <!-- main-navigation start -->
-                                    <!-- classes: -->
-                                    <!-- "onclick": Makes the dropdowns open on click, this the default bootstrap behavior e.g. class="main-navigation onclick" -->
-                                    <!-- "animated": Enables animations on dropdowns opening e.g. class="main-navigation animated" -->
-                                    <!-- "with-dropdown-buttons": Mandatory class that adds extra space, to the main navigation, for the search and cart dropdowns -->
-                                    <!-- ================ -->
-                                    <div class="main-navigation onclick animated with-dropdown-buttons">
-                                        <!-- navbar start -->
-                                        <!-- ================ -->
-                                        <nav class="navbar navbar-default" role="navigation">
-                                            <div class="container-fluid">
-                                                <!-- Toggle get grouped for better mobile display -->
-                                                <div class="navbar-header">
-                                                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
-                                                        <span class="sr-only">Toggle navigation</span>
-                                                        <span class="icon-bar"></span>
-                                                        <span class="icon-bar"></span>
-                                                        <span class="icon-bar"></span>
-                                                    </button>
-
-                                                </div>
-                                                <!-- Collect the nav links, forms, and other content for toggling -->
-                                                <div class="collapse navbar-collapse" id="navbar-collapse-1">
-                                                    <!-- main-menu -->
-                                                    <ul class="nav navbar-nav ">
-                                                        <!-- mega-menu start -->
-                                                        <li class="dropdown active">
-                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Adopt A Husky</a>
-                                                            <ul class="dropdown-menu">
-                                                                <li class="active"><a asp-area="" asp-controller="Adopt" asp-action="Index"><i class="icon-alert pr-10"></i>Huskies to Adopt</a></li>
-                                                                <li><a asp-area="" asp-controller="Adopt" asp-action="Process"><i class="icon-help pr-10"></i>Process to Adopt</a></li>
-                                                                <li><a asp-area="" asp-controller="Adopt" asp-action="Apply"><i class="icon-star pr-10"></i>Apply to Adopt</a></li>
-                                                            </ul>
-                                                        </li>
-                                                        <!-- mega-menu end -->
-                                                        <!-- mega-menu start -->
-                                                        <li class="dropdown">
-                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Support</a>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a asp-area="" asp-controller="Donate" asp-action="Index"><i class="icon-alert pr-10"></i>Donate</a></li>
-                                                                <li><a asp-area="" asp-controller="Donate" asp-action="Sponsors"><i class="icon-tools pr-10"></i>Sponsors</a></li>
-                                                                <li><a asp-area="" asp-controller="Donate" asp-action="Partners"><i class="icon-anchor pr-10"></i>Partners</a></li>
-                                                            </ul>
-                                                        </li>
-                                                        <!-- mega-menu end -->
-                                                        <!-- mega-menu start -->
-                                                        <li class="dropdown">
-                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Be Involved</a>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a asp-area="" asp-controller="Volunteer" asp-action="Index"><i class="icon-alert pr-10"></i>Ways to Help</a></li>
-                                                                <li><a asp-area="" asp-controller="Volunteer" asp-action="Apply"><i class="icon-alert pr-10"></i>Sign Up</a></li>
-                                                            </ul>
-                                                        </li>
-                                                        <!-- mega-menu end -->
-                                                        <!-- mega-menu start -->
-                                                        <li class="dropdown">
-                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Foster</a>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a asp-area="" asp-controller="Foster" asp-action="Index"><i class="icon-alert pr-10"></i>Huskies to Foster</a></li>
-                                                                <li><a asp-area="" asp-controller="Foster" asp-action="About"><i class="icon-help pr-10"></i>All About Fostering</a></li>
-                                                                <li><a asp-area="" asp-controller="Foster" asp-action="Apply"><i class="icon-star pr-10"></i>Apply to Foster</a></li>
-                                                            </ul>
-                                                        </li>
-                                                        <!-- mega-menu end -->
-                                                        <!-- mega-menu start -->
-                                                        <li class="dropdown">
-                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Golf 2016</a>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a asp-area="" asp-controller="Golf" asp-action="Index"><i class="icon-info pr-10"></i>Tournament Info</a></li>
-                                                                <li><a asp-area="" asp-controller="Golf" asp-action="Index"><i class="icon-up pr-10"></i>Sign Up</a></li>
-                                                                <li><a asp-area="" asp-controller="Golf" asp-action="Index"><i class="icon-tools pr-10"></i>Sponsors</a></li>
-                                                                <li><a asp-area="" asp-controller="Golf" asp-action="Index"><i class="icon-info-1 pr-10"></i>Sponsorships</a></li>
-                                                                <li><a asp-area="" asp-controller="Golf" asp-action="Index"><i class="icon-star pr-10"></i>Auction</a></li>
-                                                            </ul>
-                                                        </li>
-                                                        <!-- mega-menu end -->
-                                                        <!-- mega-menu start -->
-                                                        <li class="dropdown">
-                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">About</a>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a asp-area="" asp-controller="Home" asp-action="AboutUs"><i class="icon-alert pr-10"></i>TXHR</a></li>
-                                                                <li><a asp-area="" asp-controller="Home" asp-action="History"><i class="icon-help pr-10"></i>History</a></li>
-                                                                <li><a asp-area="" asp-controller="Home" asp-action="Reports"><i class="icon-star pr-10"></i>Reports</a></li>
-                                                            </ul>
-                                                        </li>
-                                                        <!-- mega-menu end -->
-                                                        <li class="menu">
-                                                            <a href="https://mkt.com/texashuskyrescue" target="_blank">Shop</a>
-                                                        </li>
-                                                    </ul>
-                                                    <!-- main-menu end -->
-                                                    <!-- header buttons -->
-                                                    <div class="header-dropdown-buttons">
-                                                        <a asp-area="" asp-controller="Home" asp-action="Contact" class="btn btn-sm hidden-xs btn-default">Contact <i class="fa fa-envelope-o pl-5"></i></a>
-                                                        <a asp-area="" asp-controller="Home" asp-action="Contact" class="btn btn-lg visible-xs btn-block btn-default">Contact <i class="fa fa-envelope-o pl-5"></i></a>
-
-                                                        <a asp-area="" asp-controller="Donate" asp-action="Index" class="btn btn-sm hidden-xs btn-success">Donate <i class="fa fa-dollar pl-5"></i></a>
-                                                        <a asp-area="" asp-controller="Donate" asp-action="Index" class="btn btn-lg visible-xs btn-block btn-success">Donate <i class="fa fa-dollar pl-5"></i></a>
-                                                    </div>
-                                                    <!-- header buttons end-->
-
-                                                </div>
-                                            </div>
-                                        </nav>
-                                        <!-- navbar end -->
-                                    </div>
-                                    <!-- main-navigation end -->
-                                </div>
-                                <!-- header-right end -->
-
-                            </div>
-                        </div>
-                    </div>
-
-                </header>
-                <!-- header end -->
-            </div>
-            <!-- header-container end -->
-            @RenderBody()
-
-            <!-- footer top start -->
+        <!-- header-container start -->
+        <div class="header-container">
+            <!-- header-top start -->
+            <!-- classes:  -->
+            <!-- "dark": dark version of header top e.g. class="header-top dark" -->
+            <!-- "colored": colored version of header top e.g. class="header-top colored" -->
             <!-- ================ -->
-            <div class="dark-bg   footer-top animated-text">
+            <div class="header-top dark ">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="call-to-action text-center">
-                                <div class="row">
-                                    <div class="col-sm-8">
-                                        <h2>Show Off Your Passion For Huskies</h2>
-                                        <h2>Support Texas Husky Rescue</h2>
+                        <div class="col-xs-2 col-sm-5">
+                            <!-- header-top-first start -->
+                            <!-- ================ -->
+                            <div class="header-top-first clearfix">
+                                <ul class="social-links squaare small clearfix hidden-xs">
+                                    <li class="twitter"><a target="_blank" href="https://twitter.com/txhuskyrescue"><i class="fa fa-twitter"></i></a></li>
+                                    <li class="pinterest"><a target="_blank" href="http://pinterest.com/txhuskyrescue"><i class="fa fa-pinterest"></i></a></li>
+                                    <li class="googleplus"><a target="_blank" href="https://plus.google.com/112816597978592196487/posts"><i class="fa fa-google-plus"></i></a></li>
+                                    <li class="youtube"><a target="_blank" href="https://www.youtube.com/user/TxHR/videos"><i class="fa fa-youtube-play"></i></a></li>
+                                    <li class="facebook"><a target="_blank" href="https://www.facebook.com/TexasHuskyRescue"><i class="fa fa-facebook"></i></a></li>
+                                    <li class="instagram"><a target="_blank" href="https://www.instagram.com/txhuskyrescue/"><i class="fa fa-instagram"></i></a></li>
+                                </ul>
+                                <div class="social-links hidden-lg hidden-md hidden-sm circle small">
+                                    <div class="btn-group dropdown">
+                                        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"><i class="fa fa-share-alt"></i></button>
+                                        <ul class="dropdown-menu dropdown-animation">
+                                            <li class="twitter"><a target="_blank" href="https://twitter.com/txhuskyrescue"><i class="fa fa-twitter"></i></a></li>
+                                            <li class="pinterest"><a target="_blank" href="http://pinterest.com/txhuskyrescue"><i class="fa fa-pinterest"></i></a></li>
+                                            <li class="googleplus"><a target="_blank" href="https://plus.google.com/112816597978592196487/posts"><i class="fa fa-google-plus"></i></a></li>
+                                            <li class="youtube"><a target="_blank" href="https://www.youtube.com/user/TxHR/videos"><i class="fa fa-youtube-play"></i></a></li>
+                                            <li class="facebook"><a target="_blank" href="https://www.facebook.com/TexasHuskyRescue"><i class="fa fa-facebook"></i></a></li>
+                                            <li class="instagram"><a target="_blank" href="https://www.instagram.com/txhuskyrescue/"><i class="fa fa-instagram"></i></a></li>
+                                        </ul>
                                     </div>
-                                    <div class="col-sm-4">
-                                        <p class="mt-10"><a href="https://mkt.com/texashuskyrescue" target="_blank" class="btn btn-animated btn-lg btn-gray-transparent ">Shop<i class="fa fa-cart-arrow-down pl-20"></i></a></p>
-                                    </div>
+                                </div>
+                            </div>
+                            <!-- header-top-first end -->
+                        </div>
+                        <div class="col-xs-10 col-sm-7">
+                            <!-- header-top-second start -->
+                            <!-- ================ -->
+                            <div id="header-top-second" class="clearfix text-right">
+                                <ul class="list-inline">
+                                    <li><i class="fa fa-phone pr-5 pl-10"></i>877-894-8759</li>
+                                    <li><i class="fa fa-envelope-square pr-5 pl-10"></i>PO Box 118891 Carrollton, TX 75007</li>
+                                    @*<li><i class="fa fa-envelope-o pr-5 pl-10"></i>contact@texashuskyrescue.org</li>*@
+                                </ul>
+                            </div>
+                            <!-- header-top-second end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- header-top end -->
+            <!-- header start -->
+            <!-- classes:  -->
+            <!-- "fixed": enables fixed navigation mode (sticky menu) e.g. class="header fixed clearfix" -->
+            <!-- "dark": dark version of header e.g. class="header dark clearfix" -->
+            <!-- "full-width": mandatory class for the full-width menu layout -->
+            <!-- "centered": mandatory class for the centered logo layout -->
+            <!-- ================ -->
+            <header class="header fixed clearfix">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-2 ">
+                            <!-- header-left start -->
+                            <!-- ================ -->
+                            <div class="header-left clearfix">
+                                <!-- logo -->
+                                <div id="logo" class="logo">
+                                    <a asp-area="" asp-controller="Home" asp-action="Index"><img id="logo_img" src="/images/logo.png" alt="Texas Husky Rescue"></a>
+                                </div>
+                                <!-- name-and-slogan -->
+                                <div class="site-slogan">
+                                    Texas Husky Rescue
+                                </div>
+                            </div>
+                            <!-- header-left end -->
+                        </div>
+                        <div class="col-md-10">
+
+                            <!-- header-right start -->
+                            <!-- ================ -->
+                            <div class="header-right clearfix">
+
+                                <!-- main-navigation start -->
+                                <!-- classes: -->
+                                <!-- "onclick": Makes the dropdowns open on click, this the default bootstrap behavior e.g. class="main-navigation onclick" -->
+                                <!-- "animated": Enables animations on dropdowns opening e.g. class="main-navigation animated" -->
+                                <!-- "with-dropdown-buttons": Mandatory class that adds extra space, to the main navigation, for the search and cart dropdowns -->
+                                <!-- ================ -->
+                                <div class="main-navigation onclick animated with-dropdown-buttons">
+                                    <!-- navbar start -->
+                                    <!-- ================ -->
+                                    <nav class="navbar navbar-default" role="navigation">
+                                        <div class="container-fluid">
+                                            <!-- Toggle get grouped for better mobile display -->
+                                            <div class="navbar-header">
+                                                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                                                    <span class="sr-only">Toggle navigation</span>
+                                                    <span class="icon-bar"></span>
+                                                    <span class="icon-bar"></span>
+                                                    <span class="icon-bar"></span>
+                                                </button>
+
+                                            </div>
+                                            <!-- Collect the nav links, forms, and other content for toggling -->
+                                            <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                                                <!-- main-menu -->
+                                                <ul class="nav navbar-nav ">
+                                                    <!-- mega-menu start -->
+                                                    <li class="dropdown active">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Adopt A Husky</a>
+                                                        <ul class="dropdown-menu">
+                                                            <li class="active"><a asp-area="" asp-controller="Adopt" asp-action="Index"><i class="icon-alert pr-10"></i>Huskies to Adopt</a></li>
+                                                            <li><a asp-area="" asp-controller="Adopt" asp-action="Process"><i class="icon-help pr-10"></i>Process to Adopt</a></li>
+                                                            <li><a asp-area="" asp-controller="Adopt" asp-action="Apply"><i class="icon-star pr-10"></i>Apply to Adopt</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <!-- mega-menu end -->
+                                                    <!-- mega-menu start -->
+                                                    <li class="dropdown">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Support</a>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a asp-area="" asp-controller="Donate" asp-action="Index"><i class="icon-alert pr-10"></i>Donate</a></li>
+                                                            <li><a asp-area="" asp-controller="Donate" asp-action="Sponsors"><i class="icon-tools pr-10"></i>Sponsors</a></li>
+                                                            <li><a asp-area="" asp-controller="Donate" asp-action="Partners"><i class="icon-anchor pr-10"></i>Partners</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <!-- mega-menu end -->
+                                                    <!-- mega-menu start -->
+                                                    <li class="dropdown">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Be Involved</a>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a asp-area="" asp-controller="Volunteer" asp-action="Index"><i class="icon-alert pr-10"></i>Ways to Help</a></li>
+                                                            <li><a asp-area="" asp-controller="Volunteer" asp-action="Apply"><i class="icon-alert pr-10"></i>Sign Up</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <!-- mega-menu end -->
+                                                    <!-- mega-menu start -->
+                                                    <li class="dropdown">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Foster</a>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a asp-area="" asp-controller="Foster" asp-action="Index"><i class="icon-alert pr-10"></i>Huskies to Foster</a></li>
+                                                            <li><a asp-area="" asp-controller="Foster" asp-action="About"><i class="icon-help pr-10"></i>All About Fostering</a></li>
+                                                            <li><a asp-area="" asp-controller="Foster" asp-action="Apply"><i class="icon-star pr-10"></i>Apply to Foster</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <!-- mega-menu end -->
+                                                    <!-- mega-menu start -->
+                                                    <li class="dropdown">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Golf 2016</a>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a asp-area="" asp-controller="Golf" asp-action="Index"><i class="icon-info pr-10"></i>Tournament Info</a></li>
+                                                            <li><a asp-area="" asp-controller="Golf" asp-action="Register"><i class="icon-up pr-10"></i>Sign Up</a></li>
+                                                            <li><a asp-area="" asp-controller="Golf" asp-action="Sponsors"><i class="icon-tools pr-10"></i>Sponsors</a></li>
+                                                            <li><a asp-area="" asp-controller="Golf" asp-action="Sponsorships"><i class="icon-info-1 pr-10"></i>Sponsorships</a></li>
+                                                            <li><a asp-area="" asp-controller="Golf" asp-action="RaffleAuction"><i class="icon-star pr-10"></i>Auction</a></li>
+                                                            <li><a asp-area="" asp-controller="Golf" asp-action="Support"><i class="icon-star pr-10"></i>Supporting TXHR</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <!-- mega-menu end -->
+                                                    <!-- mega-menu start -->
+                                                    <li class="dropdown">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">About</a>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a asp-area="" asp-controller="Home" asp-action="AboutUs"><i class="icon-alert pr-10"></i>TXHR</a></li>
+                                                            <li><a asp-area="" asp-controller="Home" asp-action="History"><i class="icon-help pr-10"></i>History</a></li>
+                                                            <li><a asp-area="" asp-controller="Home" asp-action="Reports"><i class="icon-star pr-10"></i>Reports</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <!-- mega-menu end -->
+                                                    <li class="menu">
+                                                        <a href="https://mkt.com/texashuskyrescue" target="_blank">Shop</a>
+                                                    </li>
+                                                </ul>
+                                                <!-- main-menu end -->
+                                                <!-- header buttons -->
+                                                <div class="header-dropdown-buttons">
+                                                    <a asp-area="" asp-controller="Home" asp-action="Contact" class="btn btn-sm hidden-xs btn-default">Contact <i class="fa fa-envelope-o pl-5"></i></a>
+                                                    <a asp-area="" asp-controller="Home" asp-action="Contact" class="btn btn-lg visible-xs btn-block btn-default">Contact <i class="fa fa-envelope-o pl-5"></i></a>
+
+                                                    <a asp-area="" asp-controller="Donate" asp-action="Index" class="btn btn-sm hidden-xs btn-success">Donate <i class="fa fa-dollar pl-5"></i></a>
+                                                    <a asp-area="" asp-controller="Donate" asp-action="Index" class="btn btn-lg visible-xs btn-block btn-success">Donate <i class="fa fa-dollar pl-5"></i></a>
+                                                </div>
+                                                <!-- header buttons end-->
+
+                                            </div>
+                                        </div>
+                                    </nav>
+                                    <!-- navbar end -->
+                                </div>
+                                <!-- main-navigation end -->
+                            </div>
+                            <!-- header-right end -->
+
+                        </div>
+                    </div>
+                </div>
+
+            </header>
+            <!-- header end -->
+        </div>
+        <!-- header-container end -->
+
+        @RenderBody()
+
+        <!-- footer top start -->
+        <!-- ================ -->
+        <div class="dark-bg   footer-top animated-text">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="call-to-action text-center">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <h2>Show Off Your Passion For Huskies</h2>
+                                    <h2>Support Texas Husky Rescue</h2>
+                                </div>
+                                <div class="col-sm-4">
+                                    <p class="mt-10"><a href="https://mkt.com/texashuskyrescue" target="_blank" class="btn btn-animated btn-lg btn-gray-transparent ">Shop<i class="fa fa-cart-arrow-down pl-20"></i></a></p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- footer top end -->
-            <!-- footer start (Add "dark" class to #footer in order to enable dark footer) -->
-            <!-- ================ -->
-            <footer id="footer" class="clearfix ">
-                <!-- .footer start -->
-                <!-- ================ -->
-                <div class="footer">
-                    <div class="container">
-                        <div class="footer-inner">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="footer-content">
-                                        <div class="logo-footer"><img id="logo-footer" src="/images/logo.png" alt=""></div>
-                                        <p>
-                                            Our mission is to rescue, rehabilitate, and find qualified loving homes for neglected, abused, and unwanted Huskies throughout Texas and beyond. To educate the public about responsible pet ownership and the special qualities of the Siberian Husky Breed.
-                                            <a asp-area="" asp-controller="Home" asp-action="AboutUs">Learn More<i class="fa fa-long-arrow-right pl-5"></i></a>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="footer-content">
-                                        <h2 class="title">Useful Links</h2>
-                                        <div class="separator-2"></div>
-                                        <nav>
-                                            <ul class="nav nav-pills nav-stacked">
-                                                <li><a asp-area="" asp-controller="Home" asp-action="Contact">Support</a></li>
-                                                <li><a asp-area="" asp-controller="Home" asp-action="Policies">Policies</a></li>
-                                                <li><a asp-area="" asp-controller="Home" asp-action="AboutUs">About TXHR</a></li>
-                                                <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="footer-content">
-                                        <h2 class="title">Subscribe</h2>
-                                        <div class="separator-2"></div>
-                                        <p>Stay on top of what&rsquo;s happening at Texas Husky Rescue.</p>
-                                        <p>Sign up to receive regular digital newsletters and announcements.</p>
-                                        <form asp-controller="Home" asp-action="EmailSignUp">
-                                            <div class="margin-clear form-group has-feedback">
-                                                <label class="sr-only" for="subscribe">Email address</label>
-                                                <input type="email" class="form-control" id="subscribe" placeholder="Enter email" name="subscribe" required="">
-                                                <i class="fa fa-envelope form-control-feedback"></i>
-                                            </div>
-                                            <div class="text-right">
-                                                <button type="submit" class="btn btn-default btn-md-link btn-animated">Submit<i class="fa fa-send"></i></button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- .footer end -->
-                <!-- .subfooter start -->
-                <!-- ================ -->
-                <div class="subfooter dark-bg">
-                    <div class="container">
-                        <div class="subfooter-inner">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <p class="text-center">Copyright © 2016 Texas Husky Rescue. All Rights Reserved</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- .subfooter end -->
-            </footer>
-            <!-- footer end -->
-
         </div>
-        <!-- page-wrapper end -->
-        <!-- JavaScript files placed at the end of the document so the pages load faster -->
-        <!-- ================================================== -->
-        <!-- Jquery and Bootstap core js files -->
-        <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-        <!-- Modernizr javascript -->
-        <script type="text/javascript" src="~/plugins/modernizr.js"></script>
-        <!-- jQuery Revolution Slider  -->
-        <script type="text/javascript" src="~/plugins/rs-plugin/js/jquery.themepunch.tools.min.js"></script>
-        <script type="text/javascript" src="~/plugins/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
-        <!-- Isotope javascript -->
-        <script type="text/javascript" src="~/lib/isotope/dist/isotope.pkgd.min.js"></script>
-        <!-- Magnific Popup javascript -->
-        <script type="text/javascript" src="~/lib/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
-        <!-- Appear javascript -->
-        <script type="text/javascript" src="~/lib/waypoints/lib/jquery.waypoints.min.js"></script>
-        <!-- Count To javascript -->
-        <script type="text/javascript" src="~/plugins/jquery.countTo.js"></script>
-        <!-- Parallax javascript -->
-        <script type="text/javascript" src="~/plugins/jquery.parallax-1.1.3.js"></script>
-        <!-- Contact form -->
-        <script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-        <script type="text/javascript" src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
-        <script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-        <!-- Morphext -->
-        <script type="text/javascript" src="~/plugins/morphext/morphext.min.js"></script>
-        <!-- Background Video -->
-        <script type="text/javascript" src="~/lib/vide/dist/jquery.vide.min.js"></script>
-        <!-- Owl carousel javascript -->
-        <script type="text/javascript" src="~/lib/owl.carousel/dist/owl.carousel.min.js"></script>
-        <!-- SmoothScroll javascript -->
-        <script type="text/javascript" src="~/plugins/jquery.browser.js"></script>
-        <script type="text/javascript" src="~/plugins/SmoothScroll.js"></script>
-        <!-- Initialization of Plugins -->
-        <script type="text/javascript" src="~/js/template.js"></script>
-        <!-- Pace javascript -->
-        <script type="text/javascript" src="~/plugins/pace/pace.min.js"></script>
+        <!-- footer top end -->
+        <!-- footer start (Add "dark" class to #footer in order to enable dark footer) -->
+        <!-- ================ -->
+        <footer id="footer" class="clearfix ">
+            <!-- .footer start -->
+            <!-- ================ -->
+            <div class="footer">
+                <div class="container">
+                    <div class="footer-inner">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="footer-content">
+                                    <div class="logo-footer"><img id="logo-footer" src="/images/logo.png" alt=""></div>
+                                    <p>
+                                        Our mission is to rescue, rehabilitate, and find qualified loving homes for neglected, abused, and unwanted Huskies throughout Texas and beyond. To educate the public about responsible pet ownership and the special qualities of the Siberian Husky Breed.
+                                        <a asp-area="" asp-controller="Home" asp-action="AboutUs">Learn More<i class="fa fa-long-arrow-right pl-5"></i></a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="footer-content">
+                                    <h2 class="title">Useful Links</h2>
+                                    <div class="separator-2"></div>
+                                    <nav>
+                                        <ul class="nav nav-pills nav-stacked">
+                                            <li><a asp-area="" asp-controller="Home" asp-action="Contact">Support</a></li>
+                                            <li><a asp-area="" asp-controller="Home" asp-action="Policies">Policies</a></li>
+                                            <li><a asp-area="" asp-controller="Home" asp-action="AboutUs">About TXHR</a></li>
+                                            <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="footer-content">
+                                    <h2 class="title">Subscribe</h2>
+                                    <div class="separator-2"></div>
+                                    <p>Stay on top of what&rsquo;s happening at Texas Husky Rescue.</p>
+                                    <p>Sign up to receive regular digital newsletters and announcements.</p>
+                                    <form asp-controller="Home" asp-action="EmailSignUp">
+                                        <div class="margin-clear form-group has-feedback">
+                                            <label class="sr-only" for="subscribe">Email address</label>
+                                            <input type="email" class="form-control" id="subscribe" placeholder="Enter email" name="subscribe" required="">
+                                            <i class="fa fa-envelope form-control-feedback"></i>
+                                        </div>
+                                        <div class="text-right">
+                                            <button type="submit" class="btn btn-default btn-md-link btn-animated">Submit<i class="fa fa-send"></i></button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- .footer end -->
+            <!-- .subfooter start -->
+            <!-- ================ -->
+            <div class="subfooter dark-bg">
+                <div class="container">
+                    <div class="subfooter-inner">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="text-center">Copyright © 2016 Texas Husky Rescue. All Rights Reserved</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- .subfooter end -->
+        </footer>
+        <!-- footer end -->
 
-        <recaptcha-script />
+    </div>
+    <!-- page-wrapper end -->
+    <!-- JavaScript files placed at the end of the document so the pages load faster -->
+    <!-- ================================================== -->
+    @Html.Partial("_ScriptsPartial")
 
-        <!-- Custom Scripts -->
-        <script type="text/javascript" src="~/js/custom.js"></script>
-
-        @*<environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>*@
-
-        @RenderSection("scripts", required: false)
-    </body>
+    @RenderSection("scripts", required: false)
+</body>
 </html>

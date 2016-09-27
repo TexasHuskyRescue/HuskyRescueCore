@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.WindowsAzure.Storage; // Namespace for CloudStorageAccount
-using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage types
+﻿using HuskyRescueCore.Models.SettingsModels;
 using Microsoft.Extensions.Configuration;
-using Microsoft.WindowsAzure.Storage.Auth;
-using System.IO;
-using HuskyRescueCore.Models.SettingsModels;
 using Microsoft.Extensions.Logging;
+using Microsoft.WindowsAzure.Storage; // Namespace for CloudStorageAccount
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage types
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace HuskyRescueCore.Services
 {
@@ -69,6 +67,17 @@ namespace HuskyRescueCore.Services
             CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileName);
 
             await blockBlob.DownloadToStreamAsync(stream);
+        }
+
+        public async Task<bool> IsAppAdoptionGenerated(string fileName)
+        {
+            _logger.LogInformation("StorageService.IsAppAdoptionGenerated {@fileName}", fileName);
+            // create the adoption app container
+            CloudBlobContainer container = CloudBlobClient.GetContainerReference(AzureSettings.AdoptionAppsContainer);
+
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileName);
+
+            return await blockBlob.ExistsAsync();
         }
     }
 }

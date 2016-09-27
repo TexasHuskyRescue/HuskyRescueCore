@@ -88,7 +88,7 @@ namespace HuskyRescueCore.Services
                             pdfFormFields.SetField("AppName", app.AppNameFirst + " " + app.AppNameLast);
                             pdfFormFields.SetField("AppSpouseName", app.AppSpouseNameFirst + " " + app.AppSpouseNameLast);
                             pdfFormFields.SetField("AppAddressStreet", app.AppAddressStreet1);
-                            var stateName = (await _context.States.SingleAsync(x => x.Id == app.AppAddressStateId)).Text;
+                            var stateName = (await _context.States.FirstAsync(x => x.Id == app.AppAddressStateId)).Text;
                             pdfFormFields.SetField("AppAddressCityStateZip", app.AppAddressCity + ", " + stateName + " " + app.AppAddressZIP);
                             pdfFormFields.SetField("AppHomePhone", app.AppHomePhone);
                             pdfFormFields.SetField("AppCellPhone", app.AppCellPhone);
@@ -98,9 +98,9 @@ namespace HuskyRescueCore.Services
                             pdfFormFields.SetField("DateSubmitted", DateTime.Today.ToString("d"));
                             pdfFormFields.SetField("IsAllAdultsAgreedOnAdoption", IsTrueFalse(app.IsAllAdultsAgreedOnAdoption)); //, saveAppearance);
                             pdfFormFields.SetField("IsAllAdultsAgreedOnAdoptionReason", app.IsAllAdultsAgreedOnAdoptionReason); //, saveAppearance);
-                            pdfFormFields.SetField("ResidenceOwnership", (await _context.ApplicationResidenceOwnershipType.SingleAsync(x => x.Id == app.ApplicationResidenceOwnershipTypeId)).Text);
+                            pdfFormFields.SetField("ResidenceOwnership", (await _context.ApplicationResidenceOwnershipType.FirstAsync(x => x.Id == app.ApplicationResidenceOwnershipTypeId)).Text);
 
-                            pdfFormFields.SetField("ResidenceType", (await _context.ApplicationResidenceType.SingleAsync(x => x.Id == app.ApplicationResidenceTypeId)).Text);
+                            pdfFormFields.SetField("ResidenceType", (await _context.ApplicationResidenceType.FirstAsync(x => x.Id == app.ApplicationResidenceTypeId)).Text);
 
 
                             if (app.ApplicationResidenceOwnershipTypeId.Equals(2))
@@ -116,7 +116,7 @@ namespace HuskyRescueCore.Services
                                         pdfFormFields.SetField("ResidencePetDepositAmount", app.ResidencePetDepositAmount.ToString());
                                         if (app.ApplicationResidencePetDepositCoverageTypeId.HasValue)
                                         {
-                                            pdfFormFields.SetField("ResidencePetDepositCoverage", (await _context.ApplicationResidencePetDepositCoverageType.SingleAsync(x => x.Id == app.ApplicationResidencePetDepositCoverageTypeId)).Text);
+                                            pdfFormFields.SetField("ResidencePetDepositCoverage", (await _context.ApplicationResidencePetDepositCoverageType.FirstAsync(x => x.Id == app.ApplicationResidencePetDepositCoverageTypeId)).Text);
                                         }
                                         pdfFormFields.SetField("ResidenceIsPetDepositPaid", IsTrueFalse(app.ResidenceIsPetDepositPaid)); //, saveAppearance);
                                     }
@@ -132,7 +132,7 @@ namespace HuskyRescueCore.Services
                                 pdfFormFields.SetField("IsAppOrSpouseStudent", IsTrueFalse(app.IsAppOrSpouseStudent)); //, saveAppearance);
                                 if (app.ApplicationStudentTypeId != null && app.IsAppOrSpouseStudent.Value)
                                 {
-                                    pdfFormFields.SetField("StudentType", (await _context.ApplicationStudentType.SingleAsync(x => x.Id == app.ApplicationStudentTypeId)).Text);
+                                    pdfFormFields.SetField("StudentType", (await _context.ApplicationStudentType.FirstAsync(x => x.Id == app.ApplicationStudentTypeId)).Text);
                                 }
                             }
                             pdfFormFields.SetField("IsAppTravelFrequent", IsTrueFalse(app.IsAppTravelFrequent)); //, saveAppearance);
@@ -202,25 +202,28 @@ namespace HuskyRescueCore.Services
                             pdfFormFields.SetField("Veterinarian.NameDr", app.VeterinarianDoctorName);
                             pdfFormFields.SetField("Veterinarian.PhoneNumber", app.VeterinarianPhoneNumber);
 
-                            foreach (var pet in app.ApplicationAppAnimals)
+                            if (app.ApplicationAppAnimals != null)
                             {
-                                var i = 1;
-                                if (!string.IsNullOrEmpty(pet.Name))
+                                foreach (var pet in app.ApplicationAppAnimals)
                                 {
-                                    pdfFormFields.SetField("AdopterAnimal.Name" + i, pet.Name);
-                                    pdfFormFields.SetField("AdopterAnimal.Breed" + i, pet.Breed);
-                                    pdfFormFields.SetField("AdopterAnimal.Gender" + i, pet.Sex);
-                                    pdfFormFields.SetField("AdopterAnimal.Age" + i, pet.Age);
-                                    pdfFormFields.SetField("AdopterAnimal.OwnershipLengthMonths" + i, pet.OwnershipLength);
-                                    pdfFormFields.SetField("AdopterAnimal.IsAltered" + i, IsTrueFalse(pet.IsAltered)); //, saveAppearance);
-                                    pdfFormFields.SetField("AdopterAnimal.AlteredReason" + i, pet.AlteredReason);
-                                    pdfFormFields.SetField("AdopterAnimal.IsHwPrevention" + i, IsTrueFalse(pet.IsHwPrevention)); //, saveAppearance);
-                                    pdfFormFields.SetField("AdopterAnimal.HwPreventionReason" + i, pet.HwPreventionReason);
-                                    pdfFormFields.SetField("AdopterAnimal.IsFullyVaccinated" + i, IsTrueFalse(pet.IsFullyVaccinated)); //, saveAppearance);
-                                    pdfFormFields.SetField("AdopterAnimal.FullyVaccinatedReason" + i, pet.FullyVaccinatedReason);
-                                    pdfFormFields.SetField("AdopterAnimal.IsStillOwned" + i, IsTrueFalse(pet.IsStillOwned)); //, saveAppearance);
-                                    pdfFormFields.SetField("AdopterAnimal.IsStillOwnedReason" + i, pet.IsStillOwnedReason);
-                                    i++;
+                                    var i = 1;
+                                    if (!string.IsNullOrEmpty(pet.Name))
+                                    {
+                                        pdfFormFields.SetField("AdopterAnimal.Name" + i, pet.Name);
+                                        pdfFormFields.SetField("AdopterAnimal.Breed" + i, pet.Breed);
+                                        pdfFormFields.SetField("AdopterAnimal.Gender" + i, pet.Sex);
+                                        pdfFormFields.SetField("AdopterAnimal.Age" + i, pet.Age);
+                                        pdfFormFields.SetField("AdopterAnimal.OwnershipLengthMonths" + i, pet.OwnershipLength);
+                                        pdfFormFields.SetField("AdopterAnimal.IsAltered" + i, IsTrueFalse(pet.IsAltered)); //, saveAppearance);
+                                        pdfFormFields.SetField("AdopterAnimal.AlteredReason" + i, pet.AlteredReason);
+                                        pdfFormFields.SetField("AdopterAnimal.IsHwPrevention" + i, IsTrueFalse(pet.IsHwPrevention)); //, saveAppearance);
+                                        pdfFormFields.SetField("AdopterAnimal.HwPreventionReason" + i, pet.HwPreventionReason);
+                                        pdfFormFields.SetField("AdopterAnimal.IsFullyVaccinated" + i, IsTrueFalse(pet.IsFullyVaccinated)); //, saveAppearance);
+                                        pdfFormFields.SetField("AdopterAnimal.FullyVaccinatedReason" + i, pet.FullyVaccinatedReason);
+                                        pdfFormFields.SetField("AdopterAnimal.IsStillOwned" + i, IsTrueFalse(pet.IsStillOwned)); //, saveAppearance);
+                                        pdfFormFields.SetField("AdopterAnimal.IsStillOwnedReason" + i, pet.IsStillOwnedReason);
+                                        i++;
+                                    }
                                 }
                             }
                         }

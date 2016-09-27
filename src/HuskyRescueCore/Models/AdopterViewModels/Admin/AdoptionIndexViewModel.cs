@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HuskyRescueCore.Models.AdopterViewModels
+namespace HuskyRescueCore.Models.AdopterViewModels.Admin
 {
-    public class AdoptionAppStatusViewModel
+    public class AdoptionIndexViewModel
     {
-        public List<ApplicationAdoption> apps;
+        public List<AdoptionListViewModel> apps;
         public SelectList appStatuses;
         public string appStatus { get; set; }
     }

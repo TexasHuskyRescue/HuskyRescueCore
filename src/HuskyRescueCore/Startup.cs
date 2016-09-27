@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -18,6 +16,7 @@ using PaulMiami.AspNetCore.Mvc.Recaptcha;
 using Microsoft.Extensions.Options;
 using Serilog;
 using Serilog.Events;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace HuskyRescueCore
 {
@@ -69,7 +68,8 @@ namespace HuskyRescueCore
             services.AddSingleton<IConfiguration>(c => { return Configuration; });
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                                    .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

@@ -8,5 +8,7 @@ namespace HuskyRescueCore.Services
         Task AddAppAdoption(MemoryStream inputStream, string fileName);
 
         Task GetAppAdoption(string fileName, Stream stream);
+
+        Task<bool> IsAppAdoptionGenerated(string fileName);
     }
 }
