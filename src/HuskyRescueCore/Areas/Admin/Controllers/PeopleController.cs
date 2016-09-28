@@ -34,7 +34,7 @@ namespace HuskyRescueCore.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var person = await _context.Person.SingleOrDefaultAsync(m => m.Id == id);
+            var person = await _context.Person.FirstAsync(m => m.Id == id);
             if (person == null)
             {
                 return NotFound();
@@ -74,7 +74,7 @@ namespace HuskyRescueCore.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var person = await _context.Person.SingleOrDefaultAsync(m => m.Id == id);
+            var person = await _context.Person.FirstAsync(m => m.Id == id);
             if (person == null)
             {
                 return NotFound();
@@ -125,7 +125,7 @@ namespace HuskyRescueCore.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var person = await _context.Person.SingleOrDefaultAsync(m => m.Id == id);
+            var person = await _context.Person.FirstAsync(m => m.Id == id);
             if (person == null)
             {
                 return NotFound();
@@ -139,7 +139,7 @@ namespace HuskyRescueCore.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var person = await _context.Person.SingleOrDefaultAsync(m => m.Id == id);
+            var person = await _context.Person.FirstAsync(m => m.Id == id);
             _context.Person.Remove(person);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");

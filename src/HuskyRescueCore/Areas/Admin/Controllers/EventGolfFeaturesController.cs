@@ -35,7 +35,7 @@ namespace HuskyRescueCore.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var eventGolfFeatures = await _context.EventGolfFeatures.SingleOrDefaultAsync(m => m.EventGolfId == id);
+            var eventGolfFeatures = await _context.EventGolfFeatures.FirstAsync(m => m.EventGolfId == id);
             if (eventGolfFeatures == null)
             {
                 return NotFound();
@@ -77,7 +77,7 @@ namespace HuskyRescueCore.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var eventGolfFeatures = await _context.EventGolfFeatures.SingleOrDefaultAsync(m => m.EventGolfId == id);
+            var eventGolfFeatures = await _context.EventGolfFeatures.FirstAsync(m => m.EventGolfId == id);
             if (eventGolfFeatures == null)
             {
                 return NotFound();
@@ -130,7 +130,7 @@ namespace HuskyRescueCore.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var eventGolfFeatures = await _context.EventGolfFeatures.SingleOrDefaultAsync(m => m.EventGolfId == id);
+            var eventGolfFeatures = await _context.EventGolfFeatures.FirstAsync(m => m.EventGolfId == id);
             if (eventGolfFeatures == null)
             {
                 return NotFound();
@@ -144,7 +144,7 @@ namespace HuskyRescueCore.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var eventGolfFeatures = await _context.EventGolfFeatures.SingleOrDefaultAsync(m => m.EventGolfId == id);
+            var eventGolfFeatures = await _context.EventGolfFeatures.FirstAsync(m => m.EventGolfId == id);
             _context.EventGolfFeatures.Remove(eventGolfFeatures);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");

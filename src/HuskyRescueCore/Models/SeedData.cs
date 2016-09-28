@@ -345,7 +345,7 @@ namespace HuskyRescueCore.Models
                     var golfEventId = Guid.NewGuid();
                     var businessId = Guid.NewGuid();
 
-                    var setting = context.SystemSetting.Single(s => s.Id == "GolfTournamentId");
+                    var setting = context.SystemSetting.First(s => s.Id == "GolfTournamentId");
                     setting.Value = golfEventId.ToString();
                     context.Update(setting);
 

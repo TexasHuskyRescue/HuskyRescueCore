@@ -40,7 +40,7 @@ namespace HuskyRescueCore.Services
         {
             var serviceResult = new ServiceResult();
 
-            var systemSetting = await _context.SystemSetting.SingleAsync(s => s.Id == key);
+            var systemSetting = await _context.SystemSetting.FirstAsync(s => s.Id == key);
 
             _context.Remove(systemSetting);
             serviceResult.DbChangeCount = await _context.SaveChangesAsync();
@@ -55,14 +55,14 @@ namespace HuskyRescueCore.Services
 
         public async Task<SystemSetting> GetSettingAsync(string key)
         {
-            var setting = await _context.SystemSetting.SingleAsync(p => p.Id == key);
+            var setting = await _context.SystemSetting.FirstAsync(p => p.Id == key);
 
             return setting;
         }
 
         public SystemSetting GetSetting(string key)
         {
-            var setting = _context.SystemSetting.Single(p => p.Id == key);
+            var setting = _context.SystemSetting.First(p => p.Id == key);
 
             return setting;
         }

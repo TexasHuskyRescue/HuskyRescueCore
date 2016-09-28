@@ -121,7 +121,7 @@ namespace HuskyRescueCore.Controllers
                         }
                         else
                         {
-                            var stateCode = _context.States.Single(p => p.Id == model.BrainTreePayment.PayeeAddressStateId).Code;
+                            var stateCode = _context.States.First(p => p.Id == model.BrainTreePayment.PayeeAddressStateId).Code;
 
                             paymentRequestResult = _paymentService.SendPayment(model.TotalAmountDue,
                                                     model.BrainTreePayment.Nonce,

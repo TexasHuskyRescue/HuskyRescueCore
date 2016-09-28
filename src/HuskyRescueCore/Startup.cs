@@ -245,8 +245,8 @@ namespace HuskyRescueCore
                 var provider = scope.ServiceProvider;
                 using (var dbContext = provider.GetRequiredService<ApplicationDbContext>())
                 {
-                    options.SiteKey = dbContext.SystemSetting.Single(p => p.Id == "RecaptchaPublicKey").Value;
-                    options.SecretKey = dbContext.SystemSetting.Single(p => p.Id == "RecaptchaPrivateKey").Value;
+                    options.SiteKey = dbContext.SystemSetting.First(p => p.Id == "RecaptchaPublicKey").Value;
+                    options.SecretKey = dbContext.SystemSetting.First(p => p.Id == "RecaptchaPrivateKey").Value;
                     options.ValidationMessage = "Are you a robot?";
                 }
             }

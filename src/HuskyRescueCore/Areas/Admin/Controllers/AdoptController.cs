@@ -164,7 +164,7 @@ namespace HuskyRescueCore.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var ApplicationAdoption = await _context.ApplicationAdoption.SingleOrDefaultAsync(m => m.Id == id);
+            var ApplicationAdoption = await _context.ApplicationAdoption.FirstAsync(m => m.Id == id);
             if (ApplicationAdoption == null)
             {
                 return NotFound();
@@ -205,7 +205,7 @@ namespace HuskyRescueCore.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var ApplicationAdoption = await _context.ApplicationAdoption.SingleOrDefaultAsync(m => m.Id == id);
+            var ApplicationAdoption = await _context.ApplicationAdoption.FirstAsync(m => m.Id == id);
             if (ApplicationAdoption == null)
             {
                 return NotFound();
@@ -256,7 +256,7 @@ namespace HuskyRescueCore.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var ApplicationAdoption = await _context.ApplicationAdoption.SingleOrDefaultAsync(m => m.Id == id);
+            var ApplicationAdoption = await _context.ApplicationAdoption.FirstAsync(m => m.Id == id);
             if (ApplicationAdoption == null)
             {
                 return NotFound();
@@ -270,7 +270,7 @@ namespace HuskyRescueCore.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var ApplicationAdoption = await _context.ApplicationAdoption.SingleOrDefaultAsync(m => m.Id == id);
+            var ApplicationAdoption = await _context.ApplicationAdoption.FirstAsync(m => m.Id == id);
             _context.ApplicationAdoption.Remove(ApplicationAdoption);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
