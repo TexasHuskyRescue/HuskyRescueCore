@@ -75,6 +75,7 @@ namespace HuskyRescueCore.Services
                             "animalOKWithCats",
                             "animalOKWithDogs",
                             "animalOKWithKids",
+                            "animalOthernames",
                             "animalPictures",
                             "animalRescueID",
                             "animalSex",
@@ -139,6 +140,7 @@ namespace HuskyRescueCore.Services
                         AnimalOkWithCats = animal.Value.animalOKWithCats != null ? animal.Value.animalOKWithCats.Value : string.Empty,
                         AnimalOkWithDogs = animal.Value.animalOKWithDogs != null ? animal.Value.animalOKWithDogs.Value : string.Empty,
                         AnimalOkWithKids = animal.Value.animalOKWithKids != null ? animal.Value.animalOKWithKids.Value : string.Empty,
+                        AnimalOthernames = animal.Value.animalOthernames != null ? animal.Value.animalOthernames.Value : string.Empty,
                         AnimalOrgId = animal.Value.animalOrgID != null ? animal.Value.animalOrgID.Value : string.Empty,
                         AnimalRescueId = animal.Value.animalRescueID != null ? animal.Value.animalRescueID.Value : string.Empty,
                         AnimalSex = animal.Value.animalSex != null ? animal.Value.animalSex.Value : string.Empty,
@@ -149,7 +151,7 @@ namespace HuskyRescueCore.Services
                         AnimalThumbnailUrl = animal.Value.animalThumbnailUrl != null ? animal.Value.animalThumbnailUrl.Value : string.Empty
                     };
 
-                    var startIndex = a.AnimalDescription.IndexOf("<p") + 3;
+                    var startIndex = a.AnimalDescription.IndexOf("<p>") + 3;
                     var length = a.AnimalDescription.IndexOf("</p>") - startIndex;
                     a.AnimalDescriptionText = a.AnimalDescription.Substring(startIndex, length).Replace("&nbsp;", " ");
 
@@ -257,6 +259,7 @@ namespace HuskyRescueCore.Services
                             "animalOKWithCats",
                             "animalOKWithDogs",
                             "animalOKWithKids",
+                            "animalOthernames",
                             "animalPictures",
                             "animalRescueID",
                             "animalSex",
@@ -342,6 +345,7 @@ namespace HuskyRescueCore.Services
                     AnimalOkWithCats = animal.Value.animalOKWithCats != null ? animal.Value.animalOKWithCats.Value : string.Empty,
                     AnimalOkWithDogs = animal.Value.animalOKWithDogs != null ? animal.Value.animalOKWithDogs.Value : string.Empty,
                     AnimalOkWithKids = animal.Value.animalOKWithKids != null ? animal.Value.animalOKWithKids.Value : string.Empty,
+                    AnimalOthernames = animal.Value.animalOthernames != null ? animal.Value.animalOthernames.Value : string.Empty,
                     AnimalOrgId = animal.Value.animalOrgID != null ? animal.Value.animalOrgID.Value : string.Empty,
                     AnimalRescueId = animal.Value.animalRescueID != null ? animal.Value.animalRescueID.Value : string.Empty,
                     AnimalSex = animal.Value.animalSex != null ? animal.Value.animalSex.Value : string.Empty,
@@ -431,6 +435,7 @@ namespace HuskyRescueCore.Services
                             "animalOKWithCats",
                             "animalOKWithDogs",
                             "animalOKWithKids",
+                            "animalOthernames",
                             "animalPictures",
                             "animalRescueID",
                             "animalSex",

@@ -31,6 +31,7 @@ namespace HuskyRescueCore.Models.RescueGroupViewModels
         public string AnimalOkWithDogs { get; set; }
         public string AnimalOkWithKids { get; set; }
         public string AnimalOrgId { get; set; }
+        public string AnimalOthernames { get; set; }
         public string AnimalRescueId { get; set; }
         public string AnimalSex { get; set; }
         public string AnimalSpecialneeds { get; set; }
