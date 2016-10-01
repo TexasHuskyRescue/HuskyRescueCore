@@ -1,4 +1,5 @@
-﻿if ($('.isotope-animals').length > 0) {
+﻿$(document).ready(function () {
+if ($('.isotope-animals').length > 0) {
     $(window).load(function () {
         // store filter for each group
         var filters = {};
@@ -30,3 +31,5 @@
         });
     });
 }
+});
+
