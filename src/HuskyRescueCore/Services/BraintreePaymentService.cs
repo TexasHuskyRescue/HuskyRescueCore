@@ -168,7 +168,7 @@ namespace HuskyRescueCore.Services
                     serviceResult.NewKey = result.Target.Id;
                     var transTarget = result.Target;
                     if (transTarget.PaymentInstrumentType == PaymentInstrumentType.CREDIT_CARD)
-                    {
+                    {////
                     }
                     if (transTarget.PaymentInstrumentType == PaymentInstrumentType.PAYPAL_ACCOUNT)
                     {

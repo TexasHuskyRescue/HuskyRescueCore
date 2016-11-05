@@ -53,7 +53,7 @@ namespace HuskyRescueCore.Models
                 if (!context.ApplicationResidenceOwnershipType.Any())
                 {
                     context.ApplicationResidenceOwnershipType.AddRange(
-                        new Types.ApplicationResidenceOwnershipType { Id = 0, Text = "", Code = "0" },
+                        new Types.ApplicationResidenceOwnershipType { Id = 0, Text = "", Code = "" },
                         new Types.ApplicationResidenceOwnershipType { Id = 1, Text = "Own", Code = "1" },
                         new Types.ApplicationResidenceOwnershipType { Id = 2, Text = "Rent", Code = "2" }
                         );
@@ -63,7 +63,7 @@ namespace HuskyRescueCore.Models
                 if (!context.ApplicationResidencePetDepositCoverageType.Any())
                 {
                     context.ApplicationResidencePetDepositCoverageType.AddRange(
-                        new Types.ApplicationResidencePetDepositCoverageType { Id = 0, Text = "", Code = "0" },
+                        new Types.ApplicationResidencePetDepositCoverageType { Id = 0, Text = "", Code = "" },
                         new Types.ApplicationResidencePetDepositCoverageType { Id = 1, Text = "per pet", Code = "1" },
                         new Types.ApplicationResidencePetDepositCoverageType { Id = 2, Text = "per household", Code = "2" }
                         );
@@ -73,7 +73,7 @@ namespace HuskyRescueCore.Models
                 if (!context.ApplicationResidenceType.Any())
                 {
                     context.ApplicationResidenceType.AddRange(
-                        new Types.ApplicationResidenceType { Id = 0, Text = "", Code = "0" },
+                        new Types.ApplicationResidenceType { Id = 0, Text = "", Code = "" },
                         new Types.ApplicationResidenceType { Id = 1, Text = "House", Code = "1" },
                         new Types.ApplicationResidenceType { Id = 2, Text = "Apartment", Code = "2" },
                         new Types.ApplicationResidenceType { Id = 3, Text = "Mobile Home", Code = "3" },
@@ -86,7 +86,7 @@ namespace HuskyRescueCore.Models
                 if (!context.ApplicationStudentType.Any())
                 {
                     context.ApplicationStudentType.AddRange(
-                        new Types.ApplicationStudentType { Id = 0, Text = "", Code = "0" },
+                        new Types.ApplicationStudentType { Id = 0, Text = "", Code = "" },
                         new Types.ApplicationStudentType { Id = 1, Text = "Full Time", Code = "1" },
                         new Types.ApplicationStudentType { Id = 2, Text = "Part Time", Code = "2" }
                         );

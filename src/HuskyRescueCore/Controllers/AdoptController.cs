@@ -1,7 +1,12 @@
+//using Contentful.NET;
+//using Contentful.NET.DataModels;
+//using Contentful.NET.Search;
+//using Contentful.NET.Search.Filters;
 using HuskyRescueCore.Data;
 using HuskyRescueCore.Helpers.PostRequestGet;
 using HuskyRescueCore.Models.AdopterViewModels;
 using HuskyRescueCore.Models.BrainTreeViewModels;
+//using HuskyRescueCore.Models.Content.Adopt;
 using HuskyRescueCore.Models.RescueGroupViewModels;
 using HuskyRescueCore.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HuskyRescueCore.Controllers
@@ -27,9 +33,16 @@ namespace HuskyRescueCore.Controllers
         private readonly IFormSerivce _formService;
         private readonly ILogger<AdoptController> _logger;
         private readonly IStorageService _storageService;
+        //private readonly IContentfulClient _contentfulClient;
+
+        private string contentDeliveryApi = "1500acf09a4cde7de8884b0027b6f20a99200f97b2096259e9c0d39f554ab821";
+        private string contentPreviewApi = "d194884e8215d8be121dd9f0d931b855d13c93a4b909d9ff28b13020a080f74e";
+        private string spaceId = "jf2qd27ic77e";
+        private string adoptProcessId = "adoptProcess";
 
         public AdoptController(ApplicationDbContext context,
-            ISystemSettingService systemServices, IEmailSender emailService, IRescueGroupsService rescuegroupService, IBraintreePaymentService paymentService, IFormSerivce formService, ILogger<AdoptController> logger, IStorageService storageService)
+            ISystemSettingService systemServices, IEmailSender emailService, IRescueGroupsService rescuegroupService, IBraintreePaymentService paymentService, 
+            IFormSerivce formService, ILogger<AdoptController> logger, IStorageService storageService)//, IContentfulClient contentfulClient)
         {
             _systemServices = systemServices;
             _emailService = emailService;
@@ -39,6 +52,7 @@ namespace HuskyRescueCore.Controllers
             _formService = formService;
             _logger = logger;
             _storageService = storageService;
+            //_contentfulClient = contentfulClient;
         }
 
         public async Task<IActionResult> Index()
@@ -50,6 +64,56 @@ namespace HuskyRescueCore.Controllers
 
         public IActionResult Process()
         {
+            //CancellationToken cancellationToken = HttpContext?.RequestAborted ?? CancellationToken.None;
+
+            //var results = await _contentfulClient.SearchAsync<Entry>(cancellationToken, new ISearchFilter[]
+            //{
+            //    new EqualitySearchFilter(BuiltInProperties.ContentType, "adoptProcess")
+            //},
+            //includeLevels: 1 // Ensure we retrieve the linked assets inside this one request - we want to get the Images for the dogs too
+            //);
+
+            ////var results = await _contentfulClient.GetAsync<Entry>(cancellationToken, "5LhgWGQbO8owM2ckGwoagQ"); //Adopt Process
+            //ViewBag.Criteria = adoptProcessId;
+            ////return View("All", GetAllDogsFromContentfulResult(results));
+
+
+            //var result = results.Items;
+                    // Retrieve the ImageId from the linked 'mainPicture' asset
+                    // NOTE: We could merge all of these Select() statements into one, but this way we only have to call dog.GetLink() and dog.GetString()
+                    //       once, which improves performance.
+                    //.Select(leftImg => new
+                    //{
+                    //    leftImg.SystemProperties.Id,
+                    //    ImageId = leftImg.GetLink("leftTopImage").SystemProperties.Id,
+                    //    Type = leftImg.GetString("dogType")
+                    //})
+                    //.Select(rightImg => new
+                    //{
+                    //    rightImg.SystemProperties.Id,
+                    //    ImageId = rightImg.GetLink("rightTopImage").SystemProperties.Id,
+                    //    Type = rightImg.GetString("dogType")
+                    //})
+                    //// Now find the included 'Asset' details from the corresponding ImageId
+                    //.Select(dog => new
+                    //{
+                    //    dog.Id,
+                    //    ImageUrl =
+                    //        results.Includes.Assets.First(asset => asset.SystemProperties.Id == dog.ImageId)
+                    //            .Details.File.Url,
+                    //    dog.Type
+                    //})
+                    //// Now we map our calculated data to our model
+                    //.Select(dog => new DogItem
+                    //{
+                    //    Id = dog.Id,
+                    //    LargeImageUrl =
+                    //        ImageHelper.GetResizedImageUrl(dog.ImageUrl, 500, 500, ImageHelper.ImageType.Jpg, 75),
+                    //    ThumbnailImageUrl =
+                    //        ImageHelper.GetResizedImageUrl(dog.ImageUrl, 150, 150, ImageHelper.ImageType.Png),
+                    //    Type = dog.Type
+                    //});
+
             return View();
         }
 
@@ -66,18 +130,22 @@ namespace HuskyRescueCore.Controllers
 
             model.ResidenceOwnershipList = new List<SelectListItem>();
             var ownershipTypes = _context.ApplicationResidenceOwnershipType.ToList();
+            foreach (var item in ownershipTypes.Where(w => w.Code == "0")) { item.Code = string.Empty; }
             model.ResidenceOwnershipList = (ownershipTypes.Select(i => new SelectListItem { Text = i.Text, Value = i.Code })).AsEnumerable();
 
             model.ResidencePetDepositCoverageList = new List<SelectListItem>();
             var coverageTypes = _context.ApplicationResidencePetDepositCoverageType.ToList();
+            foreach (var item in coverageTypes.Where(w => w.Code == "0")) { item.Code = string.Empty; }
             model.ResidencePetDepositCoverageList = (coverageTypes.Select(i => new SelectListItem { Text = i.Text, Value = i.Code })).AsEnumerable();
 
             model.ResidenceTypeList = new List<SelectListItem>();
             var residenceTypes = _context.ApplicationResidenceType.ToList();
+            foreach (var item in residenceTypes.Where(w => w.Code == "0")) { item.Code = string.Empty; }
             model.ResidenceTypeList = (residenceTypes.Select(i => new SelectListItem { Text = i.Text, Value = i.Code })).AsEnumerable();
 
             model.StudentTypeList = new List<SelectListItem>();
             var studentTypes = _context.ApplicationStudentType.ToList();
+            foreach (var item in studentTypes.Where(w => w.Code == "0")) { item.Code = string.Empty; }
             model.StudentTypeList = (studentTypes.Select(i => new SelectListItem { Text = i.Text, Value = i.Code })).AsEnumerable();
 
             model.AppDateBirth = DateTime.Now.AddYears(-21);
@@ -126,13 +194,12 @@ namespace HuskyRescueCore.Controllers
                         #region Process Payment
                         var paymentMethod = (Models.BrainTreeViewModels.PaymentTypeEnum)Enum.Parse(typeof(Models.BrainTreeViewModels.PaymentTypeEnum), model.BrainTreePayment.PaymentMethod);
                         var phone = string.IsNullOrEmpty(model.AppCellPhone) ? model.AppHomePhone : model.AppCellPhone;
-                        var paymentResult = new ServiceResult();
 
                         var paymentRequestResult = new ServiceResult();
 
                         if (paymentMethod == PaymentTypeEnum.Paypal)
                         {
-                            paymentResult = _paymentService.SendPayment(model.ApplicationFeeAmount,
+                            paymentRequestResult = _paymentService.SendPayment(model.ApplicationFeeAmount,
                                                     model.BrainTreePayment.Nonce,
                                                     true,
                                                     paymentMethod,

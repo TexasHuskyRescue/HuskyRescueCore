@@ -98,9 +98,9 @@ namespace HuskyRescueCore.Services
                             pdfFormFields.SetField("DateSubmitted", DateTime.Today.ToString("d"));
                             pdfFormFields.SetField("IsAllAdultsAgreedOnAdoption", IsTrueFalse(app.IsAllAdultsAgreedOnAdoption)); //, saveAppearance);
                             pdfFormFields.SetField("IsAllAdultsAgreedOnAdoptionReason", app.IsAllAdultsAgreedOnAdoptionReason); //, saveAppearance);
-                            pdfFormFields.SetField("ResidenceOwnership", (await _context.ApplicationResidenceOwnershipType.FirstAsync(x => x.Id == app.ApplicationResidenceOwnershipTypeId)).Text);
+                            pdfFormFields.SetField("ResidenceOwnership", (await _context.ApplicationResidenceOwnershipType.FirstAsync(x => x.Id == app.ApplicationResidenceOwnershipTypeId)).Code);
 
-                            pdfFormFields.SetField("ResidenceType", (await _context.ApplicationResidenceType.FirstAsync(x => x.Id == app.ApplicationResidenceTypeId)).Text);
+                            pdfFormFields.SetField("ResidenceType", (await _context.ApplicationResidenceType.FirstAsync(x => x.Id == app.ApplicationResidenceTypeId)).Code);
 
 
                             if (app.ApplicationResidenceOwnershipTypeId.Equals(2))
@@ -116,7 +116,7 @@ namespace HuskyRescueCore.Services
                                         pdfFormFields.SetField("ResidencePetDepositAmount", app.ResidencePetDepositAmount.ToString());
                                         if (app.ApplicationResidencePetDepositCoverageTypeId.HasValue)
                                         {
-                                            pdfFormFields.SetField("ResidencePetDepositCoverage", (await _context.ApplicationResidencePetDepositCoverageType.FirstAsync(x => x.Id == app.ApplicationResidencePetDepositCoverageTypeId)).Text);
+                                            pdfFormFields.SetField("ResidencePetDepositCoverage", (await _context.ApplicationResidencePetDepositCoverageType.FirstAsync(x => x.Id == app.ApplicationResidencePetDepositCoverageTypeId)).Code);
                                         }
                                         pdfFormFields.SetField("ResidenceIsPetDepositPaid", IsTrueFalse(app.ResidenceIsPetDepositPaid)); //, saveAppearance);
                                     }
@@ -132,7 +132,7 @@ namespace HuskyRescueCore.Services
                                 pdfFormFields.SetField("IsAppOrSpouseStudent", IsTrueFalse(app.IsAppOrSpouseStudent)); //, saveAppearance);
                                 if (app.ApplicationStudentTypeId != null && app.IsAppOrSpouseStudent.Value)
                                 {
-                                    pdfFormFields.SetField("StudentType", (await _context.ApplicationStudentType.FirstAsync(x => x.Id == app.ApplicationStudentTypeId)).Text);
+                                    pdfFormFields.SetField("StudentType", (await _context.ApplicationStudentType.FirstAsync(x => x.Id == app.ApplicationStudentTypeId)).Code);
                                 }
                             }
                             pdfFormFields.SetField("IsAppTravelFrequent", IsTrueFalse(app.IsAppTravelFrequent)); //, saveAppearance);

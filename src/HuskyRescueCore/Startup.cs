@@ -1,28 +1,32 @@
-﻿using System;
-using System.Linq;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿//using Contentful.NET;
+using Elmah.Io.AspNetCore;
 using HuskyRescueCore.Data;
 using HuskyRescueCore.Models;
 using HuskyRescueCore.Services;
-using Elmah.Io.AspNetCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using PaulMiami.AspNetCore.Mvc.Recaptcha;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using PaulMiami.AspNetCore.Mvc.Recaptcha;
 using Serilog;
 using Serilog.Events;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+using System;
+using System.Linq;
 
 namespace HuskyRescueCore
 {
     public class Startup
     {
         private IHostingEnvironment CurrentEnvironment { get; set; }
+
+        private string contentDeliveryApi = "1500acf09a4cde7de8884b0027b6f20a99200f97b2096259e9c0d39f554ab821";
+        private string spaceId = "jf2qd27ic77e";
 
         // https://docs.asp.net/en/dev/fundamentals/startup.html
         public Startup(IHostingEnvironment env)
@@ -89,6 +93,8 @@ namespace HuskyRescueCore
             services.AddTransient<IRescueGroupsService, RescueGroupsService>();
             services.AddTransient<IFormSerivce, FormService>();
             services.AddTransient<IStorageService, StorageService>();
+
+            //services.AddTransient<IContentfulClient, ContentfulClient>(t => new ContentfulClient(contentDeliveryApi, spaceId));
 
             // TODO: figure out why azure will not ready the configuration for recaptha
             if (CurrentEnvironment.EnvironmentName == "Development")

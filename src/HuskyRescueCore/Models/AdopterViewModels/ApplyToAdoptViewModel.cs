@@ -389,7 +389,7 @@ namespace HuskyRescueCore.Models.AdopterViewModels
         public string FilterAppCatsOwnedCount { get; set; }
 
         [Display(Name = "Are you aware huskies are diggers, escape artists, heavy shedders, and may not be cat friendly?")]
-        [Required(ErrorMessage = "traits of a husky is required")]
+        //[Required(ErrorMessage = "traits of a husky is required")]
         public bool? FilterAppIsAwareHuskyAttributes { get; set; }
         public IEnumerable<YesNoRadios> FilterAppIsAwareHuskyAttributesOptions { get; set; }
 
