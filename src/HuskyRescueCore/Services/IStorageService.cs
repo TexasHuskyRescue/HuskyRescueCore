@@ -10,5 +10,10 @@ namespace HuskyRescueCore.Services
         Task GetAppAdoption(string fileName, Stream stream);
 
         Task<bool> IsAppAdoptionGenerated(string fileName);
+
+        Task<bool> IsRescueGroupApiCachedDataAvailable(string cachedDataName);
+        Task AddRescueGroupApiCachedData(string cachedDataName, Stream storedDataStream);
+        Task GetRescueGroupApiCachedData(string cachedDataName, Stream storedDataStream);
+
     }
 }

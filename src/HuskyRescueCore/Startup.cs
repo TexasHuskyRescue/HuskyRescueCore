@@ -21,6 +21,10 @@ using System.Linq;
 
 namespace HuskyRescueCore
 {
+    using Mappers;
+
+    using Repositories;
+
     public class Startup
     {
         private IHostingEnvironment CurrentEnvironment { get; set; }
@@ -93,6 +97,8 @@ namespace HuskyRescueCore
             services.AddTransient<IRescueGroupsService, RescueGroupsService>();
             services.AddTransient<IFormSerivce, FormService>();
             services.AddTransient<IStorageService, StorageService>();
+            services.AddTransient<IMapper<string>, RescueGroupAnimalMapper>();
+            services.AddTransient<IRescueGroupApiRepository, RescueGroupApiRepository>();
 
             //services.AddTransient<IContentfulClient, ContentfulClient>(t => new ContentfulClient(contentDeliveryApi, spaceId));
 
