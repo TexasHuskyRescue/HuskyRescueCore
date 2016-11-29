@@ -79,5 +79,60 @@ namespace HuskyRescueCore.Services
 
             return await blockBlob.ExistsAsync();
         }
+
+        public async Task<bool> IsRescueGroupApiCachedDataAvailable(string cachedDataName)
+        {
+            _logger.LogInformation("StorageService.IsRescueGroupApiCachedDataAvailable {@cachedDataName}", cachedDataName);
+            var container = CloudBlobClient.GetContainerReference(AzureSettings.AdoptionAppsContainer);
+
+            var blockBlob = container.GetBlockBlobReference(cachedDataName);
+            await blockBlob.FetchAttributesAsync();
+            if (HasDataExpired(blockBlob.Properties.LastModified))
+            {
+                await blockBlob.DeleteIfExistsAsync();
+            }
+            return await blockBlob.ExistsAsync();
+        }
+
+        public async Task AddRescueGroupApiCachedData(string cachedDataName, Stream storedDataStream)
+        {
+            _logger.LogInformation("StorageService.AddRescueGroupApiCachedData {@cachedDataName} {@cachedDataSize}", cachedDataName, storedDataStream.Length);
+            var container = CloudBlobClient.GetContainerReference(AzureSettings.AdoptionAppsContainer);
+
+            var blockBlob = container.GetBlockBlobReference(cachedDataName);
+
+            await blockBlob.UploadFromStreamAsync(storedDataStream);
+        }
+
+        public async Task GetRescueGroupApiCachedData(string cachedDataName, Stream storedDataStream)
+        {
+            _logger.LogInformation("StorageService.GetRescueGroupApiCachedData {@cachedDataName}", cachedDataName);
+
+            var container = CloudBlobClient.GetContainerReference(AzureSettings.AdoptionAppsContainer);
+
+            var blockBlob = container.GetBlockBlobReference(cachedDataName);
+            await blockBlob.FetchAttributesAsync();
+            await blockBlob.DownloadToStreamAsync(storedDataStream);
+            storedDataStream.Position = 0;
+        }
+
+        private bool HasDataExpired(DateTimeOffset? blobsLastModifiedDateTime)
+        {
+            return (blobsLastModifiedDateTime <= DateTime.Now.AddHours(-12));
+            //return (blobsLastModifiedDateTime <= DateTime.Now.AddMinutes(-2));
+        }
     }
+
+    internal class RescueGroupCachedData
+    {
+        public DateTime ExpirationDateTime { get; set; }
+        public string StoredData{ get; set; }
+
+        public RescueGroupCachedData(DateTime expirationDateTime, string storedData)
+        {
+            ExpirationDateTime = expirationDateTime;
+            StoredData = storedData;
+        }
+    }
+
 }

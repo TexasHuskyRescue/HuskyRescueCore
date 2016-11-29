@@ -16,5 +16,6 @@ namespace HuskyRescueCore
 
             host.Run();
         }
+
     }
 }
