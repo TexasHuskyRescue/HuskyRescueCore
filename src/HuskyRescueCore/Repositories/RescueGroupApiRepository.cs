@@ -15,34 +15,34 @@
 
         public RescueGroupApiRepository(IStorageService storageService)
         {
-            this._storageService = storageService;
+            _storageService = storageService;
         }
 
         public async Task<string> GetAdoptableHuskies(string rescueGroupsApiUri, string rescueGroupsApiKey, string cachedDataName)
         {
-            return await Get(rescueGroupsApiUri, rescueGroupsApiKey, cachedDataName, 
+            return await Get(rescueGroupsApiUri, cachedDataName, 
                 AdoptableHuskiesApiQueryParameters(rescueGroupsApiKey));
         }
 
         public async Task<string> GetFosterableHuskies(string rescueGroupsApiUri, string rescueGroupsApiKey, string cachedDataName)
         {
-            return await Get(rescueGroupsApiUri, rescueGroupsApiKey, cachedDataName, 
-                FosterableHuskiesApiQueryParameters(rescueGroupsApiKey));
+            return await Get(rescueGroupsApiUri, cachedDataName,
+            FosterableHuskiesApiQueryParameters(rescueGroupsApiKey));
         }
 
         public async Task<string> GetHuskyProfile(string huskyId, string rescueGroupsApiUri, string rescueGroupsApiKey, string cachedDataName)
         {
-            return await Get(rescueGroupsApiUri, rescueGroupsApiKey, cachedDataName,
+            return await Get(rescueGroupsApiUri, cachedDataName,
                 HuskyProfileApiQueryParameters(rescueGroupsApiKey, huskyId));
         }
 
-        private async Task<string> Get(string rescueGroupApiUri, string rescueGroupsApiKey, string cachedDataName, dynamic apiQueryParameters)
+        private async Task<string> Get(string rescueGroupApiUri, string cachedDataName, dynamic apiQueryParameters)
         {
             var request = (HttpWebRequest)WebRequest.Create(rescueGroupApiUri);
             request.Method = "POST";
             request.ContentType = "application/json";
 
-            var jsonData = JsonConvert.SerializeObject(AdoptableHuskiesApiQueryParameters(rescueGroupsApiKey));
+            var jsonData = JsonConvert.SerializeObject(apiQueryParameters);
             var bytes = Encoding.UTF8.GetBytes(jsonData);
 
             var requestStream = await request.GetRequestStreamAsync();
@@ -143,7 +143,7 @@
                         "animalOKWithCats",
                         "animalOKWithDogs",
                         "animalOKWithKids",
-                        "animalOthernames",
+                        //"animalOthernames", // requires Volunteer permissions
                         "animalPictures",
                         "animalRescueID",
                         "animalSex",
@@ -159,6 +159,9 @@
 
         private dynamic FosterableHuskiesApiQueryParameters(string rescueGroupsApiKey)
         {
+            // searching 'animalNeedsFoster' requires volunteer permissions. It appears that this key is for public use as I'm not 
+            // getting results when I search on that field.
+
             return new
             {
                 apikey = rescueGroupsApiKey,
@@ -190,6 +193,7 @@
                             operation = "equal",
                             criteria = "Yes"
                         }
+
                     },
                     fields = new[]
                     {
@@ -213,7 +217,7 @@
                         "animalOKWithCats",
                         "animalOKWithDogs",
                         "animalOKWithKids",
-                        "animalOthernames",
+                        //"animalOthernames",  // requires Volunteer permissions
                         "animalPictures",
                         "animalRescueID",
                         "animalSex",
@@ -225,8 +229,74 @@
                     }
                 }
             };
+        //{
+        //    apikey = rescueGroupsApiKey,
+        //    objectType = "animals",
+        //    objectAction = "publicSearch",
+        //    search = new
+        //    {
+        //        resultStart = 0,
+        //        resultLimit = 100,
+        //        resultSort = "animalName",
+        //        resultOrder = "asc",
+        //        filters = new[]
+        //        {
+        //            new
+        //            {
+        //                fieldName = "animalStatus",
+        //                operation = "equal",
+        //                criteria = "Available"
+        //            },
+        //            new
+        //            {
+        //                fieldName = "animalOrgID",
+        //                operation = "equal",
+        //                criteria = "3427"
+        //            }//,
+        //            //new
+        //            //{
+        //            //    fieldName = "animalNeedsFoster",
+        //            //    operation = "equal",
+        //            //    criteria = "Yes"
+        //            //}
 
-        }
+        //        },
+        //        fields = new[]
+        //        {
+        //            "animalID",
+        //            "animalAltered",
+        //            "animalBirthdate",
+        //            "animalBreed",
+        //            "animalColor",
+        //            "animalCratetrained",
+        //            "animalDescription",
+        //            "animalEnergyLevel",
+        //            "animalExerciseNeeds",
+        //            "animalEyeColor",
+        //            "animalGeneralAge",
+        //            "animalHousetrained",
+        //            "animalLeashtrained",
+        //            "animalMixedBreed",
+        //            "animalName",
+        //            "animalNeedsFoster",
+        //            "animalOKWithAdults",
+        //            "animalOKWithCats",
+        //            "animalOKWithDogs",
+        //            "animalOKWithKids",
+        //            //"animalOtherNames", // requires Volunteer permissions
+        //            "animalPictures",
+        //            "animalRescueID",
+        //            "animalSex",
+        //            "animalSpecialneeds",
+        //            "animalSpecialneedsDescription",
+        //            "animalStatus",
+        //            "animalSummary",
+        //            "animalThumbnailUrl"
+        //        }
+        //    }
+        //};
+
+    }
 
         private dynamic AdoptableHuskiesApiQueryParameters(string rescueGroupsApiKey)
         {
@@ -278,7 +348,7 @@
                         "animalOKWithCats",
                         "animalOKWithDogs",
                         "animalOKWithKids",
-                        "animalOthernames",
+                        //"animalOthernames",  // requires Volunteer permissions
                         "animalPictures",
                         "animalRescueID",
                         "animalSex",
@@ -292,5 +362,6 @@
             };
 
         }
+
     }
 }

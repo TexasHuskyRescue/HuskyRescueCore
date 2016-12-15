@@ -145,5 +145,10 @@ namespace HuskyRescueCore.Controllers
         {
             return View();
         }
+
+        public IActionResult Policies()
+        {
+            return View();
+        }
     }
 }

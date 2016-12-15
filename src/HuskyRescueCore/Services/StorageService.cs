@@ -84,8 +84,10 @@ namespace HuskyRescueCore.Services
         {
             _logger.LogInformation("StorageService.IsRescueGroupApiCachedDataAvailable {@cachedDataName}", cachedDataName);
             var container = CloudBlobClient.GetContainerReference(AzureSettings.AdoptionAppsContainer);
-
             var blockBlob = container.GetBlockBlobReference(cachedDataName);
+            if (!await blockBlob.ExistsAsync())
+                return false;
+
             await blockBlob.FetchAttributesAsync();
             if (HasDataExpired(blockBlob.Properties.LastModified))
             {
@@ -120,19 +122,9 @@ namespace HuskyRescueCore.Services
         {
             return (blobsLastModifiedDateTime <= DateTime.Now.AddHours(-12));
             //return (blobsLastModifiedDateTime <= DateTime.Now.AddMinutes(-2));
+            //return (blobsLastModifiedDateTime <= DateTime.Now.AddSeconds(-20));
         }
     }
 
-    internal class RescueGroupCachedData
-    {
-        public DateTime ExpirationDateTime { get; set; }
-        public string StoredData{ get; set; }
-
-        public RescueGroupCachedData(DateTime expirationDateTime, string storedData)
-        {
-            ExpirationDateTime = expirationDateTime;
-            StoredData = storedData;
-        }
-    }
 
 }
