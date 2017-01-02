@@ -249,3 +249,5 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+*.pubxml
+*.ps1
