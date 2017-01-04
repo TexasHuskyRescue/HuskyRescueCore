@@ -249,5 +249,9 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+
 *.pubxml
 *.ps1
+
+/test/HuskyRescueCore.Tests
+/test/HuskyRescueCore.Tests
