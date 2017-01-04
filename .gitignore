@@ -255,3 +255,5 @@ ModelManifest.xml
 
 /test/HuskyRescueCore.Tests
 /test/HuskyRescueCore.Tests
+src/HuskyRescueCore/appsettings.Production.json
+src/HuskyRescueCore/appsettings.Production.json
