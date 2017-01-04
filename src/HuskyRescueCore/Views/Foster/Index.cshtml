@@ -1,5 +1,108 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@using HuskyRescueCore.Models.RescueGroupViewModels
+@model RescueGroupAnimals
+
+@section scripts {
+
+    <script type="text/javascript">
+        var AnimalsObj = JSON.parse(@Html.Raw(Json.Serialize(Model.ToJsonString())));
+    </script>
+
+    <script type="text/javascript" src="~/js/Adopt-Index.js"></script>
 }
+
+<!-- main-container start -->
+<!-- ================ -->
+<section class="main-container">
+    <div class="container">
+        <div class="row">
+            <!-- main start -->
+            <!-- ================ -->
+            <div class="main col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <!-- page-title start -->
+                <!-- ================ -->
+                <h1 class="page-title text-center">Huskies that need a foster</h1>
+                <div class="separator"></div>
+                <!-- isotope filters start -->
+                <div class="filters">
+                    <ul class="nav nav-pills">
+                        <li class="active"><a href="#" data-filter="*">All</a></li>
+                        <li><a href="#" data-filter=".Female">Girls</a></li>
+                        <li><a href="#" data-filter=".Male">Boys</a></li>
+                        <li><a href="#" data-filter=".foster-yes">Foster Needed</a></li>
+                    </ul>
+                </div>
+                <!-- isotope filters end -->
+                <div class="isotope-container-fitrows row grid-space-10 isotope-animals">
+                    @{
+                        foreach (var animal in Model.Animals)
+                        {
+                            var classes = "isotope-item";
+                            classes += string.IsNullOrEmpty(animal.AnimalSex) ? string.Empty : " " + animal.AnimalSex;
+                            if (string.IsNullOrEmpty(animal.AnimalNeedsFoster))
+                            {
+                                classes += animal.AnimalNeedsFoster.ToLowerInvariant() == "yes" ? " foster-yes" : string.Empty;
+                            }
+                            else if (animal.AnimalName.ToLower().Contains("foster"))
+                            {
+                                classes += " foster-yes";
+                            }
+                            else
+                            {
+                                classes += " foster-no";
+                            }
+
+                            @:<div class='col-lg-3 col-md-3 col-sm-6 col-xs-6 @classes' style='max-height:250px; margin-bottom:20px' data-toggle='modal' data-target='#myModal-@animal.AnimalId'>
+                                @if (animal.AnimalPictures != null)
+                                {
+                                    var picture = animal.AnimalPictures[0];
+                                    @:<div class='overlay-container overlay-visible'>
+                                        @:<img src='@picture.UrlSecureFullsize' alt='' style='width:100%; max-height: 250px'>
+                                        @:<div class='overlay-bottom hidden-xs'>
+                                            @:<div class='text'>
+                                                @:<h3 class='title'>@animal.AnimalName</h3>
+                                                @:</div>
+                                            @:</div>
+                                        @*<a href='images/portfolio-2.jpg' class='popup-img overlay-link' title='image title'><i class='icon-plus-1'></i></a>*@
+                                        @*@:<button class="btn btn-default" data-toggle="modal" data-target="#myModal">Launch modal</button>*@
+                                        @:<div class="modal fade" id="myModal-@animal.AnimalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            @:<div class="modal-dialog">
+                                                @:<div class="modal-content">
+                                                    @:<div class="modal-header">
+                                                        @:<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                        @:<h4 class="modal-title" id="myModalLabel">@animal.AnimalName</h4>
+                                                        @:</div>
+                                                    @:<div class="modal-footer">
+                                                        @:<button type="button" class="btn btn-sm btn-dark" data-dismiss="modal">Close</button>
+                                                        @*@:<button type="button" class="btn btn-sm btn-default">Save changes</button>*@
+                                                        @:</div>
+                                                    @:<div class="modal-body">
+                                                        @Html.Raw(@animal.AnimalDescription);
+                                    @:<div class='owl-carousel dog-slider-autoplay'>
+                                        @if (animal.AnimalPictures != null)
+                                        {
+                                            foreach (var pictureItem in animal.AnimalPictures)
+                                            {
+                                                @:<div class='overlay-container overlay-visible'>
+                                                    @:<img src='@pictureItem.UrlSecureFullsize' alt=''>
+                                                    @:</div>
+                                                            }
+                                        }
+                                        @:</div>
+                                                    @*@:<p></p>*@
+                                                    @:</div>
+                                                @:</div>
+                                            @:</div>
+                                        @:</div>
+                                    @:</div>
+                                }
+                                @:</div>
+                        }
+                    }
+                </div>
+            </div>
+            <!-- main end -->
+        </div>
+    </div>
+</section>
+
+<!-- main-container end -->
