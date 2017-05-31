@@ -12,7 +12,7 @@ namespace HuskyRescueCore.Models.AdopterViewModels
     {
         public ApplyToAdoptViewModel()
         {
-            BrainTreePayment = new BrainTreePayment();
+            //BrainTreePayment = new BrainTreePayment();
 
             States = new List<SelectListItem>();
             ResidenceOwnershipList = new List<SelectListItem>();
@@ -57,7 +57,7 @@ namespace HuskyRescueCore.Models.AdopterViewModels
             IsStillOwned5Options = YesNoRadios.List();
         }
 
-        public BrainTreePayment BrainTreePayment { get; set; }
+        //public BrainTreePayment BrainTreePayment { get; set; }
 
         public IEnumerable<SelectListItem> States { get; set; }
 
@@ -331,7 +331,7 @@ namespace HuskyRescueCore.Models.AdopterViewModels
         [Display(Name = "Basement")]
         public bool IsPetKeptLocationSleepingRestrictionBasement { get; set; }
         [Display(Name = "In bed with owner")]
-        public bool IsPetKeptLocationSleepingRestrictionInBedOwner { get; set; }
+        public bool IsPetKeptLocationSleepingRestrictionBedWithOwner { get; set; }
         [Display(Name = "Other")]
         public bool IsPetKeptLocationSleepingRestrictionOther { get; set; }
 

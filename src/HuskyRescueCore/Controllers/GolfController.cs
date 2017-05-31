@@ -1,6 +1,5 @@
 using HuskyRescueCore.Data;
 using HuskyRescueCore.Helpers.PostRequestGet;
-using HuskyRescueCore.Models.AdopterViewModels;
 using HuskyRescueCore.Models.BrainTreeViewModels;
 using HuskyRescueCore.Models.GolfViewModels;
 using HuskyRescueCore.Services;
@@ -8,10 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PaulMiami.AspNetCore.Mvc.Recaptcha;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -79,9 +76,11 @@ namespace HuskyRescueCore.Controllers
         [ExportModelState]
         public async Task<IActionResult> Register(Register model)
         {
+            _logger.LogInformation("Start GolfController.Register POST - {@GolfRegistration}", model);
             if (string.IsNullOrEmpty(model.BrainTreePayment.Nonce))
             {
                 ModelState.AddModelError("", "incomplete payment information provided");
+                _logger.LogInformation("Cont. GolfController.Register POST - Nonce missing");
             }
             else
             {
@@ -99,6 +98,8 @@ namespace HuskyRescueCore.Controllers
                     if (errorCount == 0)
                     {
                         #region Process Payment
+                        _logger.LogInformation("Cont. GolfController.Register POST - Start Payment Processing");
+
                         var paymentMethod = (PaymentTypeEnum)Enum.Parse(typeof(PaymentTypeEnum), model.BrainTreePayment.PaymentMethod);
                         var phone = model.Attendee1PhoneNumber;
                         var paymentResult = new ServiceResult();
@@ -149,7 +150,7 @@ namespace HuskyRescueCore.Controllers
                             result.Messages.Add("Payment Failure - see below for details: ");
                             result.Messages.AddRange(paymentRequestResult.Messages);
 
-                            _logger.LogError("Golf Registration Fee Payment Failed {@GolfRegFeePaymentErrors}", result.Messages);
+                            _logger.LogError("Cont. GolfController.Register POST - Cont. Payment Processing - Payment Failed {@GolfRegFeePaymentErrors}", paymentRequestResult);
                             ModelState.AddModelError("", "Unable to process your payment. Try again, and if the problem persists see your system administrator.");
                             foreach (var error in paymentRequestResult.Messages)
                             {
@@ -161,9 +162,12 @@ namespace HuskyRescueCore.Controllers
 
                         // payment is a success. capture the transaction id from braintree
                         model.BrainTreePayment.BraintreeTransactionId = paymentRequestResult.NewKey;
+
+                        _logger.LogInformation("Cont. GolfController.Register POST - End Payment Processing");
                         #endregion
 
                         #region Database
+                        _logger.LogInformation("Cont. GolfController.Register POST - Start Database Save");
 
                         var eventId = new Guid(_systemServices.GetSetting("GolfTournamentId").Value);
                         var registrationId = Guid.NewGuid();
@@ -176,6 +180,7 @@ namespace HuskyRescueCore.Controllers
 
 
                         #region Copy ViewModel to database Model
+                        _logger.LogInformation("Cont. GolfController.Register POST - Cont. Database - Start Copy Model to ViewModel");
                         var dbRegistration = new Models.EventRegistration
                         {
                             Id = registrationId,
@@ -276,16 +281,20 @@ namespace HuskyRescueCore.Controllers
                                 ZipCode = model.Attendee4AddressPostalCode
                             });
                         }
+                        _logger.LogInformation("Cont. GolfController.Register POST - Cont. Database - End Copy Model to ViewModel");
                         #endregion
 
                         #region Add to Database
+                        _logger.LogInformation("Cont. GolfController.Register POST - Cont. Database - Start Add to Context {@dbRegistration}", dbRegistration);
                         _context.Add(dbRegistration);
+                        _logger.LogInformation("Cont. GolfController.Register POST - Cont. Database - End Add to Context");
                         #endregion
 
                         #region Save to Database and check exceptions
+                        _logger.LogInformation("Cont. GolfController.Register POST - Cont. Database - Start Save to Database");
                         try
                         {
-                            _logger.LogInformation("Saving golf registration to database: {@dbRegistration}", dbRegistration);
+                            _logger.LogInformation("Cont. GolfController.Register POST - Cont. Database - Saving golf registration to database: {@dbRegistration}", dbRegistration);
                             var numChanges = _context.SaveChanges();
                             if (numChanges > 0)
                             {
@@ -294,17 +303,20 @@ namespace HuskyRescueCore.Controllers
                         }
                         catch (DbUpdateException ex)
                         {
-                            _logger.LogError(new EventId(1), ex, "Database Update Exception saving golf registration");
+                            _logger.LogError("Cont. GolfController.Register POST - Cont. Database - Database Update Exception saving golf registration {@DbUpdateException}", ex);
                         }
                         catch (InvalidOperationException ex)
                         {
-                            _logger.LogError(new EventId(1), ex, "Invalid Operation Exception saving golf registration");
+                            _logger.LogError("Cont. GolfController.Register POST - Cont. Database - Invalid Operation Exception saving golf registration {@InvalidOperationException}", ex);
                         }
+                        _logger.LogInformation("Cont. GolfController.Register POST - Cont. Database - End Save to Database");
                         #endregion
 
+                        _logger.LogInformation("Cont. GolfController.Register POST - End Database Save");
                         #endregion
 
                         #region Send Emails
+                        _logger.LogInformation("Cont. GolfController.Register POST - Start Send Emails");
                         var groupEmail = _systemServices.GetSetting("Email-Golf").Value;
 
                         var subject = string.Join(" - ", "[TXHR Web]", "6th Annual Texas Husky Rescue Golf Registration");
@@ -322,22 +334,28 @@ PO Box 118891, Carrollton, TX 75011
 
 
                         // Send email to the primary registrant
+                        _logger.LogInformation("Cont. GolfController.Register POST - Cont. Send Emails - Start send registerant emails");
                         if (model.Attendee1IsAttending)
                         {
-                            var emailAppResult = await _emailService.SendEmailAsync(model.Attendee1EmailAddress, groupEmail, groupEmail, subject, bodyText, "golf-registration");
+                            var emailRegistrantResult = await _emailService.SendEmailAsync(model.Attendee1EmailAddress, groupEmail, groupEmail, subject, bodyText, "golf-registration");
+                            _logger.LogInformation("Cont. GolfController.Register POST - Cont. Send Emails - Cont. send registerant emails - {@result}", emailRegistrantResult);
                         }
                         if (model.Attendee2IsAttending)
                         {
-                            var emailAppResult = await _emailService.SendEmailAsync(model.Attendee2EmailAddress, groupEmail, groupEmail, subject, bodyText, "golf-registration");
+                            var emailRegistrantResult = await _emailService.SendEmailAsync(model.Attendee2EmailAddress, groupEmail, groupEmail, subject, bodyText, "golf-registration");
+                            _logger.LogInformation("Cont. GolfController.Register POST - Cont. Send Emails - Cont. send registerant emails - {@result}", emailRegistrantResult);
                         }
                         if (model.Attendee3IsAttending)
                         {
-                            var emailAppResult = await _emailService.SendEmailAsync(model.Attendee3EmailAddress, groupEmail, groupEmail, subject, bodyText, "golf-registration");
+                            var emailRegistrantResult = await _emailService.SendEmailAsync(model.Attendee3EmailAddress, groupEmail, groupEmail, subject, bodyText, "golf-registration");
+                            _logger.LogInformation("Cont. GolfController.Register POST - Cont. Send Emails - Cont. send registerant emails - {@result}", emailRegistrantResult);
                         }
                         if (model.Attendee4IsAttending)
                         {
-                            var emailAppResult = await _emailService.SendEmailAsync(model.Attendee4EmailAddress, groupEmail, groupEmail, subject, bodyText, "golf-registration");
+                            var emailRegistrantResult = await _emailService.SendEmailAsync(model.Attendee4EmailAddress, groupEmail, groupEmail, subject, bodyText, "golf-registration");
+                            _logger.LogInformation("Cont. GolfController.Register POST - Cont. Send Emails - Cont. send registerant emails - {@result}", emailRegistrantResult);
                         }
+                        _logger.LogInformation("Cont. GolfController.Register POST - Cont. Send Emails - End send registerant emails");
 
                         bodyText = "Golf registration for " + numberOfTickets + " attendees.";
                         bodyText += Environment.NewLine;
@@ -393,12 +411,17 @@ PO Box 118891, Carrollton, TX 75011
                         bodyText += "Paid with " + model.BrainTreePayment.PaymentMethod + Environment.NewLine;
                         bodyText += "Name: " + model.BrainTreePayment.PayeeFirstName + " " + model.BrainTreePayment.PayeeLastName + Environment.NewLine;
 
+                        _logger.LogInformation("Cont. GolfController.Register POST - Cont. Send Emails - Start send group email");
                         var emailGroupResult = await _emailService.SendEmailAsync(groupEmail, groupEmail, groupEmail, subject, bodyText, "golf-registration");
+                        _logger.LogInformation("Cont. GolfController.Register POST - Cont. Send Emails - End send group Emails - {@result}", emailGroupResult);
 
+                        _logger.LogInformation("Cont. GolfController.Register POST - End Send Emails");
                         #endregion
 
                         if (result.IsSuccess)
                         {
+                            _logger.LogInformation("End GolfController.Register POST - Success - Redirect to Thank You");
+
                             return RedirectToAction("RegisterThankYou");
                         }
                         else
@@ -406,21 +429,22 @@ PO Box 118891, Carrollton, TX 75011
                             foreach (var error in result.Messages)
                             {
                                 ModelState.AddModelError(error.GetHashCode().ToString(), error);
-                                _logger.LogError("Data Exception saving Golf Registration {@modelGolfReg}", model);
                             }
+                            _logger.LogError("End GolfController.Register POST - Failure - Data Exception saving Golf Registration {@result}", result);
 
                             return RedirectToAction("Register");
                         }
                     }
-                    _logger.LogInformation("Adoption App Model Errors {@errors} {@modelGolfReg}", result.Messages, model);
+                    _logger.LogInformation("Cont. GolfController.Register POST - Golf Registartion Model Errors - {@errors} - {@GolfRegistration}", errors, model);
                 }
                 catch (Exception dex)
                 {
                     //Log the error (uncomment dex variable name and add a line here to write a log.
                     ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                    _logger.LogError(new EventId(6), dex, "Data Exception saving Golf Registration {@modelGolfReg}", model);
+                    _logger.LogError("Cont. GolfController.Register POST - Data Exception saving Golf Registration - {@GolfRegistration} {@exception}", model, dex);
                 }
             }
+            _logger.LogInformation("End GolfController.Register POST - Redirect to Register - Incomplete registration");
             return RedirectToAction("Register");
         }
 

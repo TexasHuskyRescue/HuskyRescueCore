@@ -37,6 +37,7 @@ namespace HuskyRescueCore.Controllers
         //[ValidateRecaptcha]
         public IActionResult Index()
         {
+            _logger.LogInformation("Start DonateController.Index Get");
             var model = new DonationViewModel();
 
             var states = _context.States.ToList();
@@ -50,6 +51,7 @@ namespace HuskyRescueCore.Controllers
             ViewData.Add("environment", _systemServices.GetSetting("BraintreeIsProduction").Value);
             #endregion
 
+            _logger.LogInformation("End DonateController.Index Get: {@model}", model);
             return View(model);
         }
 
@@ -59,9 +61,25 @@ namespace HuskyRescueCore.Controllers
         //[ValidateRecaptcha]
         public async Task<IActionResult> Donate(DonationViewModel model)
         {
+            return await DonateCommon(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ExportModelState]
+        //[ValidateRecaptcha]
+        public async Task<IActionResult> DonateJson([FromBody]DonationViewModel model)
+        {
+            return await DonateCommon(model);
+        }
+
+        private async Task<IActionResult> DonateCommon(DonationViewModel model)
+        {
+            _logger.LogInformation("Start DonateController.Index POST");
             if (string.IsNullOrEmpty(model.BrainTreePayment.Nonce))
             {
                 ModelState.AddModelError("", "incomplete payment information provided");
+                _logger.LogInformation("Cont. DonateController.Index POST - Model State Error - Nonce Null or Empty");
             }
             else
             {
@@ -69,6 +87,8 @@ namespace HuskyRescueCore.Controllers
                 {
                     // get model state errors
                     var errors = ModelState.Values.SelectMany(v => v.Errors);
+
+                    _logger.LogInformation("Cont. DonateController.Index POST - ModelSate Errors {@errors}", errors);
 
                     // if paying with a credit card the fields for credit card number/cvs/month/year will be invalid because we do not send them to the server
                     // so count the errors on the field validation that do not start with 'card ' (comes from the property attributes in the model class Apply.cs)
@@ -79,11 +99,11 @@ namespace HuskyRescueCore.Controllers
                     if (errorCount == 0)
                     {
                         #region Process Payment
+                        _logger.LogInformation("Cont. DonateController.Index POST - Start payment processing");
+
                         var paymentMethod = (PaymentTypeEnum)Enum.Parse(typeof(PaymentTypeEnum), model.BrainTreePayment.PaymentMethod);
                         var phone = model.DonorPhoneNumber;
                         var paymentResult = new ServiceResult();
-
-                        var paymentRequestResult = new ServiceResult();
 
                         if (paymentMethod == PaymentTypeEnum.Paypal)
                         {
@@ -103,7 +123,7 @@ namespace HuskyRescueCore.Controllers
                         {
                             var stateCode = _context.States.First(p => p.Id == model.BrainTreePayment.PayeeAddressStateId).Code;
 
-                            paymentRequestResult = _paymentService.SendPayment(model.AmountDonation,
+                            paymentResult = _paymentService.SendPayment(model.AmountDonation,
                                                     model.BrainTreePayment.Nonce,
                                                     true,
                                                     paymentMethod,
@@ -122,16 +142,16 @@ namespace HuskyRescueCore.Controllers
                                                     model.DonorEmail);
                         }
 
-                        if (!paymentRequestResult.IsSuccess)
+                        if (!paymentResult.IsSuccess)
                         {
                             // TODO: handle failure to pay
                             result.IsSuccess = false;
                             result.Messages.Add("Payment Failure - see below for details: ");
-                            result.Messages.AddRange(paymentRequestResult.Messages);
+                            result.Messages.AddRange(paymentResult.Messages);
 
-                            _logger.LogError("Donation Payment Failed {@DonationPaymentErrors}", result.Messages);
+                            _logger.LogError("Cont. DonateController.Index POST - Donation Payment Failed - [{@DonationPaymentErrors}", result);
                             ModelState.AddModelError("", "Unable to process your payment. Try again, and if the problem persists see your system administrator.");
-                            foreach (var error in paymentRequestResult.Messages)
+                            foreach (var error in paymentResult.Messages)
                             {
                                 ModelState.AddModelError("", error);
                             }
@@ -140,10 +160,13 @@ namespace HuskyRescueCore.Controllers
                         }
 
                         // payment is a success. capture the transaction id from braintree
-                        model.BrainTreePayment.BraintreeTransactionId = paymentRequestResult.NewKey;
+                        model.BrainTreePayment.BraintreeTransactionId = paymentResult.NewKey;
+
+                        _logger.LogInformation("Cont. DonateController.Index POST - End payment processing {@transaction}", paymentResult);
                         #endregion
 
                         #region Database
+                        _logger.LogInformation("Cont. DonateController.Index POST - Start database save");
 
                         var donationId = Guid.NewGuid();
                         var personId = Guid.NewGuid();
@@ -217,6 +240,9 @@ namespace HuskyRescueCore.Controllers
                         }
                         #endregion
 
+                        _logger.LogInformation("Cont. DonateController.Index POST - Cont. database save - Donation Added: {@dbDonation}", dbDonation);
+                        _logger.LogInformation("Cont. DonateController.Index POST - Cont. database save - Person Added: {@dbPerson}", dbPerson);
+
                         #region Add to Database
                         _context.Add(dbDonation);
                         _context.Add(dbPerson);
@@ -225,7 +251,7 @@ namespace HuskyRescueCore.Controllers
                         #region Save to Database and check exceptions
                         try
                         {
-                            _logger.LogInformation("Saving donation information to database: {@dbDonation}", dbDonation);
+                            _logger.LogInformation("Cont. DonateController.Index POST - Cont. database save - Saving donation information to database: {@model}", model);
                             var numChanges = _context.SaveChanges();
                             if (numChanges > 0)
                             {
@@ -234,17 +260,20 @@ namespace HuskyRescueCore.Controllers
                         }
                         catch (DbUpdateException ex)
                         {
-                            _logger.LogError(new EventId(7), ex, "Database Update Exception saving donation information");
+                            _logger.LogError("Cont. DonateController.Index POST - Cont. database save - Database Update Exception saving donation information {@DbUpdateException}", ex);
                         }
                         catch (InvalidOperationException ex)
                         {
-                            _logger.LogError(new EventId(7), ex, "Invalid Operation Exception saving donation information");
+                            _logger.LogError("Cont. DonateController.Index POST - Cont. database save - Invalid Operation Exception saving donation information {@InvalidOperationException}", ex);
                         }
                         #endregion
 
+                        _logger.LogInformation("Cont. DonateController.Index POST - End database save {@databaseResult}", result);
                         #endregion
 
                         #region Send Emails
+                        _logger.LogInformation("Cont. DonateController.Index POST - Start Send Emails");
+
                         var groupEmail = _systemServices.GetSetting("Email-Contact").Value;
 
                         var subject = string.Format("[TXHR Web] [Donation] [Amount=${0}] - {1}", model.AmountDonation, model.BrainTreePayment.PayeeFullName);
@@ -260,8 +289,11 @@ Texas Husky Rescue
 PO Box 118891, Carrollton, TX 75007",
 model.BrainTreePayment.PayeeFullName, model.AmountDonation, paymentMethod, DateTime.Now.Date, model.BrainTreePayment.BraintreeTransactionId);
 
+                        _logger.LogInformation("Cont. DonateController.Index POST - Start Send Emails - Send to Donor");
 
-                        var emailAppResult = await _emailService.SendEmailAsync(model.DonorEmail, groupEmail, groupEmail, subject, bodyText, "donation");
+                        var emailResult = await _emailService.SendEmailAsync(model.DonorEmail, groupEmail, groupEmail, subject, bodyText, "donation");
+
+                        _logger.LogInformation("Cont. DonateController.Index POST - Start Send Emails - Send to Donor Result {@emailResult}", emailResult);
 
                         bodyText = string.Format(@"
 Donor Name: {0}
@@ -274,9 +306,16 @@ Payment Confirmation Id: {6}
 Comments : {7}",
 model.BrainTreePayment.PayeeFullName, model.DonorEmail, model.DonorPhoneNumber, model.AmountDonation, paymentMethod, DateTime.Now.Date, model.BrainTreePayment.BraintreeTransactionId, model.Comments);
 
+                        _logger.LogInformation("Cont. DonateController.Index POST - Start Send Emails - Send to Group");
+
                         var emailGroupResult = await _emailService.SendEmailAsync(groupEmail, groupEmail, groupEmail, subject, bodyText, "donation");
 
+                        _logger.LogInformation("Cont. DonateController.Index POST - Start Send Emails - Send to Group Result {@emailResult}", emailResult);
+
+                        _logger.LogInformation("Cont. DonateController.Index POST - End Send Emails");
                         #endregion
+
+                        _logger.LogInformation("Cont. DonateController.Index POST - {@result}", result);
 
                         if (result.IsSuccess)
                         {
@@ -287,21 +326,21 @@ model.BrainTreePayment.PayeeFullName, model.DonorEmail, model.DonorPhoneNumber, 
                             foreach (var error in result.Messages)
                             {
                                 ModelState.AddModelError(error.GetHashCode().ToString(), error);
-                                _logger.LogError("Data Exception saving Donation {@modelGolfReg}", model);
+                                _logger.LogError("Cont. DonateController.Index POST - Data Exception saving Donation {@modelDonation} {@errors}", model, error);
                             }
 
                             return RedirectToAction("ThankYou");
                         }
                     }
-                    _logger.LogInformation("Donation Model Errors {@errors} {@modelDonation}", result.Messages, model);
                 }
                 catch (Exception dex)
                 {
                     //Log the error (uncomment dex variable name and add a line here to write a log.
                     ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                    _logger.LogError(new EventId(6), dex, "Data Exception saving Donation {@modelDonation}", model);
+                    _logger.LogError("Data Exception saving Donation {@modelDonation} - {@exception}", model, dex);
                 }
             }
+            _logger.LogInformation("End DonateController.Index POST");
             return RedirectToAction("Index");
         }
 

@@ -111,13 +111,14 @@
   {
     "outputFileName": "wwwroot/js/bundles/layout3.js",
     "inputFiles": [
-      "wwwroot/plugins/morphext/morphext.js",
-      "wwwroot/lib/vide/dist/jquery.vide.js",
-      "wwwroot/lib/owl.carousel/dist/owl.carousel.js",
-      "wwwroot/plugins/jquery.browser.js",
-      "wwwroot/plugins/SmoothScroll.js",
-      "wwwroot/js/template.js",
-      "wwwroot/plugins/pace/pace.min.js"
+        "wwwroot/plugins/morphext/morphext.js",
+        "wwwroot/lib/vide/dist/jquery.vide.js",
+        "wwwroot/lib/owl.carousel/dist/owl.carousel.js",
+        "wwwroot/plugins/jquery.browser.js",
+        "wwwroot/plugins/SmoothScroll.js",
+        "wwwroot/js/template.js",
+        "wwwroot/plugins/pace/pace.min.js",
+        "wwwroot/lib/jquery-mask-plugin/dist/jquery.mask.js"
     ]
   },
   {

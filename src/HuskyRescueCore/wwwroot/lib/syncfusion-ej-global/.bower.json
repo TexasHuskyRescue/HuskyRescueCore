@@ -1,0 +1,29 @@
+{
+  "name": "syncfusion-ej-global",
+  "version": "14.4.20",
+  "description": "Bower package of localized texts of the Syncfusion Essential JavaScript widgets in various languages.",
+  "ignore": [
+    ".npmignore",
+    "package.json",
+    ".gitignore",
+    "demos",
+    "i18n/*",
+    "!i18n/ej.culture.ar-AE.js",
+    "!i18n/ej.culture.de-DE.js",
+    "!i18n/ej.culture.en-US.js",
+    "!i18n/ej.culture.es-ES.js",
+    "!i18n/ej.culture.fr-FR.js",
+    "!i18n/ej.culture.vi-VN.js",
+    "!i18n/ej.culture.zh-CN.js"
+  ],
+  "homepage": "https://github.com/syncfusion/ej-global",
+  "_release": "14.4.20",
+  "_resolution": {
+    "type": "version",
+    "tag": "14.4.20",
+    "commit": "6dfee5d0c3b7a98a4830398384523299fa10fbaa"
+  },
+  "_source": "https://github.com/syncfusion/ej-global.git",
+  "_target": "*",
+  "_originalSource": "syncfusion-ej-global"
+}

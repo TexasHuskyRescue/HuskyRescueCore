@@ -14,7 +14,8 @@
   </PropertyGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
-    <ApplicationInsightsResourceId>/subscriptions/95e9c307-2bda-47d2-bfb4-60a4b61be01d/resourcegroups/Default-ApplicationInsights-CentralUS/providers/microsoft.insights/components/HuskyRescueCore</ApplicationInsightsResourceId>
+    <ApplicationInsightsResourceId>/subscriptions/67da9897-14b4-4644-8f02-84dfb839e4c3/resourcegroups/Default-ApplicationInsights-CentralUS/providers/microsoft.insights/components/HuskyRescueCore</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/67da9897-14b4-4644-8f02-84dfb839e4c3/resourcegroups/Default-ApplicationInsights-CentralUS/providers/microsoft.insights/components/HuskyRescueCore</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
   <ItemGroup>
     <DnxInvisibleContent Include="bower.json" />

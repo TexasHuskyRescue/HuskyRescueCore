@@ -1,0 +1,48 @@
+
+
+{
+
+  "name": "syncfusion-javascript",
+
+  "version": "14.4.20",
+
+  "description": "Bower package of Syncfusion.JavaScript.",
+	
+  "authors": [
+    "Syncfusion Inc"
+  ],
+  
+  "license": "SEE LICENSE IN README.md",
+	
+  "homepage": "https://github.com/syncfusion/JavaScript-Widgets#readme",
+
+  "ignore": [
+
+    ".npmignore",
+
+    "package.json",
+
+    "Scripts/jquery.unobtrusive-ajax.min.js",
+
+    "Scripts/jquery.validate.unobtrusive.min.js"
+
+  ],
+
+  "dependencies": {
+
+    "syncfusion-ej-global": "*",
+	
+	"jquery": "*",
+
+    "jquery-validation": "*",
+
+    "jsrender": "*",
+
+    "Microsoft.jQuery.Unobtrusive.Ajax": "*",
+
+    "Microsoft.jQuery.Unobtrusive.Validation": "*"
+
+  }
+
+}
+

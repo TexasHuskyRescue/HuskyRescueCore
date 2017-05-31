@@ -9,9 +9,22 @@ var globalHostedInstance = {};
 var isHostedInit = false;
 
 $(function () {
-    PaymentType();
+    var appFee = parseInt($('#ApplicationFeeAmount').value, 2);
+    if (isNaN(appFee)) {
+        appFee = 0;
+    }
+    if (appFee > 0) {
+        PaymentType();
+    }
 
-    $('select[name="BrainTreePayment.PaymentMethod"]').change(PaymentType);
+    // https://igorescobar.github.io/jQuery-Mask-Plugin/
+    $('.phone_us').mask('(000) 000-0000');
+    $('.postal').mask('00000');
+    $('.money').mask('00000.00', { reverse: true });
+
+    if (appFee > 0) {
+        $('select[name="BrainTreePayment.PaymentMethod"]').change(PaymentType);
+    }
 
     $('#IsAllAdultsAgreedOnAdoption').click(function () {
         if ($('#IsAllAdultsAgreedOnAdoption:checked').val() === 'true') {

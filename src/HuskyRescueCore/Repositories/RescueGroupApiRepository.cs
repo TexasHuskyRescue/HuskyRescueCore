@@ -4,24 +4,29 @@
     using System.Net;
     using System.Text;
     using System.Threading.Tasks;
+    using Microsoft.Extensions.Logging;
 
     using Newtonsoft.Json;
 
     using Services;
+    using Newtonsoft.Json.Linq;
+    using System;
 
     public class RescueGroupApiRepository : IRescueGroupApiRepository
     {
         private readonly IStorageService _storageService;
+        private readonly ILogger<RescueGroupApiRepository> _logger;
 
-        public RescueGroupApiRepository(IStorageService storageService)
+        public RescueGroupApiRepository(IStorageService storageService, ILogger<RescueGroupApiRepository> logger)
         {
             _storageService = storageService;
+            _logger = logger;
         }
 
         public async Task<string> GetAdoptableHuskies(string rescueGroupsApiUri, string rescueGroupsApiKey, string cachedDataName)
         {
-            return await Get(rescueGroupsApiUri, cachedDataName, 
-                AdoptableHuskiesApiQueryParameters(rescueGroupsApiKey));
+            _logger.LogInformation("Start RescueGroupApiRepository.GetAdoptableHuskies: {@rescueGroupsApiUri}, {@rescueGroupsApiKey}, {@cachedDataName}", rescueGroupsApiUri, rescueGroupsApiKey, cachedDataName);
+            return await Get(rescueGroupsApiUri, cachedDataName, AdoptableHuskiesApiQueryParameters(rescueGroupsApiKey));
         }
 
         public async Task<string> GetFosterableHuskies(string rescueGroupsApiUri, string rescueGroupsApiKey, string cachedDataName)
@@ -38,21 +43,14 @@
 
         private async Task<string> Get(string rescueGroupApiUri, string cachedDataName, dynamic apiQueryParameters)
         {
-            var request = (HttpWebRequest)WebRequest.Create(rescueGroupApiUri);
-            request.Method = "POST";
-            request.ContentType = "application/json";
-
-            var jsonData = JsonConvert.SerializeObject(apiQueryParameters);
-            var bytes = Encoding.UTF8.GetBytes(jsonData);
-
-            var requestStream = await request.GetRequestStreamAsync();
-            requestStream.Write(bytes, 0, bytes.Length);
-
+            _logger.LogInformation("Start RescueGroupApiRepository.Get: {@rescueGroupApiUri}, {@cachedDataName}", rescueGroupApiUri, cachedDataName);
 
             var result = string.Empty;
 
             if (await _storageService.IsRescueGroupApiCachedDataAvailable(cachedDataName))
             {
+                _logger.LogInformation("Cont. RescueGroupApiRepository.Get: IsRescueGroupApiCachedDataAvailable returns true");
+
                 using (var cachedStream = new MemoryStream())
                 {
                     await _storageService.GetRescueGroupApiCachedData(cachedDataName, cachedStream);
@@ -64,6 +62,18 @@
             }
             else
             {
+                _logger.LogInformation("Cont. RescueGroupApiRepository.Get: IsRescueGroupApiCachedDataAvailable returns false");
+
+                var request = (HttpWebRequest)WebRequest.Create(rescueGroupApiUri);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+
+                var jsonData = JsonConvert.SerializeObject(apiQueryParameters);
+                var bytes = Encoding.UTF8.GetBytes(jsonData);
+
+                var requestStream = await request.GetRequestStreamAsync();
+                requestStream.Write(bytes, 0, bytes.Length);
+
                 var response = await request.GetResponseAsync();
                 var stream = response.GetResponseStream();
                 if (stream != null)
@@ -75,15 +85,39 @@
                         ms.Position = 0;
                         reader = new StreamReader(ms);
                         result = reader.ReadToEnd();
-
+                        
                         ms.Position = 0;
-                        await _storageService.AddRescueGroupApiCachedData(cachedDataName, ms);
+
+                        dynamic source = JObject.Parse(result);
+                        var status = string.Empty;
+                        var message = string.Empty;
+                        if (source.data == null)
+                        {
+                            _logger.LogInformation("End RescueGroupApiRepository.Get source.data is null");
+                            status = "error";
+                            message = "null data retuned";
+                        }
+
+                        status = Convert.ToString(source.status);
+
+                        _logger.LogInformation("Cont. RescueGroupApiRepository.Get source.status is {@status}", status);
+
+                        if (status == "error")
+                        {
+                            message = Convert.ToString(source.message);
+                            _logger.LogInformation("End RescueGroupApiRepository.Get {@message}", message);
+                        }
+                        else
+                        {
+                            await _storageService.AddRescueGroupApiCachedData(cachedDataName, ms);
+                        }
                     }
                     stream.Dispose();
                     reader.Dispose();
                 }
             }
 
+            _logger.LogInformation("End RescueGroupApiRepository.Get: {@result}", result);
             return result;
         }
 
@@ -300,6 +334,8 @@
 
         private dynamic AdoptableHuskiesApiQueryParameters(string rescueGroupsApiKey)
         {
+            _logger.LogInformation("Start RescueGroupApiRepository.AdoptableHuskiesApiQueryParameters: {@rescueGroupsApiKey}", rescueGroupsApiKey);
+
             return new
             {
                 apikey = rescueGroupsApiKey,

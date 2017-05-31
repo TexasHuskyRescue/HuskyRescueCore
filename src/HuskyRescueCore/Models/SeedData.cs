@@ -217,7 +217,7 @@ namespace HuskyRescueCore.Models
                        new SystemSetting
                        {
                            Id = "AdoptionApplicationFee",
-                           Value = "25.00"
+                           Value = "0"
                        },
                        new SystemSetting
                        {
@@ -227,6 +227,16 @@ namespace HuskyRescueCore.Models
                        new SystemSetting
                        {
                            Id = "AdoptionApplicationOutputPath",
+                           Value = "Undefined"
+                       },
+                       new SystemSetting
+                       {
+                           Id = "FosterApplicationFormPath",
+                           Value = ""
+                       },
+                       new SystemSetting
+                       {
+                           Id = "FosterApplicationOutputPath",
                            Value = "Undefined"
                        },
                        new SystemSetting
@@ -336,6 +346,32 @@ namespace HuskyRescueCore.Models
                        }
                     );
                     context.SaveChanges();
+                }
+                else
+                {
+                    // updates - existing install getting new system settings
+                    if (context.SystemSetting.Count(s => s.Id == "FosterApplicationFormPath") == 0)
+                    {
+                        context.SystemSetting.AddRange(
+                            new SystemSetting
+                            {
+                                Id = "FosterApplicationFormPath",
+                                Value = ""
+                            }
+                        );
+                        context.SaveChanges();
+                    }
+                    if (context.SystemSetting.Count(s => s.Id == "FosterApplicationOutputPath") == 0)
+                    {
+                        context.SystemSetting.AddRange(
+                            new SystemSetting
+                            {
+                                Id = "FosterApplicationOutputPath",
+                                Value = ""
+                            }
+                        );
+                        context.SaveChanges();
+                    }
                 }
                 #endregion
 

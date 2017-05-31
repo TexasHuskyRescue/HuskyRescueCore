@@ -9,5 +9,7 @@ namespace HuskyRescueCore.Services
     public interface IFormSerivce
     {
         Task<string> CreateAdoptionApplicationPdf(ApplicationAdoption app);
+
+        Task<string> CreateFosterApplicationPdf(ApplicationFoster app);
     }
 }

@@ -4,14 +4,15 @@
 @model HuskyRescueCore.Models.AdopterViewModels.ApplyToAdoptViewModel
 
 @section scripts {
-    <script src="https://js.braintreegateway.com/web/3.1.0/js/client.min.js"></script>
-    <script src="https://js.braintreegateway.com/web/3.1.0/js/hosted-fields.min.js"></script>
-    <script src="https://js.braintreegateway.com/web/3.1.0/js/paypal.min.js"></script>
-    <script src="https://js.braintreegateway.com/web/3.1.0/js/data-collector.min.js"></script>
+    @*@if (Model.ApplicationFeeAmount > 0)
+    {
+        <script src="https://js.braintreegateway.com/web/3.1.0/js/client.min.js"></script>
+        <script src="https://js.braintreegateway.com/web/3.1.0/js/hosted-fields.min.js"></script>
+        <script src="https://js.braintreegateway.com/web/3.1.0/js/paypal.min.js"></script>
+        <script src="https://js.braintreegateway.com/web/3.1.0/js/data-collector.min.js"></script>
+    }*@
     <script type="text/javascript" src="~/js/Adopt-Apply.js"></script>
-
 }
-
 
 <!-- main-container start -->
 <!-- ================ -->
@@ -25,9 +26,11 @@
 
                 <div class="Adopt-apply-form">
                     <form asp-area="" asp-controller="Adopt" asp-action="Apply" method="post" class="margin-clear form-horizontal form-custom" role="form" id="applyForm">
-                        <input asp-for="ApplicationFeeAmount"/>
-                        <input asp-for="BrainTreePayment.DeviceData" />
-                        <input asp-for="BrainTreePayment.Nonce" />
+                        <input asp-for="ApplicationFeeAmount" />
+                        @*
+        <input asp-for="BrainTreePayment.DeviceData" />
+        <input asp-for="BrainTreePayment.Nonce" />
+                        *@
                         <input type="hidden" name="payment-method-nonce">
                         <input type="hidden" id="clientToken" value="@ViewData["clientToken"]" />
                         <input type="hidden" id="merchantId" value="@ViewData["merchantId"]" />
@@ -104,7 +107,7 @@
                                 <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
                                     <div class="form-group has-feedback">
                                         <label asp-for="AppAddressZip" class="control-label"></label>
-                                        <input asp-for="AppAddressZip" class="form-control" />
+                                        <input asp-for="AppAddressZip" class="form-control postal" />
                                         <span asp-validation-for="AppAddressZip"></span>
                                     </div>
                                 </div>
@@ -113,17 +116,17 @@
 
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
                                     <div class="form-group has-feedback">
                                         <label asp-for="AppHomePhone" class="control-label"></label>
-                                        <input asp-for="AppHomePhone" class="form-control" />
+                                        <input asp-for="AppHomePhone" class="form-control phone_us" />
                                         <span asp-validation-for="AppHomePhone"></span>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
                                     <div class="form-group has-feedback">
                                         <label asp-for="AppCellPhone" class="control-label"></label>
-                                        <input asp-for="AppCellPhone" class="form-control" />
+                                        <input asp-for="AppCellPhone" class="form-control phone_us" />
                                         <span asp-validation-for="AppCellPhone"></span>
                                     </div>
                                 </div>
@@ -200,11 +203,11 @@
                                             <div id="input-type" class="row">
                                                 @foreach (var item in Model.ResidenceIsPetAllowedOptions)
                                                 {
-                                                <div class="col-sm-6 col-xs-6">
-                                                    <label class="radio-inline">
-                                                        <input asp-for="ResidenceIsPetAllowed" type="radio" value="@item.Id" /> @item.Text
-                                                    </label>
-                                                </div>
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="ResidenceIsPetAllowed" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
                                                 }
                                             </div>
                                         </div>
@@ -218,11 +221,11 @@
                                             <div id="input-type" class="row">
                                                 @foreach (var item in Model.ResidencePetSizeWeightLimitOptions)
                                                 {
-                                                <div class="col-sm-6 col-xs-6">
-                                                    <label class="radio-inline">
-                                                        <input asp-for="ResidencePetSizeWeightLimit" type="radio" value="@item.Id" /> @item.Text
-                                                    </label>
-                                                </div>
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="ResidencePetSizeWeightLimit" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
                                                 }
                                             </div>
                                         </div>
@@ -242,11 +245,11 @@
                                                 <div id="input-type" class="row">
                                                     @foreach (var item in Model.ResidenceIsPetDepositRequiredOptions)
                                                     {
-                                                    <div class="col-sm-6 col-xs-6">
-                                                        <label class="radio-inline">
-                                                            <input asp-for="ResidenceIsPetDepositRequired" type="radio" value="@item.Id" /> @item.Text
-                                                        </label>
-                                                    </div>
+                                                        <div class="col-sm-6 col-xs-6">
+                                                            <label class="radio-inline">
+                                                                <input asp-for="ResidenceIsPetDepositRequired" type="radio" value="@item.Id" /> @item.Text
+                                                            </label>
+                                                        </div>
                                                     }
                                                 </div>
                                             </div>
@@ -256,7 +259,7 @@
                                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                         <div class="form-group has-feedback ResidencePetDeposit">
                                             <label asp-for="ResidencePetDepositAmount" class="control-label"></label>
-                                            <input asp-for="ResidencePetDepositAmount" class="form-control" />
+                                            <input asp-for="ResidencePetDepositAmount" class="form-control money" />
                                             <span asp-validation-for="ResidencePetDepositAmount"></span>
                                         </div>
                                     </div>
@@ -267,11 +270,11 @@
                                                 <div id="input-type" class="row">
                                                     @foreach (var item in Model.ResidenceIsPetDepositPaidOptions)
                                                     {
-                                                    <div class="col-sm-6 col-xs-6">
-                                                        <label class="radio-inline">
-                                                            <input asp-for="ResidenceIsPetDepositPaid" type="radio" value="@item.Id" /> @item.Text
-                                                        </label>
-                                                    </div>
+                                                        <div class="col-sm-6 col-xs-6">
+                                                            <label class="radio-inline">
+                                                                <input asp-for="ResidenceIsPetDepositPaid" type="radio" value="@item.Id" /> @item.Text
+                                                            </label>
+                                                        </div>
                                                     }
                                                 </div>
                                             </div>
@@ -299,7 +302,7 @@
                                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                                         <div class="form-group has-feedback">
                                             <label asp-for="ResidenceLandlordNumber" class="control-label"></label>
-                                            <input asp-for="ResidenceLandlordNumber" class="form-control" />
+                                            <input asp-for="ResidenceLandlordNumber" class="form-control phone_us" />
                                             <span asp-validation-for="ResidenceLandlordNumber"></span>
                                         </div>
                                     </div>
@@ -335,11 +338,11 @@
                                             <div id="input-type" class="row">
                                                 @foreach (var item in Model.ResidenceIsYardFencedOptions)
                                                 {
-                                                <div class="col-sm-6 col-xs-6">
-                                                    <label class="radio-inline">
-                                                        <input asp-for="ResidenceIsYardFenced" type="radio" value="@item.Id" /> @item.Text
-                                                    </label>
-                                                </div>
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="ResidenceIsYardFenced" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
                                                 }
                                             </div>
                                         </div>
@@ -349,7 +352,7 @@
                                 <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                                     <div class="form-group has-feedback ResidenceFence">
                                         <label asp-for="ResidenceFenceTypeHeight" class="control-label"></label>
-                                        <input asp-for="ResidenceFenceTypeHeight" class="form-control"/>
+                                        <input asp-for="ResidenceFenceTypeHeight" class="form-control" />
                                         <span asp-validation-for="ResidenceFenceTypeHeight"></span>
                                     </div>
                                 </div>
@@ -365,11 +368,11 @@
                                             <div id="input-type" class="row">
                                                 @foreach (var item in Model.IsAppOrSpouseStudentOptions)
                                                 {
-                                                <div class="col-sm-6 col-xs-6">
-                                                    <label class="radio-inline">
-                                                        <input asp-for="IsAppOrSpouseStudent" type="radio" value="@item.Id" /> @item.Text
-                                                    </label>
-                                                </div>
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsAppOrSpouseStudent" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
                                                 }
                                             </div>
                                         </div>
@@ -395,11 +398,11 @@
                                             <div id="input-type" class="row">
                                                 @foreach (var item in Model.IsAppTravelFrequentOptions)
                                                 {
-                                                <div class="col-sm-6 col-xs-6">
-                                                    <label class="radio-inline">
-                                                        <input asp-for="IsAppTravelFrequent" type="radio" value="@item.Id" /> @item.Text
-                                                    </label>
-                                                </div>
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="IsAppTravelFrequent" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
                                                 }
                                             </div>
                                         </div>
@@ -572,6 +575,74 @@
 
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label asp-for="PetKeptLocationSleepingRestriction" class="control-label"></label>
+                                <div class="checkbox">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetKeptLocationSleepingRestrictionLooseIndoors" class="control-label">
+                                                <input asp-for="IsPetKeptLocationSleepingRestrictionLooseIndoors" class="" /> @Html.DisplayNameFor(m => m.IsPetKeptLocationSleepingRestrictionLooseIndoors)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetKeptLocationSleepingRestrictionGarage" class="control-label">
+                                                <input asp-for="IsPetKeptLocationSleepingRestrictionGarage" class="" /> @Html.DisplayNameFor(m => m.IsPetKeptLocationSleepingRestrictionGarage)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetKeptLocationSleepingRestrictionOutsideKennel" class="control-label">
+                                                <input asp-for="IsPetKeptLocationSleepingRestrictionOutsideKennel" class="" /> @Html.DisplayNameFor(m => m.IsPetKeptLocationSleepingRestrictionOutsideKennel)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetKeptLocationSleepingRestrictionCratedIndoors" class="control-label">
+                                                <input asp-for="IsPetKeptLocationSleepingRestrictionCratedIndoors" class="" /> @Html.DisplayNameFor(m => m.IsPetKeptLocationSleepingRestrictionCratedIndoors)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetKeptLocationSleepingRestrictionLooseInBackyard" class="control-label">
+                                                <input asp-for="IsPetKeptLocationSleepingRestrictionLooseInBackyard" class="" /> @Html.DisplayNameFor(m => m.IsPetKeptLocationSleepingRestrictionLooseInBackyard)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetKeptLocationSleepingRestrictionTiedUpOutdoors" class="control-label">
+                                                <input asp-for="IsPetKeptLocationSleepingRestrictionTiedUpOutdoors" class="" /> @Html.DisplayNameFor(m => m.IsPetKeptLocationSleepingRestrictionTiedUpOutdoors)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetKeptLocationSleepingRestrictionBasement" class="control-label">
+                                                <input asp-for="IsPetKeptLocationSleepingRestrictionBasement" class="" /> @Html.DisplayNameFor(m => m.IsPetKeptLocationSleepingRestrictionBasement)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetKeptLocationSleepingRestrictionCratedOutdoors" class="control-label">
+                                                <input asp-for="IsPetKeptLocationSleepingRestrictionCratedOutdoors" class="" /> @Html.DisplayNameFor(m => m.IsPetKeptLocationSleepingRestrictionCratedOutdoors)
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <label asp-for="IsPetKeptLocationSleepingRestrictionOther" class="control-label">
+                                                <input asp-for="IsPetKeptLocationSleepingRestrictionOther" class="" /> @Html.DisplayNameFor(m => m.IsPetKeptLocationSleepingRestrictionOther)
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group has-feedback">
+                                        <label asp-for="PetKeptLocationSleepingRestrictionExplain" class="control-label"></label>
+                                        <textarea asp-for="PetKeptLocationSleepingRestrictionExplain" class="form-control" rows="2"></textarea>
+                                        <span asp-validation-for="PetKeptLocationSleepingRestrictionExplain"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label asp-for="PetAdoptionReason" class="control-label"></label>
                                 <div class="checkbox">
                                     <div class="row">
@@ -642,11 +713,11 @@
                                             <div id="input-type" class="row">
                                                 @foreach (var item in Model.FilterAppIsAwareHuskyAttributesOptions)
                                                 {
-                                                <div class="col-sm-6 col-xs-6">
-                                                    <label class="radio-inline">
-                                                        <input asp-for="FilterAppIsAwareHuskyAttributes" type="radio" value="@item.Id" /> @item.Text
-                                                    </label>
-                                                </div>
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="FilterAppIsAwareHuskyAttributes" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
                                                 }
                                             </div>
                                         </div>
@@ -660,11 +731,11 @@
                                             <div id="input-type" class="row">
                                                 @foreach (var item in Model.FilterAppHasOwnedHuskyBeforeOptions)
                                                 {
-                                                <div class="col-sm-6 col-xs-6">
-                                                    <label class="radio-inline">
-                                                        <input asp-for="FilterAppHasOwnedHuskyBefore" type="radio" value="@item.Id" /> @item.Text
-                                                    </label>
-                                                </div>
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="FilterAppHasOwnedHuskyBefore" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
                                                 }
                                             </div>
                                         </div>
@@ -696,11 +767,11 @@
                                             <div id="input-type" class="row">
                                                 @foreach (var item in Model.FilterAppIsCatOwnerOptions)
                                                 {
-                                                <div class="col-sm-6 col-xs-6">
-                                                    <label class="radio-inline">
-                                                        <input asp-for="FilterAppIsCatOwner" type="radio" value="@item.Id" /> @item.Text
-                                                    </label>
-                                                </div>
+                                                    <div class="col-sm-6 col-xs-6">
+                                                        <label class="radio-inline">
+                                                            <input asp-for="FilterAppIsCatOwner" type="radio" value="@item.Id" /> @item.Text
+                                                        </label>
+                                                    </div>
                                                 }
                                             </div>
                                         </div>
@@ -748,7 +819,7 @@
                             </div>
                             <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
                                 <label asp-for="PhoneNumber" class="control-label"></label>
-                                <input asp-for="PhoneNumber" class="form-control" />
+                                <input asp-for="PhoneNumber" class="form-control phone_us" />
                                 <span asp-validation-for="PhoneNumber"></span>
                             </div>
                         </div>
@@ -1612,9 +1683,9 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <hr />
-                        
+
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-lg-12">
@@ -1626,141 +1697,142 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <hr />
+                        @*@if (Model.ApplicationFeeAmount > 0)
+            {
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4>Payment</h4>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label asp-for="ApplicationFeeAmountReadOnly" class="control-label"></label>
+                            <input asp-for="ApplicationFeeAmountReadOnly" class="form-control" readonly/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="has-feedback">
+                                <label asp-for="BrainTreePayment.PaymentMethod"></label>
+                                <select asp-for="BrainTreePayment.PaymentMethod" asp-items="Html.GetEnumSelectList<PaymentTypeEnum>()" class="form-control">
+                                    <option value=""></option>
+                                </select>
+                                <i class="fa fa-navicon form-control-feedback"></i>
+                                <span asp-validation-for="BrainTreePayment.PaymentMethod"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="has-feedback">
+                                <label asp-for="BrainTreePayment.PayeeFirstName" class="control-label"></label>
+                                <input asp-for="BrainTreePayment.PayeeFirstName" class="form-control"/>
+                                <span asp-validation-for="BrainTreePayment.PayeeFirstName"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="has-feedback">
+                                <label asp-for="BrainTreePayment.PayeeLastName" class="control-label"></label>
+                                <input asp-for="BrainTreePayment.PayeeLastName" class="form-control"/>
+                                <span asp-validation-for="BrainTreePayment.PayeeLastName"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="creditcardrow" style="display:none">
+                    <div class="form-group">
                         <div class="row">
-                            <div class="col-lg-12">
-                                <h4>Payment</h4>
+                            <div class="col-lg-6">
+                                <div class="as-feedback">
+                                    <label asp-for="BrainTreePayment.PayeeAddressStreet1" class="control-label"></label>
+                                    <input asp-for="BrainTreePayment.PayeeAddressStreet1" class="form-control"/>
+                                    <span asp-validation-for="BrainTreePayment.PayeeAddressStreet1"></span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <label asp-for="ApplicationFeeAmountReadOnly" class="control-label"></label>
-                                    <input asp-for="ApplicationFeeAmountReadOnly" class="form-control" readonly/>
+                            <div class="col-lg-6">
+                                <div class="has-feedback">
+                                    <label asp-for="BrainTreePayment.PayeeAddressStreet2" class="control-label"></label>
+                                    <input asp-for="BrainTreePayment.PayeeAddressStreet2" class="form-control"/>
+                                    <span asp-validation-for="BrainTreePayment.PayeeAddressStreet2"></span>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="has-feedback">
-                                        <label asp-for="BrainTreePayment.PaymentMethod"></label>
-                                        <select asp-for="BrainTreePayment.PaymentMethod" asp-items="Html.GetEnumSelectList<PaymentTypeEnum>()" class="form-control">
-                                            <option value=""></option>
-                                        </select>
-                                        <i class="fa fa-navicon form-control-feedback"></i>
-                                        <span asp-validation-for="BrainTreePayment.PaymentMethod"></span>
-                                    </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="has-feedback">
+                                    <label asp-for="BrainTreePayment.PayeeAddressCity" class="control-label"></label>
+                                    <input asp-for="BrainTreePayment.PayeeAddressCity" class="form-control"/>
+                                    <span asp-validation-for="BrainTreePayment.PayeeAddressCity"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="has-feedback">
+                                    <label asp-for="BrainTreePayment.PayeeAddressStateId" class="control-label"></label>
+                                    <select asp-for="BrainTreePayment.PayeeAddressStateId" asp-items="Model.BrainTreePayment.States" class="form-control"></select>
+                                    <span asp-validation-for="BrainTreePayment.PayeeAddressStateId"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="has-feedback">
+                                    <label asp-for="BrainTreePayment.PayeeAddressPostalCode" class="control-label"></label>
+                                    <input asp-for="BrainTreePayment.PayeeAddressPostalCode" class="form-control postal"/>
+                                    <span asp-validation-for="BrainTreePayment.PayeeAddressPostalCode"></span>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div id="error-message"></div>
+                            <div class="col-md-3">
+                                <div class="has-feedback">
+                                    <label for="card-number" class="control-label">Card Number</label>
+                                    <div class="hosted-field form-control" id="card-number"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="has-feedback">
+                                    <label for="cvv" class="control-label">CVV</label>
+                                    <div class="hosted-field form-control" id="cvv"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="has-feedback">
+                                    <label for="expiration-date" class="control-label">Expiration Date</label>
+                                    <div class="hosted-field form-control" id="expiration-date"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="has-feedback">
-                                        <label asp-for="BrainTreePayment.PayeeFirstName" class="control-label"></label>
-                                        <input asp-for="BrainTreePayment.PayeeFirstName" class="form-control"/>
-                                        <span asp-validation-for="BrainTreePayment.PayeeFirstName"></span>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="has-feedback">
-                                        <label asp-for="BrainTreePayment.PayeeLastName" class="control-label"></label>
-                                        <input asp-for="BrainTreePayment.PayeeLastName" class="form-control"/>
-                                        <span asp-validation-for="BrainTreePayment.PayeeLastName"></span>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="row" id="paypalrow" style="display:none">
+                    <div class="col-lg-12">
+                        <div id="paypal-button">
+                            <script src="https://www.paypalobjects.com/api/button.js?"
+                                    data-merchant="braintree"
+                                    data-id="paypal-button"
+                                    data-button="checkout"
+                                    data-color="blue"
+                                    data-size="medium"
+                                    data-shape="pill"
+                                    data-button_type="submit"
+                                    data-button_disabled="false"></script>
                         </div>
-                        <div id="creditcardrow" style="display:none">
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="as-feedback">
-                                            <label asp-for="BrainTreePayment.PayeeAddressStreet1" class="control-label"></label>
-                                            <input asp-for="BrainTreePayment.PayeeAddressStreet1" class="form-control"/>
-                                            <span asp-validation-for="BrainTreePayment.PayeeAddressStreet1"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="has-feedback">
-                                            <label asp-for="BrainTreePayment.PayeeAddressStreet2" class="control-label"></label>
-                                            <input asp-for="BrainTreePayment.PayeeAddressStreet2" class="form-control"/>
-                                            <span asp-validation-for="BrainTreePayment.PayeeAddressStreet2"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="has-feedback">
-                                            <label asp-for="BrainTreePayment.PayeeAddressCity" class="control-label"></label>
-                                            <input asp-for="BrainTreePayment.PayeeAddressCity" class="form-control"/>
-                                            <span asp-validation-for="BrainTreePayment.PayeeAddressCity"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <div class="has-feedback">
-                                            <label asp-for="BrainTreePayment.PayeeAddressStateId" class="control-label"></label>
-                                            <select asp-for="BrainTreePayment.PayeeAddressStateId" asp-items="Model.BrainTreePayment.States" class="form-control"></select>
-                                            <span asp-validation-for="BrainTreePayment.PayeeAddressStateId"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <div class="has-feedback">
-                                            <label asp-for="BrainTreePayment.PayeeAddressPostalCode" class="control-label"></label>
-                                            <input asp-for="BrainTreePayment.PayeeAddressPostalCode" class="form-control"/>
-                                            <span asp-validation-for="BrainTreePayment.PayeeAddressPostalCode"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div id="error-message"></div>
-                                    <div class="col-md-3">
-                                        <div class="has-feedback">
-                                            <label for="card-number" class="control-label">Card Number</label>
-                                            <div class="hosted-field form-control" id="card-number"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="has-feedback">
-                                            <label for="cvv" class="control-label">CVV</label>
-                                            <div class="hosted-field form-control" id="cvv"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="has-feedback">
-                                            <label for="expiration-date" class="control-label">Expiration Date</label>
-                                            <div class="hosted-field form-control" id="expiration-date"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row" id="paypalrow" style="display:none">
-                            <div class="col-lg-12">
-                                <div id="paypal-button">
-                                    <script src="https://www.paypalobjects.com/api/button.js?"
-                                            data-merchant="braintree"
-                                            data-id="paypal-button"
-                                            data-button="checkout"
-                                            data-color="blue"
-                                            data-size="medium"
-                                            data-shape="pill"
-                                            data-button_type="submit"
-                                            data-button_disabled="false"></script>
-                                </div>
-                                <br />
-                            </div>
-                        </div>
-
+                        <br />
+                    </div>
+                </div>
+            }*@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="form-group">

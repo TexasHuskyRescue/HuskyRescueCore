@@ -35,37 +35,42 @@ namespace HuskyRescueCore.Services
 
         public async Task<List<RescueGroupAnimal>> GetAdoptableHuskiesAsync()
         {
+            _logger.LogInformation("Start GetAdoptableHuskiesAsync");
             var rescueGroupsApiUri = (await _systemServices.GetSettingAsync("RescueGroups-Api-Uri")).Value;
+            _logger.LogInformation("Cont. GetAdoptableHuskiesAsync: {@rescueGroupsApiUri}", rescueGroupsApiUri);
             var apikey = (await _systemServices.GetSettingAsync("RescueGroups-Api-Key")).Value;
+            _logger.LogInformation("Cont. GetAdoptableHuskiesAsync: {@rescueGroupsApiUri}", rescueGroupsApiUri);
 
             List<RescueGroupAnimal> animals = null;
             try
             {
                 var result = await rescueGroupApiRepository.GetAdoptableHuskies(rescueGroupsApiUri, apikey, AdoptableHuskiesCachedData);
+                _logger.LogInformation("Cont. GetAdoptableHuskiesAsync: {@result}", result);
                 animals = _rescueAnimalMapper.Map(result);
             }
             catch (WebException ex)
             {
-                _logger.LogError(new EventId(4), ex, "Error reading data from RescueGroups");
+                _logger.LogError("Web: Error reading data from RescueGroups {@WebException}", ex);
             }
             catch (ProtocolViolationException ex)
             {
-                _logger.LogError(new EventId(4), ex, "Error reading data from RescueGroups");
+                _logger.LogError("Protocol Violation: Error reading data from RescueGroups {@ProtocolViolationException}", ex);
             }
             catch (InvalidOperationException ex)
             {
-                _logger.LogError(new EventId(4), ex, "Error reading data from RescueGroups");
+                _logger.LogError("Invalid Operation: Error reading data from RescueGroups {@InvalidOperationException}", ex);
             }
             catch (NotSupportedException ex)
             {
-                _logger.LogError(new EventId(4), ex, "Error reading data from RescueGroups");
+                _logger.LogError("Not Supported: Error reading data from RescueGroups {@NotSupportedException}", ex);
             }
             catch (Exception ex)
             {
-                _logger.LogError(new EventId(4), ex, "Error reading data from RescueGroups");
+                _logger.LogError("Exception: Error reading data from RescueGroups {@Exception}", ex);
             }
-            return animals;
+            _logger.LogInformation("End GetAdoptableHuskiesAsync: {@animals}", animals);
 
+            return animals;
         }
 
         public async Task<List<RescueGroupAnimal>> GetFosterableHuskiesAsync()
@@ -82,23 +87,23 @@ namespace HuskyRescueCore.Services
             }
             catch (WebException ex)
             {
-                _logger.LogError(new EventId(4), ex, "Error reading data from RescueGroups");
+                _logger.LogError("Error reading data from RescueGroups {@WebException}", ex);
             }
             catch (ProtocolViolationException ex)
             {
-                _logger.LogError(new EventId(4), ex, "Error reading data from RescueGroups");
+                _logger.LogError("Error reading data from RescueGroups {@ProtocolViolationException}", ex);
             }
             catch (InvalidOperationException ex)
             {
-                _logger.LogError(new EventId(4), ex, "Error reading data from RescueGroups");
+                _logger.LogError("Error reading data from RescueGroups {@InvalidOperationException}", ex);
             }
             catch (NotSupportedException ex)
             {
-                _logger.LogError(new EventId(4), ex, "Error reading data from RescueGroups");
+                _logger.LogError("Error reading data from RescueGroups {@NotSupportedException}", ex);
             }
             catch (Exception ex)
             {
-                _logger.LogError(new EventId(4), ex, "Error reading data from RescueGroups");
+                _logger.LogError("Error reading data from RescueGroups {@Exception}", ex);
             }
 
             return animals;
@@ -116,23 +121,23 @@ namespace HuskyRescueCore.Services
                 }
                 catch (WebException ex)
                 {
-                    _logger.LogError(new EventId(4), ex, "Error reading data from RescueGroups");
+                    _logger.LogError("Error reading data from RescueGroups {@ {@}}", ex);
                 }
                 catch (ProtocolViolationException ex)
                 {
-                    _logger.LogError(new EventId(4), ex, "Error reading data from RescueGroups");
+                    _logger.LogError("Error reading data from RescueGroups {@ProtocolViolationException}", ex);
                 }
                 catch (InvalidOperationException ex)
                 {
-                    _logger.LogError(new EventId(4), ex, "Error reading data from RescueGroups");
+                    _logger.LogError("Error reading data from RescueGroups {@InvalidOperationException}", ex);
                 }
                 catch (NotSupportedException ex)
                 {
-                    _logger.LogError(new EventId(4), ex, "Error reading data from RescueGroups");
+                    _logger.LogError("Error reading data from RescueGroups {@NotSupportedException}", ex);
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(new EventId(4), ex, "Error reading data from RescueGroups");
+                    _logger.LogError("Error reading data from RescueGroups {@Exception}", ex);
                 }
 
                 return JsonConvert.DeserializeObject<RescueGroupAnimal>(result);

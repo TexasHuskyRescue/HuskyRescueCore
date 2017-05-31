@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.Logging;
 using PostmarkDotNet;
-using PostmarkDotNet.Model;
-using System.IO;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace HuskyRescueCore.Services
 {
@@ -14,15 +11,18 @@ namespace HuskyRescueCore.Services
     public class AuthMessageSender : IEmailSender, ISmsSender
     {
         private readonly ISystemSettingService _systemServices;
+        private readonly ILogger<AuthMessageSender> _logger;
 
-        public AuthMessageSender(ISystemSettingService systemServices)
+        public AuthMessageSender(ISystemSettingService systemServices, ILogger<AuthMessageSender> logger)
         {
             _systemServices = systemServices;
+            _logger = logger;
         }
 
         public async Task<ServiceResult> SendEmailAsync(PostmarkMessage message)
         {
             //TODO - handle results from sending postmark message
+            _logger.LogInformation("Start AuthMessageSender.SendEmailAsync - {@PostmarkMessage}", message);
 
             var serviceResult = new ServiceResult();
 
@@ -30,11 +30,20 @@ namespace HuskyRescueCore.Services
             var client = new PostmarkClient(postmarkKey.Value);
             var sendResult = await client.SendMessageAsync(message);
 
+            serviceResult.Messages.Add("Postmark Message: " + sendResult.Message);
+            serviceResult.Messages.Add("Postmark Status: " + sendResult.Status);
+            serviceResult.Messages.Add("Postmark Error Code: " + sendResult.ErrorCode);
+            serviceResult.Messages.Add("Postmark To: " + sendResult.To);
+
+            _logger.LogInformation("End AuthMessageSender.SendEmailAsync - {@result}", serviceResult);
+
             return serviceResult;
         }
 
         public async Task<ServiceResult> SendEmailAsync(string toEmail, string subject, string message)
         {
+            _logger.LogInformation("Start AuthMessageSender.SendEmailAsync - {@toEmail} - {@subject} - {@message}", toEmail, subject, message);
+
             var systemEmail = await _systemServices.GetSettingAsync("Email-Admin");
 
             var postmarkMessage = new PostmarkMessage()
@@ -47,12 +56,15 @@ namespace HuskyRescueCore.Services
                 Subject = subject,
                 TextBody = message
             };
+            _logger.LogInformation("End AuthMessageSender.SendEmailAsync - {@postmarkMessage}", postmarkMessage);
 
             return await SendEmailAsync(postmarkMessage);
         }
 
         public async Task<ServiceResult> SendEmailAsync(string toEmail, string fromEmail, string replyToEmail, string subject, string message, string tag)
         {
+            _logger.LogInformation("Start AuthMessageSender.SendEmailAsync - {@toEmail} - {@fromEmail} - {@subject} - {@message} - {@tag}", toEmail, fromEmail, subject, message, tag);
+
             var postmarkMessage = new PostmarkMessage()
             {
                 To = toEmail,
@@ -64,11 +76,15 @@ namespace HuskyRescueCore.Services
                 TextBody = message
             };
 
+            _logger.LogInformation("End AuthMessageSender.SendEmailAsync - {@postmarkMessage}", postmarkMessage);
+
             return await SendEmailAsync(postmarkMessage);
         }
 
         public async Task<ServiceResult> SendEmailAsync(string toEmail, string fromEmail, string replyToEmail, string subject, string message, string tag, List<PostmarkMessageAttachment> attachments)
         {
+            _logger.LogInformation("Start AuthMessageSender.SendEmailAsync - {@toEmail} - {@fromEmail} - {@replyToEmail} - {@subject} - {@message} - {@tag} - {@attachmentCount} ", toEmail, fromEmail, replyToEmail, subject, message, tag, attachments.Count);
+
             var postmarkMessage = new PostmarkMessage()
             {
                 To = toEmail,
@@ -80,6 +96,8 @@ namespace HuskyRescueCore.Services
                 TextBody = message,
                 Attachments = attachments
             };
+
+            _logger.LogInformation("End AuthMessageSender.SendEmailAsync - {@postmarkMessage}", postmarkMessage);
 
             return await SendEmailAsync(postmarkMessage);
         }

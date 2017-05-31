@@ -5,20 +5,16 @@
 using HuskyRescueCore.Data;
 using HuskyRescueCore.Helpers.PostRequestGet;
 using HuskyRescueCore.Models.AdopterViewModels;
-using HuskyRescueCore.Models.BrainTreeViewModels;
-//using HuskyRescueCore.Models.Content.Adopt;
 using HuskyRescueCore.Models.RescueGroupViewModels;
 using HuskyRescueCore.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PaulMiami.AspNetCore.Mvc.Recaptcha;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace HuskyRescueCore.Controllers
@@ -41,7 +37,7 @@ namespace HuskyRescueCore.Controllers
         private string adoptProcessId = "adoptProcess";
 
         public AdoptController(ApplicationDbContext context,
-            ISystemSettingService systemServices, IEmailSender emailService, IRescueGroupsService rescuegroupService, IBraintreePaymentService paymentService, 
+            ISystemSettingService systemServices, IEmailSender emailService, IRescueGroupsService rescuegroupService, IBraintreePaymentService paymentService,
             IFormSerivce formService, ILogger<AdoptController> logger, IStorageService storageService)//, IContentfulClient contentfulClient)
         {
             _systemServices = systemServices;
@@ -57,8 +53,18 @@ namespace HuskyRescueCore.Controllers
 
         public async Task<IActionResult> Index()
         {
+            _logger.LogInformation("Start AdoptController.Index Get");
             var huskies = await _rescuegroupService.GetAdoptableHuskiesAsync();
-            var model = new RescueGroupAnimals { Animals = huskies };
+            _logger.LogInformation("Cont. AdoptController.Index Get: {@huskies}", huskies);
+            var model = new RescueGroupAnimals();
+            if (huskies != null)
+            {
+                if (huskies.Count > 0)
+                {
+                    model = new RescueGroupAnimals { Animals = huskies };
+                }
+            }
+            _logger.LogInformation("End AdoptController.Index Get: {@model}", model);
             return View(model);
         }
 
@@ -79,40 +85,40 @@ namespace HuskyRescueCore.Controllers
 
 
             //var result = results.Items;
-                    // Retrieve the ImageId from the linked 'mainPicture' asset
-                    // NOTE: We could merge all of these Select() statements into one, but this way we only have to call dog.GetLink() and dog.GetString()
-                    //       once, which improves performance.
-                    //.Select(leftImg => new
-                    //{
-                    //    leftImg.SystemProperties.Id,
-                    //    ImageId = leftImg.GetLink("leftTopImage").SystemProperties.Id,
-                    //    Type = leftImg.GetString("dogType")
-                    //})
-                    //.Select(rightImg => new
-                    //{
-                    //    rightImg.SystemProperties.Id,
-                    //    ImageId = rightImg.GetLink("rightTopImage").SystemProperties.Id,
-                    //    Type = rightImg.GetString("dogType")
-                    //})
-                    //// Now find the included 'Asset' details from the corresponding ImageId
-                    //.Select(dog => new
-                    //{
-                    //    dog.Id,
-                    //    ImageUrl =
-                    //        results.Includes.Assets.First(asset => asset.SystemProperties.Id == dog.ImageId)
-                    //            .Details.File.Url,
-                    //    dog.Type
-                    //})
-                    //// Now we map our calculated data to our model
-                    //.Select(dog => new DogItem
-                    //{
-                    //    Id = dog.Id,
-                    //    LargeImageUrl =
-                    //        ImageHelper.GetResizedImageUrl(dog.ImageUrl, 500, 500, ImageHelper.ImageType.Jpg, 75),
-                    //    ThumbnailImageUrl =
-                    //        ImageHelper.GetResizedImageUrl(dog.ImageUrl, 150, 150, ImageHelper.ImageType.Png),
-                    //    Type = dog.Type
-                    //});
+            // Retrieve the ImageId from the linked 'mainPicture' asset
+            // NOTE: We could merge all of these Select() statements into one, but this way we only have to call dog.GetLink() and dog.GetString()
+            //       once, which improves performance.
+            //.Select(leftImg => new
+            //{
+            //    leftImg.SystemProperties.Id,
+            //    ImageId = leftImg.GetLink("leftTopImage").SystemProperties.Id,
+            //    Type = leftImg.GetString("dogType")
+            //})
+            //.Select(rightImg => new
+            //{
+            //    rightImg.SystemProperties.Id,
+            //    ImageId = rightImg.GetLink("rightTopImage").SystemProperties.Id,
+            //    Type = rightImg.GetString("dogType")
+            //})
+            //// Now find the included 'Asset' details from the corresponding ImageId
+            //.Select(dog => new
+            //{
+            //    dog.Id,
+            //    ImageUrl =
+            //        results.Includes.Assets.First(asset => asset.SystemProperties.Id == dog.ImageId)
+            //            .Details.File.Url,
+            //    dog.Type
+            //})
+            //// Now we map our calculated data to our model
+            //.Select(dog => new DogItem
+            //{
+            //    Id = dog.Id,
+            //    LargeImageUrl =
+            //        ImageHelper.GetResizedImageUrl(dog.ImageUrl, 500, 500, ImageHelper.ImageType.Jpg, 75),
+            //    ThumbnailImageUrl =
+            //        ImageHelper.GetResizedImageUrl(dog.ImageUrl, 150, 150, ImageHelper.ImageType.Png),
+            //    Type = dog.Type
+            //});
 
             return View();
         }
@@ -120,13 +126,13 @@ namespace HuskyRescueCore.Controllers
         [ImportModelState]
         public IActionResult Apply()
         {
-            _logger.LogInformation("Start Apply Get");
+            _logger.LogInformation("Start AdoptController.Apply Get");
             var model = new ApplyToAdoptViewModel();
 
             model.AppAddressStateList = new List<SelectListItem>();
             var states = _context.States.ToList();
             model.AppAddressStateList = (states.Select(i => new SelectListItem { Text = i.Text, Value = i.Id.ToString() })).AsEnumerable();
-            model.BrainTreePayment.States = (states.Select(i => new SelectListItem { Text = i.Text, Value = i.Id.ToString() })).AsEnumerable();
+            //model.BrainTreePayment.States = (states.Select(i => new SelectListItem { Text = i.Text, Value = i.Id.ToString() })).AsEnumerable();
 
             model.ResidenceOwnershipList = new List<SelectListItem>();
             var ownershipTypes = _context.ApplicationResidenceOwnershipType.ToList();
@@ -152,13 +158,16 @@ namespace HuskyRescueCore.Controllers
 
             #region Payment
             // Values needed for submitting a payment to BrainTree
-            var token = _paymentService.GetClientToken(string.Empty);
-            ViewData.Add("clientToken", token);
-            ViewData.Add("merchantId", _systemServices.GetSetting("BraintreeMerchantId").Value);
-            ViewData.Add("environment", _systemServices.GetSetting("BraintreeIsProduction").Value);
             model.ApplicationFeeAmount = decimal.Parse(_systemServices.GetSetting("AdoptionApplicationFee").Value);
+            if (model.ApplicationFeeAmount > 0)
+            {
+                var token = _paymentService.GetClientToken(string.Empty);
+                ViewData.Add("clientToken", token);
+                ViewData.Add("merchantId", _systemServices.GetSetting("BraintreeMerchantId").Value);
+                ViewData.Add("environment", _systemServices.GetSetting("BraintreeIsProduction").Value);
+            }
             #endregion
-            _logger.LogInformation("End Apply Get: {@model}", model);
+            _logger.LogInformation("End AdoptController.Apply Get: {@model}", model);
             return View(model);
         }
 
@@ -167,31 +176,37 @@ namespace HuskyRescueCore.Controllers
         [ExportModelState]
         public async Task<IActionResult> Apply(ApplyToAdoptViewModel model)
         {
+            _logger.LogInformation("Start AdoptController.Apply POST: {@model}", model);
             // TODO: add exception handling and display error message to user
 
             // payment information in an encrypted string rather than sending the payment information to the server from the client
-            if (string.IsNullOrEmpty(model.BrainTreePayment.Nonce))
+            //if (string.IsNullOrEmpty(model.BrainTreePayment.Nonce) && model.ApplicationFeeAmount > 0)
+            //{
+            //    ModelState.AddModelError("", "incomplete payment information provided");
+            //}
+            //else
+            //{
+            try
             {
-                ModelState.AddModelError("", "incomplete payment information provided");
-            }
-            else
-            {
-                try
+                // get model state errors
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+
+                _logger.LogInformation("Cont. AdoptController.Apply POST: {@ModelStateErrors}", errors);
+
+                // if paying with a credit card the fields for credit card number/cvs/month/year will be invalid because we do not send them to the server
+                // so count the errors on the field validation that do not start with 'card ' (comes from the property attributes in the model class Apply.cs)
+                // TODO validate if this is still needed - all card validation has been removed b/c client side validation requires 'name' properties
+                //      which have been removed for PCI compliance. 
+                var errorCount = errors.Count(m => !m.ErrorMessage.StartsWith("card "));
+
+                if (errorCount == 0)
                 {
-                    // get model state errors
-                    var errors = ModelState.Values.SelectMany(v => v.Errors);
+                    var result = new ServiceResult();
 
-                    // if paying with a credit card the fields for credit card number/cvs/month/year will be invalid because we do not send them to the server
-                    // so count the errors on the field validation that do not start with 'card ' (comes from the property attributes in the model class Apply.cs)
-                    // TODO validate if this is still needed - all card validation has been removed b/c client side validation requires 'name' properties
-                    //      which have been removed for PCI compliance. 
-                    var errorCount = errors.Count(m => !m.ErrorMessage.StartsWith("card "));
-
-                    if (errorCount == 0)
+                    #region Process Payment
+                    if (model.ApplicationFeeAmount > 0)
                     {
-                        var result = new ServiceResult();
-
-                        #region Process Payment
+                        /*
                         var paymentMethod = (Models.BrainTreeViewModels.PaymentTypeEnum)Enum.Parse(typeof(Models.BrainTreeViewModels.PaymentTypeEnum), model.BrainTreePayment.PaymentMethod);
                         var phone = string.IsNullOrEmpty(model.AppCellPhone) ? model.AppHomePhone : model.AppCellPhone;
 
@@ -253,111 +268,113 @@ namespace HuskyRescueCore.Controllers
 
                         // payment is a success. capture the transaction id from braintree
                         model.BrainTreePayment.BraintreeTransactionId = paymentRequestResult.NewKey;
-                        #endregion
+                        */
+                    }
+                    #endregion
 
-                        #region Database
+                    #region Database
+                    _logger.LogInformation("Cont. AdoptController.Apply POST - Datbase Start");
+                    var personId = Guid.NewGuid();
+                    var applicantId = Guid.NewGuid();
 
-                        var personId = Guid.NewGuid();
-                        var applicantId = Guid.NewGuid();
+                    #region Copy ViewModel to database Model
+                    var dbApplicant = new Models.ApplicationAdoption
+                    {
+                        Id = applicantId,
+                        PersonId = personId,
+                        AppAddressStateId = model.AppAddressStateId,
+                        AppAddressCity = model.AppAddressCity,
+                        AppAddressStreet1 = model.AppAddressStreet1,
+                        AppAddressZIP = model.AppAddressZip,
+                        AppCellPhone = model.AppCellPhone,
+                        AppDateBirth = model.AppDateBirth,
+                        AppEmail = model.AppEmail,
+                        AppEmployer = model.AppEmployer,
+                        AppHomePhone = model.AppHomePhone,
+                        AppNameFirst = model.AppNameFirst,
+                        AppNameLast = model.AppNameLast,
+                        AppSpouseNameFirst = model.AppSpouseNameFirst,
+                        AppSpouseNameLast = model.AppSpouseNameLast,
+                        AppTravelFrequency = model.AppTravelFrequency,
+                        FilterAppCatsOwnedCount = model.FilterAppCatsOwnedCount,
+                        FilterAppDogsInterestedIn = model.FilterAppDogsInterestedIn,
+                        FilterAppHasOwnedHuskyBefore = model.FilterAppHasOwnedHuskyBefore != null && model.FilterAppHasOwnedHuskyBefore.Value,
+                        FilterAppIsAwareHuskyAttributes = model.FilterAppIsAwareHuskyAttributes != null && model.FilterAppIsAwareHuskyAttributes.Value,
+                        FilterAppIsCatOwner = model.FilterAppIsCatOwner != null && model.FilterAppIsCatOwner.Value,
+                        FilterAppTraitsDesired = model.FilterAppTraitsDesired,
+                        DateSubmitted = DateTime.Today,
+                        IsAllAdultsAgreedOnAdoption = model.IsAllAdultsAgreedOnAdoption,
+                        IsAllAdultsAgreedOnAdoptionReason = model.IsAllAdultsAgreedOnAdoptionReason,
+                        IsAppOrSpouseStudent = model.IsAppOrSpouseStudent != null && model.IsAppOrSpouseStudent.Value,
+                        IsAppTravelFrequent = model.IsAppTravelFrequent != null && model.IsAppTravelFrequent.Value,
+                        IsPetAdoptionReasonCompanionChild = model.IsPetAdoptionReasonCompanionChild,
+                        IsPetAdoptionReasonCompanionPet = model.IsPetAdoptionReasonCompanionPet,
+                        IsPetAdoptionReasonGift = model.IsPetAdoptionReasonGift,
+                        IsPetAdoptionReasonGuardDog = model.IsPetAdoptionReasonGuardDog,
+                        IsPetAdoptionReasonHousePet = model.IsPetAdoptionReasonHousePet,
+                        IsPetAdoptionReasonJoggingPartner = model.IsPetAdoptionReasonJoggingPartner,
+                        IsPetAdoptionReasonOther = model.IsPetAdoptionReasonOther,
+                        IsPetAdoptionReasonWatchDog = model.IsPetAdoptionReasonWatchDog,
+                        IsPetKeptLocationAloneRestrictionBasement = model.IsPetKeptLocationAloneRestrictionBasement,
+                        IsPetKeptLocationAloneRestrictionCratedIndoors = model.IsPetKeptLocationAloneRestrictionCratedIndoors,
+                        IsPetKeptLocationAloneRestrictionCratedOutdoors = model.IsPetKeptLocationAloneRestrictionCratedOutdoors,
+                        IsPetKeptLocationAloneRestrictionGarage = model.IsPetKeptLocationAloneRestrictionGarage,
+                        IsPetKeptLocationAloneRestrictionLooseInBackyard = model.IsPetKeptLocationAloneRestrictionLooseInBackyard,
+                        IsPetKeptLocationAloneRestrictionLooseIndoors = model.IsPetKeptLocationAloneRestrictionLooseIndoors,
+                        IsPetKeptLocationAloneRestrictionOther = model.IsPetKeptLocationAloneRestrictionOther,
+                        IsPetKeptLocationAloneRestrictionOutsideKennel = model.IsPetKeptLocationAloneRestrictionOutsideKennel,
+                        IsPetKeptLocationAloneRestrictionTiedUpOutdoors = model.IsPetKeptLocationAloneRestrictionTiedUpOutdoors,
+                        IsPetKeptLocationInOutDoorMostlyOutside = model.IsPetKeptLocationInOutDoorMostlyOutsides,
+                        IsPetKeptLocationInOutDoorsMostlyInside = model.IsPetKeptLocationInOutDoorsMostlyInside,
+                        IsPetKeptLocationInOutDoorsTotallyInside = model.IsPetKeptLocationInOutDoorsTotallyInside,
+                        IsPetKeptLocationInOutDoorsTotallyOutside = model.IsPetKeptLocationInOutDoorsTotallyOutside,
+                        IsPetKeptLocationSleepingRestrictionBasement = model.IsPetKeptLocationSleepingRestrictionBasement,
+                        IsPetKeptLocationSleepingRestrictionCratedIndoors = model.IsPetKeptLocationSleepingRestrictionCratedIndoors,
+                        IsPetKeptLocationSleepingRestrictionCratedOutdoors = model.IsPetKeptLocationSleepingRestrictionCratedOutdoors,
+                        IsPetKeptLocationSleepingRestrictionGarage = model.IsPetKeptLocationSleepingRestrictionGarage,
+                        IsPetKeptLocationSleepingRestrictionInBedOwner = model.IsPetKeptLocationSleepingRestrictionBedWithOwner,
+                        IsPetKeptLocationSleepingRestrictionLooseInBackyard = model.IsPetKeptLocationSleepingRestrictionLooseInBackyard,
+                        IsPetKeptLocationSleepingRestrictionLooseIndoors = model.IsPetKeptLocationSleepingRestrictionLooseIndoors,
+                        IsPetKeptLocationSleepingRestrictionOther = model.IsPetKeptLocationSleepingRestrictionOther,
+                        IsPetKeptLocationSleepingRestrictionOutsideKennel = model.IsPetKeptLocationSleepingRestrictionOutsideKennel,
+                        IsPetKeptLocationSleepingRestrictionTiedUpOutdoors = model.IsPetKeptLocationSleepingRestrictionTiedUpOutdoors,
+                        ResIdenceIsYardFenced = model.ResidenceIsYardFenced != null && model.ResidenceIsYardFenced.Value,
+                        ResidenceAgesOfChildren = model.ResidenceAgesOfChildren,
+                        ResidenceFenceTypeHeight = model.ResidenceFenceTypeHeight,
+                        ResidenceIsPetAllowed = model.ResidenceIsPetAllowed,
+                        ResidenceIsPetDepositPaid = model.ResidenceIsPetDepositPaid,
+                        ResidenceIsPetDepositRequired = model.ResidenceIsPetDepositRequired,
+                        ResidenceLandlordName = model.ResidenceLandlordName,
+                        ResidenceLandlordNumber = model.ResidenceLandlordNumber,
+                        ResidenceLengthOfResidence = model.ResidenceLengthOfResidence,
+                        ResidenceNumberOccupants = model.ResidenceNumberOccupants,
+                        ApplicationResidenceOwnershipTypeId = model.ResidenceOwnershipId,
+                        ResidencePetDepositAmount = model.ResidencePetDepositAmount,
+                        ApplicationResidencePetDepositCoverageTypeId = model.ResidencePetDepositCoverageId,
+                        ResidencePetSizeWeightLimit = model.ResidencePetSizeWeightLimit,
+                        ApplicationResidenceTypeId = model.ResidenceTypeId,
+                        PetLeftAloneDays = model.PetLeftAloneDays,
+                        PetLeftAloneHours = model.PetLeftAloneHours,
+                        ApplicationStudentTypeId = model.StudentTypeId,
+                        PetAdoptionReasonExplain = model.PetAdoptionReasonExplain,
+                        PetKeptLocationAloneRestriction = model.PetKeptLocationAloneRestriction,
+                        PetKeptLocationAloneRestrictionExplain = model.PetKeptLocationAloneRestrictionExplain,
+                        PetKeptLocationInOutDoors = model.PetKeptLocationInOutDoors,
+                        PetKeptLocationInOutDoorsExplain = model.PetKeptLocationInOutDoorsExplain,
+                        PetKeptLocationSleepingRestriction = model.PetKeptLocationSleepingRestriction,
+                        PetKeptLocationSleepingRestrictionExplain = model.PetKeptLocationSleepingRestrictionExplain,
+                        WhatIfMovingPetPlacement = model.WhatIfMovingPetPlacement,
+                        WhatIfTravelPetPlacement = model.WhatIfTravelPetPlacement,
+                        ApplicationFeeAmount = model.ApplicationFeeAmount,
+                        //ApplicationFeePaymentMethod = model.BrainTreePayment.PaymentMethod,
+                        //ApplicationFeeTransactionId = model.BrainTreePayment.BraintreeTransactionId,
+                        Comments = model.Comments,
+                        VeterinarianDoctorName = model.VeterinarianDoctorName,
+                        VeterinarianOfficeName = model.VeterinarianOfficeName,
+                        VeterinarianPhoneNumber = model.PhoneNumber
+                    };
 
-                        #region Copy ViewModel to database Model
-                        var dbApplicant = new Models.ApplicationAdoption
-                        {
-                            Id = applicantId,
-                            PersonId = personId,
-                            AppAddressStateId = model.AppAddressStateId,
-                            AppAddressCity = model.AppAddressCity,
-                            AppAddressStreet1 = model.AppAddressStreet1,
-                            AppAddressZIP = model.AppAddressZip,
-                            AppCellPhone = model.AppCellPhone,
-                            AppDateBirth = model.AppDateBirth,
-                            AppEmail = model.AppEmail,
-                            AppEmployer = model.AppEmployer,
-                            AppHomePhone = model.AppHomePhone,
-                            AppNameFirst = model.AppNameFirst,
-                            AppNameLast = model.AppNameLast,
-                            AppSpouseNameFirst = model.AppSpouseNameFirst,
-                            AppSpouseNameLast = model.AppSpouseNameLast,
-                            AppTravelFrequency = model.AppTravelFrequency,
-                            FilterAppCatsOwnedCount = model.FilterAppCatsOwnedCount,
-                            FilterAppDogsInterestedIn = model.FilterAppDogsInterestedIn,
-                            FilterAppHasOwnedHuskyBefore = model.FilterAppHasOwnedHuskyBefore != null && model.FilterAppHasOwnedHuskyBefore.Value,
-                            FilterAppIsAwareHuskyAttributes = model.FilterAppIsAwareHuskyAttributes != null && model.FilterAppIsAwareHuskyAttributes.Value,
-                            FilterAppIsCatOwner = model.FilterAppIsCatOwner != null && model.FilterAppIsCatOwner.Value,
-                            FilterAppTraitsDesired = model.FilterAppTraitsDesired,
-                            DateSubmitted = DateTime.Today,
-                            IsAllAdultsAgreedOnAdoption = model.IsAllAdultsAgreedOnAdoption,
-                            IsAllAdultsAgreedOnAdoptionReason = model.IsAllAdultsAgreedOnAdoptionReason,
-                            IsAppOrSpouseStudent = model.IsAppOrSpouseStudent != null && model.IsAppOrSpouseStudent.Value,
-                            IsAppTravelFrequent = model.IsAppTravelFrequent != null && model.IsAppTravelFrequent.Value,
-                            IsPetAdoptionReasonCompanionChild = model.IsPetAdoptionReasonCompanionChild,
-                            IsPetAdoptionReasonCompanionPet = model.IsPetAdoptionReasonCompanionPet,
-                            IsPetAdoptionReasonGift = model.IsPetAdoptionReasonGift,
-                            IsPetAdoptionReasonGuardDog = model.IsPetAdoptionReasonGuardDog,
-                            IsPetAdoptionReasonHousePet = model.IsPetAdoptionReasonHousePet,
-                            IsPetAdoptionReasonJoggingPartner = model.IsPetAdoptionReasonJoggingPartner,
-                            IsPetAdoptionReasonOther = model.IsPetAdoptionReasonOther,
-                            IsPetAdoptionReasonWatchDog = model.IsPetAdoptionReasonWatchDog,
-                            IsPetKeptLocationAloneRestrictionBasement = model.IsPetKeptLocationAloneRestrictionBasement,
-                            IsPetKeptLocationAloneRestrictionCratedIndoors = model.IsPetKeptLocationAloneRestrictionCratedIndoors,
-                            IsPetKeptLocationAloneRestrictionCratedOutdoors = model.IsPetKeptLocationAloneRestrictionCratedOutdoors,
-                            IsPetKeptLocationAloneRestrictionGarage = model.IsPetKeptLocationAloneRestrictionGarage,
-                            IsPetKeptLocationAloneRestrictionLooseInBackyard = model.IsPetKeptLocationAloneRestrictionLooseInBackyard,
-                            IsPetKeptLocationAloneRestrictionLooseIndoors = model.IsPetKeptLocationAloneRestrictionLooseIndoors,
-                            IsPetKeptLocationAloneRestrictionOther = model.IsPetKeptLocationAloneRestrictionOther,
-                            IsPetKeptLocationAloneRestrictionOutsideKennel = model.IsPetKeptLocationAloneRestrictionOutsideKennel,
-                            IsPetKeptLocationAloneRestrictionTiedUpOutdoors = model.IsPetKeptLocationAloneRestrictionTiedUpOutdoors,
-                            IsPetKeptLocationInOutDoorMostlyOutside = model.IsPetKeptLocationInOutDoorMostlyOutsides,
-                            IsPetKeptLocationInOutDoorsMostlyInside = model.IsPetKeptLocationInOutDoorsMostlyInside,
-                            IsPetKeptLocationInOutDoorsTotallyInside = model.IsPetKeptLocationInOutDoorsTotallyInside,
-                            IsPetKeptLocationInOutDoorsTotallyOutside = model.IsPetKeptLocationInOutDoorsTotallyOutside,
-                            IsPetKeptLocationSleepingRestrictionBasement = model.IsPetKeptLocationSleepingRestrictionBasement,
-                            IsPetKeptLocationSleepingRestrictionCratedIndoors = model.IsPetKeptLocationSleepingRestrictionCratedIndoors,
-                            IsPetKeptLocationSleepingRestrictionCratedOutdoors = model.IsPetKeptLocationSleepingRestrictionCratedOutdoors,
-                            IsPetKeptLocationSleepingRestrictionGarage = model.IsPetKeptLocationSleepingRestrictionGarage,
-                            IsPetKeptLocationSleepingRestrictionInBedOwner = model.IsPetKeptLocationSleepingRestrictionInBedOwner,
-                            IsPetKeptLocationSleepingRestrictionLooseInBackyard = model.IsPetKeptLocationSleepingRestrictionLooseInBackyard,
-                            IsPetKeptLocationSleepingRestrictionLooseIndoors = model.IsPetKeptLocationSleepingRestrictionLooseIndoors,
-                            IsPetKeptLocationSleepingRestrictionOther = model.IsPetKeptLocationSleepingRestrictionOther,
-                            IsPetKeptLocationSleepingRestrictionOutsideKennel = model.IsPetKeptLocationSleepingRestrictionOutsideKennel,
-                            IsPetKeptLocationSleepingRestrictionTiedUpOutdoors = model.IsPetKeptLocationSleepingRestrictionTiedUpOutdoors,
-                            ResIdenceIsYardFenced = model.ResidenceIsYardFenced != null && model.ResidenceIsYardFenced.Value,
-                            ResidenceAgesOfChildren = model.ResidenceAgesOfChildren,
-                            ResidenceFenceTypeHeight = model.ResidenceFenceTypeHeight,
-                            ResidenceIsPetAllowed = model.ResidenceIsPetAllowed,
-                            ResidenceIsPetDepositPaid = model.ResidenceIsPetDepositPaid,
-                            ResidenceIsPetDepositRequired = model.ResidenceIsPetDepositRequired,
-                            ResidenceLandlordName = model.ResidenceLandlordName,
-                            ResidenceLandlordNumber = model.ResidenceLandlordNumber,
-                            ResidenceLengthOfResidence = model.ResidenceLengthOfResidence,
-                            ResidenceNumberOccupants = model.ResidenceNumberOccupants,
-                            ApplicationResidenceOwnershipTypeId = model.ResidenceOwnershipId,
-                            ResidencePetDepositAmount = model.ResidencePetDepositAmount,
-                            ApplicationResidencePetDepositCoverageTypeId = model.ResidencePetDepositCoverageId,
-                            ResidencePetSizeWeightLimit = model.ResidencePetSizeWeightLimit,
-                            ApplicationResidenceTypeId = model.ResidenceTypeId,
-                            PetLeftAloneDays = model.PetLeftAloneDays,
-                            PetLeftAloneHours = model.PetLeftAloneHours,
-                            ApplicationStudentTypeId = model.StudentTypeId,
-                            PetAdoptionReasonExplain = model.PetAdoptionReasonExplain,
-                            PetKeptLocationAloneRestriction = model.PetKeptLocationAloneRestriction,
-                            PetKeptLocationAloneRestrictionExplain = model.PetKeptLocationAloneRestrictionExplain,
-                            PetKeptLocationInOutDoors = model.PetKeptLocationInOutDoors,
-                            PetKeptLocationInOutDoorsExplain = model.PetKeptLocationInOutDoorsExplain,
-                            PetKeptLocationSleepingRestriction = model.PetKeptLocationSleepingRestriction,
-                            PetKeptLocationSleepingRestrictionExplain = model.PetKeptLocationSleepingRestrictionExplain,
-                            WhatIfMovingPetPlacement = model.WhatIfMovingPetPlacement,
-                            WhatIfTravelPetPlacement = model.WhatIfTravelPetPlacement,
-                            ApplicationFeeAmount = model.ApplicationFeeAmount,
-                            ApplicationFeePaymentMethod = model.BrainTreePayment.PaymentMethod,
-                            ApplicationFeeTransactionId = model.BrainTreePayment.BraintreeTransactionId,
-                            Comments = model.Comments,
-                            VeterinarianDoctorName = model.VeterinarianDoctorName,
-                            VeterinarianOfficeName = model.VeterinarianOfficeName,
-                            VeterinarianPhoneNumber = model.PhoneNumber
-                        };
-
-                        dbApplicant.ApplicationAdoptionStatuses = new List<Models.ApplicationAdoptionStatus> {
+                    dbApplicant.ApplicationAdoptionStatuses = new List<Models.ApplicationAdoptionStatus> {
                             new Models.ApplicationAdoptionStatus {
                                 Id = 0,
                                 ApplicationAdoptionId = applicantId,
@@ -366,127 +383,127 @@ namespace HuskyRescueCore.Controllers
                             }
                         };
 
-                        dbApplicant.ApplicationAppAnimals = new List<Models.ApplicationAppAnimal>();
+                    dbApplicant.ApplicationAppAnimals = new List<Models.ApplicationAppAnimal>();
 
-                        if (!string.IsNullOrEmpty(model.Name1))
+                    if (!string.IsNullOrEmpty(model.Name1))
+                    {
+                        dbApplicant.ApplicationAppAnimals.Add(new Models.ApplicationAppAnimal
                         {
-                            dbApplicant.ApplicationAppAnimals.Add(new Models.ApplicationAppAnimal
-                            {
-                                Id = Guid.NewGuid(),
-                                ApplicantId = applicantId,
-                                Age = model.Age1,
-                                Breed = model.Breed1,
-                                Sex = model.Sex1,
-                                OwnershipLength = model.OwnershipLength1,
-                                Name = model.Name1,
-                                IsAltered = model.IsAltered1 != null && model.IsAltered1.Value,
-                                AlteredReason = model.AlteredReason1,
-                                IsFullyVaccinated = model.IsFullyVaccinated1 != null && model.IsFullyVaccinated1.Value,
-                                FullyVaccinatedReason = model.FullyVaccinatedReason1,
-                                IsHwPrevention = model.IsHwPrevention1 != null && model.IsHwPrevention1.Value,
-                                HwPreventionReason = model.HwPreventionReason1,
-                                IsStillOwned = model.IsStillOwned1 != null && model.IsStillOwned1.Value,
-                                IsStillOwnedReason = model.IsStillOwnedReason1
-                            });
-                        }
-                        if (!string.IsNullOrEmpty(model.Name2))
+                            Id = Guid.NewGuid(),
+                            ApplicantId = applicantId,
+                            Age = model.Age1,
+                            Breed = model.Breed1,
+                            Sex = model.Sex1,
+                            OwnershipLength = model.OwnershipLength1,
+                            Name = model.Name1,
+                            IsAltered = model.IsAltered1 != null && model.IsAltered1.Value,
+                            AlteredReason = model.AlteredReason1,
+                            IsFullyVaccinated = model.IsFullyVaccinated1 != null && model.IsFullyVaccinated1.Value,
+                            FullyVaccinatedReason = model.FullyVaccinatedReason1,
+                            IsHwPrevention = model.IsHwPrevention1 != null && model.IsHwPrevention1.Value,
+                            HwPreventionReason = model.HwPreventionReason1,
+                            IsStillOwned = model.IsStillOwned1 != null && model.IsStillOwned1.Value,
+                            IsStillOwnedReason = model.IsStillOwnedReason1
+                        });
+                    }
+                    if (!string.IsNullOrEmpty(model.Name2))
+                    {
+                        dbApplicant.ApplicationAppAnimals.Add(new Models.ApplicationAppAnimal
                         {
-                            dbApplicant.ApplicationAppAnimals.Add(new Models.ApplicationAppAnimal
-                            {
-                                Id = Guid.NewGuid(),
-                                ApplicantId = applicantId,
-                                Age = model.Age2,
-                                Breed = model.Breed2,
-                                Sex = model.Sex2,
-                                OwnershipLength = model.OwnershipLength2,
-                                Name = model.Name2,
-                                IsAltered = model.IsAltered2 != null && model.IsAltered2.Value,
-                                AlteredReason = model.AlteredReason2,
-                                IsFullyVaccinated = model.IsFullyVaccinated2 != null && model.IsFullyVaccinated2.Value,
-                                FullyVaccinatedReason = model.FullyVaccinatedReason2,
-                                IsHwPrevention = model.IsHwPrevention2 != null && model.IsHwPrevention2.Value,
-                                HwPreventionReason = model.HwPreventionReason2,
-                                IsStillOwned = model.IsStillOwned2 != null && model.IsStillOwned2.Value,
-                                IsStillOwnedReason = model.IsStillOwnedReason2
-                            });
-                        }
-                        if (!string.IsNullOrEmpty(model.Name3))
+                            Id = Guid.NewGuid(),
+                            ApplicantId = applicantId,
+                            Age = model.Age2,
+                            Breed = model.Breed2,
+                            Sex = model.Sex2,
+                            OwnershipLength = model.OwnershipLength2,
+                            Name = model.Name2,
+                            IsAltered = model.IsAltered2 != null && model.IsAltered2.Value,
+                            AlteredReason = model.AlteredReason2,
+                            IsFullyVaccinated = model.IsFullyVaccinated2 != null && model.IsFullyVaccinated2.Value,
+                            FullyVaccinatedReason = model.FullyVaccinatedReason2,
+                            IsHwPrevention = model.IsHwPrevention2 != null && model.IsHwPrevention2.Value,
+                            HwPreventionReason = model.HwPreventionReason2,
+                            IsStillOwned = model.IsStillOwned2 != null && model.IsStillOwned2.Value,
+                            IsStillOwnedReason = model.IsStillOwnedReason2
+                        });
+                    }
+                    if (!string.IsNullOrEmpty(model.Name3))
+                    {
+                        dbApplicant.ApplicationAppAnimals.Add(new Models.ApplicationAppAnimal
                         {
-                            dbApplicant.ApplicationAppAnimals.Add(new Models.ApplicationAppAnimal
-                            {
-                                Id = Guid.NewGuid(),
-                                ApplicantId = applicantId,
-                                Age = model.Age3,
-                                Breed = model.Breed3,
-                                Sex = model.Sex3,
-                                OwnershipLength = model.OwnershipLength3,
-                                Name = model.Name3,
-                                IsAltered = model.IsAltered3 != null && model.IsAltered3.Value,
-                                AlteredReason = model.AlteredReason3,
-                                IsFullyVaccinated = model.IsFullyVaccinated3 != null && model.IsFullyVaccinated3.Value,
-                                FullyVaccinatedReason = model.FullyVaccinatedReason3,
-                                IsHwPrevention = model.IsHwPrevention3 != null && model.IsHwPrevention3.Value,
-                                HwPreventionReason = model.HwPreventionReason3,
-                                IsStillOwned = model.IsStillOwned3 != null && model.IsStillOwned3.Value,
-                                IsStillOwnedReason = model.IsStillOwnedReason3
-                            });
-                        }
-                        if (!string.IsNullOrEmpty(model.Name4))
+                            Id = Guid.NewGuid(),
+                            ApplicantId = applicantId,
+                            Age = model.Age3,
+                            Breed = model.Breed3,
+                            Sex = model.Sex3,
+                            OwnershipLength = model.OwnershipLength3,
+                            Name = model.Name3,
+                            IsAltered = model.IsAltered3 != null && model.IsAltered3.Value,
+                            AlteredReason = model.AlteredReason3,
+                            IsFullyVaccinated = model.IsFullyVaccinated3 != null && model.IsFullyVaccinated3.Value,
+                            FullyVaccinatedReason = model.FullyVaccinatedReason3,
+                            IsHwPrevention = model.IsHwPrevention3 != null && model.IsHwPrevention3.Value,
+                            HwPreventionReason = model.HwPreventionReason3,
+                            IsStillOwned = model.IsStillOwned3 != null && model.IsStillOwned3.Value,
+                            IsStillOwnedReason = model.IsStillOwnedReason3
+                        });
+                    }
+                    if (!string.IsNullOrEmpty(model.Name4))
+                    {
+                        dbApplicant.ApplicationAppAnimals.Add(new Models.ApplicationAppAnimal
                         {
-                            dbApplicant.ApplicationAppAnimals.Add(new Models.ApplicationAppAnimal
-                            {
-                                Id = Guid.NewGuid(),
-                                ApplicantId = applicantId,
-                                Age = model.Age4,
-                                Breed = model.Breed4,
-                                Sex = model.Sex4,
-                                OwnershipLength = model.OwnershipLength4,
-                                Name = model.Name4,
-                                IsAltered = model.IsAltered4 != null && model.IsAltered4.Value,
-                                AlteredReason = model.AlteredReason4,
-                                IsFullyVaccinated = model.IsFullyVaccinated4 != null && model.IsFullyVaccinated4.Value,
-                                FullyVaccinatedReason = model.FullyVaccinatedReason4,
-                                IsHwPrevention = model.IsHwPrevention4 != null && model.IsHwPrevention4.Value,
-                                HwPreventionReason = model.HwPreventionReason4,
-                                IsStillOwned = model.IsStillOwned4 != null && model.IsStillOwned4.Value,
-                                IsStillOwnedReason = model.IsStillOwnedReason4
-                            });
-                        }
-                        if (!string.IsNullOrEmpty(model.Name5))
+                            Id = Guid.NewGuid(),
+                            ApplicantId = applicantId,
+                            Age = model.Age4,
+                            Breed = model.Breed4,
+                            Sex = model.Sex4,
+                            OwnershipLength = model.OwnershipLength4,
+                            Name = model.Name4,
+                            IsAltered = model.IsAltered4 != null && model.IsAltered4.Value,
+                            AlteredReason = model.AlteredReason4,
+                            IsFullyVaccinated = model.IsFullyVaccinated4 != null && model.IsFullyVaccinated4.Value,
+                            FullyVaccinatedReason = model.FullyVaccinatedReason4,
+                            IsHwPrevention = model.IsHwPrevention4 != null && model.IsHwPrevention4.Value,
+                            HwPreventionReason = model.HwPreventionReason4,
+                            IsStillOwned = model.IsStillOwned4 != null && model.IsStillOwned4.Value,
+                            IsStillOwnedReason = model.IsStillOwnedReason4
+                        });
+                    }
+                    if (!string.IsNullOrEmpty(model.Name5))
+                    {
+                        dbApplicant.ApplicationAppAnimals.Add(new Models.ApplicationAppAnimal
                         {
-                            dbApplicant.ApplicationAppAnimals.Add(new Models.ApplicationAppAnimal
-                            {
-                                Id = Guid.NewGuid(),
-                                ApplicantId = applicantId,
-                                Age = model.Age5,
-                                Breed = model.Breed5,
-                                Sex = model.Sex5,
-                                OwnershipLength = model.OwnershipLength5,
-                                Name = model.Name5,
-                                IsAltered = model.IsAltered5 != null && model.IsAltered5.Value,
-                                AlteredReason = model.AlteredReason5,
-                                IsFullyVaccinated = model.IsFullyVaccinated5 != null && model.IsFullyVaccinated5.Value,
-                                FullyVaccinatedReason = model.FullyVaccinatedReason5,
-                                IsHwPrevention = model.IsHwPrevention5 != null && model.IsHwPrevention5.Value,
-                                HwPreventionReason = model.HwPreventionReason5,
-                                IsStillOwned = model.IsStillOwned5 != null && model.IsStillOwned5.Value,
-                                IsStillOwnedReason = model.IsStillOwnedReason5
-                            });
-                        }
+                            Id = Guid.NewGuid(),
+                            ApplicantId = applicantId,
+                            Age = model.Age5,
+                            Breed = model.Breed5,
+                            Sex = model.Sex5,
+                            OwnershipLength = model.OwnershipLength5,
+                            Name = model.Name5,
+                            IsAltered = model.IsAltered5 != null && model.IsAltered5.Value,
+                            AlteredReason = model.AlteredReason5,
+                            IsFullyVaccinated = model.IsFullyVaccinated5 != null && model.IsFullyVaccinated5.Value,
+                            FullyVaccinatedReason = model.FullyVaccinatedReason5,
+                            IsHwPrevention = model.IsHwPrevention5 != null && model.IsHwPrevention5.Value,
+                            HwPreventionReason = model.HwPreventionReason5,
+                            IsStillOwned = model.IsStillOwned5 != null && model.IsStillOwned5.Value,
+                            IsStillOwnedReason = model.IsStillOwnedReason5
+                        });
+                    }
 
-                        var dbPerson = new Models.Person
-                        {
-                            Id = personId,
-                            CreatedTimestamp = DateTime.Today,
-                            FirstName = model.AppNameFirst,
-                            LastName = model.AppNameLast,
-                            IsActive = true,
-                            IsAdopter = true,
-                            FullName = model.AppFullName,
-                            CanEmail = model.IsEmailable.HasValue ? model.IsEmailable.Value : false
-                        };
+                    var dbPerson = new Models.Person
+                    {
+                        Id = personId,
+                        CreatedTimestamp = DateTime.Today,
+                        FirstName = model.AppNameFirst,
+                        LastName = model.AppNameLast,
+                        IsActive = true,
+                        IsAdopter = true,
+                        FullName = model.AppFullName,
+                        CanEmail = model.IsEmailable.HasValue ? model.IsEmailable.Value : false
+                    };
 
-                        dbPerson.Addresses = new List<Models.Address> {
+                    dbPerson.Addresses = new List<Models.Address> {
                             new Models.Address
                             {
                                 Id = Guid.NewGuid(),
@@ -501,9 +518,9 @@ namespace HuskyRescueCore.Controllers
                             }
                         };
 
-                        if (!string.IsNullOrEmpty(model.AppEmail))
-                        {
-                            dbPerson.Emails = new List<Models.Email>
+                    if (!string.IsNullOrEmpty(model.AppEmail))
+                    {
+                        dbPerson.Emails = new List<Models.Email>
                                         {
                                             new Models.Email
                                             {
@@ -513,134 +530,162 @@ namespace HuskyRescueCore.Controllers
                                                 EmailTypeId = 0
                                             }
                                         };
-                        }
+                    }
 
-                        if (!string.IsNullOrEmpty(model.AppHomePhone) || !string.IsNullOrEmpty(model.AppCellPhone))
+                    if (!string.IsNullOrEmpty(model.AppHomePhone) || !string.IsNullOrEmpty(model.AppCellPhone))
+                    {
+                        dbPerson.Phones = new List<Models.Phone>();
+                        if (!string.IsNullOrEmpty(model.AppHomePhone))
                         {
-                            dbPerson.Phones = new List<Models.Phone>();
-                            if (!string.IsNullOrEmpty(model.AppHomePhone))
+                            dbPerson.Phones.Add(new Models.Phone
                             {
-                                dbPerson.Phones.Add(new Models.Phone
-                                {
-                                    Id = Guid.NewGuid(),
-                                    PersonId = personId,
-                                    Number = model.AppHomePhone,
-                                    PhoneTypeId = 1
-                                });
-                            }
-                            if (!string.IsNullOrEmpty(model.AppCellPhone))
+                                Id = Guid.NewGuid(),
+                                PersonId = personId,
+                                Number = model.AppHomePhone,
+                                PhoneTypeId = 1
+                            });
+                        }
+                        if (!string.IsNullOrEmpty(model.AppCellPhone))
+                        {
+                            dbPerson.Phones.Add(new Models.Phone
                             {
-                                dbPerson.Phones.Add(new Models.Phone
-                                {
-                                    Id = Guid.NewGuid(),
-                                    PersonId = personId,
-                                    Number = model.AppCellPhone,
-                                    PhoneTypeId = 1
-                                });
-                            }
+                                Id = Guid.NewGuid(),
+                                PersonId = personId,
+                                Number = model.AppCellPhone,
+                                PhoneTypeId = 1
+                            });
                         }
-                        #endregion
+                    }
+                    #endregion
 
-                        #region Add to Database
-                        _context.Add(dbApplicant);
-                        _context.Add(dbPerson);
-                        #endregion
+                    _logger.LogInformation("Cont. AdoptController.Apply POST - Datbase Cont. - {@dbApplicant}", dbApplicant);
+                    _logger.LogInformation("Cont. AdoptController.Apply POST - Datbase Cont. - {@dbPerson}", dbPerson);
 
-                        #region Save to Database and check exceptions
-                        try
+                    #region Add to Database
+                    _context.Add(dbApplicant);
+                    _context.Add(dbPerson);
+                    #endregion
+
+                    #region Save to Database and check exceptions
+                    try
+                    {
+                        _logger.LogInformation("Cont. AdoptController.Apply POST - Datbase Cont. - Saving application to database: {@dbApplicant}", dbApplicant);
+                        var numChanges = _context.SaveChanges();
+                        if (numChanges > 0)
                         {
-                            _logger.LogInformation("Saving application to database: {@dbApplicant}", dbApplicant);
-                            var numChanges = _context.SaveChanges();
-                            if(numChanges > 0)
-                            {
-                                result.IsSuccess = true;
-                            }
+                            result.IsSuccess = true;
                         }
-                        //catch (DbEntityValidationException ex)
-                        //{
-                        //    _logger.LogError(ex, "Database Validation Exception saving Applicant");
-                        //}
-                        catch (DbUpdateException ex)
-                        {
-                            _logger.LogError(new EventId(1), ex, "Database Update Exception saving Applicant");
-                        }
-                        catch (InvalidOperationException ex)
-                        {
-                            _logger.LogError(new EventId(1), ex, "Invalid Operation Exception saving Applicant");
-                        }
-                        #endregion
+                    }
 
-                        #endregion
+                    catch (DbUpdateException ex)
+                    {
+                        _logger.LogError("Cont. AdoptController.Apply POST - Datbase Cont. - Database Update Exception saving Applicant - {@DbUpdateException}", ex);
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        _logger.LogError("Cont. AdoptController.Apply POST - Datbase Cont. - Invalid Operation Exception saving Applicant - {@InvalidOperationException}", ex);
+                    }
+                    #endregion
+                    _logger.LogInformation("Cont. AdoptController.Apply POST - Datbase end");
+                    #endregion
 
-                        #region Generate PDF
-                        var newPdfFileName = await _formService.CreateAdoptionApplicationPdf(dbApplicant);
-                        #endregion
+                    #region Generate PDF
+                    _logger.LogInformation("Cont. AdoptController.Apply POST - PDF Gen Start");
+                    var newPdfFileName = await _formService.CreateAdoptionApplicationPdf(dbApplicant);
+                    _logger.LogInformation("Cont. AdoptController.Apply POST - PDF Gen End");
+                    #endregion
 
-                        #region Send Emails
-                        var groupEmail = _systemServices.GetSetting("Email-Contact").Value;
+                    #region Send Emails
+                    _logger.LogInformation("Cont. AdoptController.Apply POST - Emails Send Start");
 
-                        var subject = string.Join(" - ", "[TXHR Web Adoption App]", model.AppFullName);
+                    var groupEmail = _systemServices.GetSetting("Email-Contact").Value;
 
-                        var bodyText = string.Format(@"Thank you for your application.
+                    var subject = string.Join(" - ", "[TXHR Web Adoption App]", model.AppFullName);
+
+                    var bodyText = string.Empty;
+                    if (model.ApplicationFeeAmount > 0)
+                    {
+                        bodyText = string.Format(@"Thank you for your application.
                                 Attached is a copy of your application sent to Texas Husky Rescue, Inc.
                                 You can respond back to this email if you have any further questions or comments for us.
                                 We will get back to you within the next 7 days regarding your application.
                                 You're ${0} application fee will be applied towards your adoption fee if you are approved.
-                                The confirmation number for your application fee is {1}", model.ApplicationFeeAmount, model.BrainTreePayment.BraintreeTransactionId);
-
-                        byte[] pdfContentBytes;
-
-                        using (var stream = new MemoryStream())
-                        {
-                            await _storageService.GetAppAdoption(newPdfFileName, stream);
-                            pdfContentBytes = stream.ToArray();
-                        }
-
-                        var attachment = new PostmarkDotNet.PostmarkMessageAttachment
-                        {
-                            Content = Convert.ToBase64String(pdfContentBytes),
-                            ContentId = Path.GetFileName(newPdfFileName),
-                            ContentType = "application/pdf",
-                            Name = Path.GetFileName(newPdfFileName)
-                        };
-
-                        var attachments = new List<PostmarkDotNet.PostmarkMessageAttachment> { attachment };
-
-                        // Send email to the adopter
-                        var emailAppResult = await _emailService.SendEmailAsync(model.AppEmail, groupEmail, groupEmail, subject, bodyText, "adoption", attachments);
-
-                        bodyText = "Dogs interested in: " + model.FilterAppDogsInterestedIn + Environment.NewLine + Environment.NewLine;
-                        bodyText += "Comments from app: " + model.Comments;
-
-                        var emailGroupResult = await _emailService.SendEmailAsync(groupEmail, groupEmail, groupEmail, subject, bodyText, "adoption", attachments);
-
-                        #endregion
-
-                        if (result.IsSuccess)
-                        {
-                            return RedirectToAction("ThankYou");
-                        }
-                        else
-                        {
-                            foreach (var error in result.Messages)
-                            {
-                                ModelState.AddModelError(error.GetHashCode().ToString(), error);
-                                _logger.LogError("Data Exception saving Adoption Application {@app}", model);
-                            }
-
-                            return RedirectToAction("Apply");
-                        }
+                                The confirmation number for your application fee is {1}", model.ApplicationFeeAmount); //, model.BrainTreePayment.BraintreeTransactionId);
                     }
-                    _logger.LogInformation("Adoption App Model Errors {@errors} {@app}", errors, model);
+                    else
+                    {
+                        bodyText = string.Format(@"Thank you for your application.
+                                Attached is a copy of your application sent to Texas Husky Rescue, Inc.
+                                You can respond back to this email if you have any further questions or comments for us.
+                                We will get back to you within the next 7 days regarding your application.");
+                    }
+                    byte[] pdfContentBytes;
+
+                    _logger.LogInformation("Cont. AdoptController.Apply POST - Emails Send Cont - Start Get Application from Storage");
+                    using (var stream = new MemoryStream())
+                    {
+                        await _storageService.GetAppAdoption(newPdfFileName, stream);
+                        pdfContentBytes = stream.ToArray();
+                    }
+                    _logger.LogInformation("Cont. AdoptController.Apply POST - Emails Send Cont - End Get Application from Storage");
+
+                    var attachment = new PostmarkDotNet.PostmarkMessageAttachment
+                    {
+                        Content = Convert.ToBase64String(pdfContentBytes),
+                        ContentId = Path.GetFileName(newPdfFileName),
+                        ContentType = "application/pdf",
+                        Name = Path.GetFileName(newPdfFileName)
+                    };
+
+                    var attachments = new List<PostmarkDotNet.PostmarkMessageAttachment> { attachment };
+
+                    // Send email to the adopter
+                    _logger.LogInformation("Cont. AdoptController.Apply POST - Emails Send Cont - Start send email to the adopter");
+                    var emailAppResult = await _emailService.SendEmailAsync(model.AppEmail, groupEmail, groupEmail, subject, bodyText, "adoption", attachments);
+                    _logger.LogInformation("Cont. AdoptController.Apply POST - Emails Send Cont - End send email to the adopter");
+
+                    bodyText = "Dogs interested in: " + model.FilterAppDogsInterestedIn + Environment.NewLine + Environment.NewLine;
+                    bodyText += "Comments from app: " + model.Comments;
+
+                    _logger.LogInformation("Cont. AdoptController.Apply POST - Emails Send Cont - Start send email to the rescue");
+                    var emailGroupResult = await _emailService.SendEmailAsync(groupEmail, groupEmail, groupEmail, subject, bodyText, "adoption", attachments);
+                    _logger.LogInformation("Cont. AdoptController.Apply POST - Emails Send Cont - End send email to the rescue");
+
+                    _logger.LogInformation("Cont. AdoptController.Apply POST - Emails Send End");
+                    #endregion
+
+                    if (result.IsSuccess)
+                    {
+                        _logger.LogInformation("End AdoptController.Apply POST - Success - Redirecto to ThankYou");
+                        return RedirectToAction("ThankYou");
+                    }
+                    else
+                    {
+                        _logger.LogInformation("Cont. AdoptController.Apply POST - Failure - Redirecto to Apply with errors");
+                        foreach (var error in result.Messages)
+                        {
+                            ModelState.AddModelError(error.GetHashCode().ToString(), error);
+                            _logger.LogError("Cont. AdoptController.Apply POST - Failure - {AdoptionApplicationError}", error);
+                        }
+
+                        _logger.LogError("End AdoptController.Apply POST - Failure - {@AdoptionApplication}", model);
+                        return View(model);
+                    }
                 }
-                catch (Exception dex)
+                foreach (var error in errors.ToList())
                 {
-                    //Log the error (uncomment dex variable name and add a line here to write a log.
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                    _logger.LogError(new EventId (1), dex, "Data Exception saving Adoption Application {@app}", model);
+                    _logger.LogError("Cont. AdoptController.Apply POST - Failure - {AdoptionApplicationError}", error);
                 }
+                _logger.LogInformation("End AdoptController.Apply POST - Adoption App Model Errors {@AdoptionApplication}", model);
+                return View(model);
             }
-            return RedirectToAction("Apply");
+            catch (Exception dex)
+            {
+                //Log the error (uncomment dex variable name and add a line here to write a log.
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                _logger.LogError("End AdoptController.Apply POST - Data Exception saving Adoption Application {@AdoptionApplication}", model);
+            }
+            return View(model);
         }
 
 

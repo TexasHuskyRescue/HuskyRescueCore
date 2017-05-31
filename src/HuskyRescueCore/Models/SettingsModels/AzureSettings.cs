@@ -6,9 +6,12 @@ namespace HuskyRescueCore.Models.SettingsModels
     public class AzureSettings
     {
         public string GoogleDriveAdoptionFormUri { get; set; }
+        public string GoogleDriveFosterFormUri { get; set; }
         public string ConnectionString { get; set; }
         public string AdoptionAppsContainer { get; set; }
+        public string FosterAppsContainer { get; set; }
         public string BlankFormsContainer { get; set; }
+        public string RescueGroupsApiContainer { get; set; }
         public string AccountName { get; set; }
         public string DefaultEndpointsProtocol { get; set; }
         public bool IsHttps { get

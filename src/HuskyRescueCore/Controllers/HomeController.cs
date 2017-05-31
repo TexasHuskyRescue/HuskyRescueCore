@@ -6,6 +6,7 @@ using PaulMiami.AspNetCore.Mvc.Recaptcha;
 using HuskyRescueCore.Services;
 using HuskyRescueCore.Models;
 using HuskyRescueCore.Helpers.PostRequestGet;
+using Microsoft.Extensions.Logging;
 
 namespace HuskyRescueCore.Controllers
 {
@@ -13,15 +14,18 @@ namespace HuskyRescueCore.Controllers
     {
         private readonly ISystemSettingService _systemServices;
         private readonly IEmailSender _emailService;
+        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ISystemSettingService systemServices, IEmailSender emailService)
+        public HomeController(ISystemSettingService systemServices, IEmailSender emailService, ILogger<HomeController> logger)
         {
             _systemServices = systemServices;
             _emailService = emailService;
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
+            _logger.LogInformation("HomeController.Index Start");
             return View();
         }
 

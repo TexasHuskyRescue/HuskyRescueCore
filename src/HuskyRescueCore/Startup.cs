@@ -21,6 +21,7 @@ using System.Linq;
 
 namespace HuskyRescueCore
 {
+    using Helpers;
     using Mappers;
 
     using Repositories;
@@ -36,11 +37,15 @@ namespace HuskyRescueCore
         public Startup(IHostingEnvironment env)
         {
             Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
               .Enrich.FromLogContext()
               //.Enrich.WithMachineName()
               //.Enrich.WithEnvironmentUserName()
               //.WriteTo.RollingFile(env.WebRootPath + @"\App_Data\logs\") //, shared: true) // file share not supported on platform - error when using this in dev
-              .WriteTo.RollingFile("log-{Date}.txt", LogEventLevel.Debug)
+              .WriteTo.RollingFile(
+                pathFormat:"log-{Date}.txt", 
+                restrictedToMinimumLevel: LogEventLevel.Verbose, 
+                outputTemplate:"{Timestamp:HH:mm} [{Level}] [{Address}] [{HttpProtocol}] [{SessionId}] [{TraceId}] [{HttpResponseStatusCode}] {HttpPath} {Site}: {Message}{NewLine}")
               .CreateLogger();
 
 
@@ -150,7 +155,9 @@ namespace HuskyRescueCore
             // https://docs.asp.net/en/dev/fundamentals/logging.html
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            loggerFactory.AddSerilog();
+            // Specifying dispose: true closes and flushes the Serilog `Log` class when the app shuts down.
+            loggerFactory.AddSerilog(dispose: true);
+            
             // Ensure any buffered events are sent at shutdown
             appLifetime.ApplicationStopped.Register(Log.CloseAndFlush);
 
@@ -161,7 +168,6 @@ namespace HuskyRescueCore
 
             var customConfig = Configuration.GetSection("custom");
             var useDevErrorPages = elmahConfig.GetValue<bool>("UseDevErrorPages");
-
 
             var sslPort = 0;
             if (env.IsDevelopment())
@@ -222,6 +228,8 @@ namespace HuskyRescueCore
             app.UseIdentity();
 
             app.UseSession();
+
+            app.UseHttpLoggingMiddleWare();
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 

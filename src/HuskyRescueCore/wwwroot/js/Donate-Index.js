@@ -248,6 +248,14 @@ function PaymentType() {
     }
 }
 
+$(function () {
+
+// https://igorescobar.github.io/jQuery-Mask-Plugin/
+$('.phone_us').mask('(000) 000-0000');
+$('.postal').mask('00000');
+$('.money').mask('00000.00', { reverse: true });
+
 $('select[name="BrainTreePayment.PaymentMethod"]').change(PaymentType);
 
 PaymentType();
+});
